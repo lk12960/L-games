@@ -3,14 +3,14 @@
 
 <head>
     <script>
-        const SITE_VERSION = "2.0"; // Increment this whenever you want to reset storage
+        const SITE_VERSION = "3.0"; // Increment this whenever you want to reset storage
     
         if (localStorage.getItem("site_version") !== SITE_VERSION) {
             localStorage.clear();  // Clear all stored data
             localStorage.setItem("site_version", SITE_VERSION); // Store the new version
         }
     </script>
-    
+
     <script>
   // Check if user is authenticated
         if (localStorage.getItem("user_authenticated") !== "true") {
