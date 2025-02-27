@@ -3,7 +3,16 @@
 
 <head>
     <script>
-        // Check if user is authenticated
+        const SITE_VERSION = "2.0"; // Increment this whenever you want to reset storage
+    
+        if (localStorage.getItem("site_version") !== SITE_VERSION) {
+            localStorage.clear();  // Clear all stored data
+            localStorage.setItem("site_version", SITE_VERSION); // Store the new version
+        }
+    </script>
+    
+    <script>
+  // Check if user is authenticated
         if (localStorage.getItem("user_authenticated") !== "true") {
             window.location.href = "https://l-games.s3.us-east-2.amazonaws.com/signin.html"; // Replace with actual sign-in page URL
         }

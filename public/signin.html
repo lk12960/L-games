@@ -110,7 +110,7 @@
                         window.location.href = "https://l-games.s3.us-east-2.amazonaws.com/index.html";
                     } else {
                         alert("Access denied: Your email is not whitelisted.");
-                        localStorage.setItem("user_authenticated_v2", "true");
+                        localStorage.removeItem("user_authenticated");
                     }
                 })
                 .catch(error => console.error('Error verifying token:', error));
