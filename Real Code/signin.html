@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Math Worksheets Teacher Sign-In</title>
+
+    <!-- Google Sign-In API -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <style>
+        body {
+            background-color: white;
+            color: black;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 20px;
+        }
+        
+        .signin-container {
+            margin-top: 100px;
+        }
+        
+        .math-symbols {
+            font-size: 50px;
+            position: absolute;
+            opacity: 0.2;
+        }
+        
+        .symbol1 { top: 10%; left: 10%; transform: rotate(-15deg); }
+        .symbol2 { top: 80%; left: 20%; transform: rotate(10deg); }
+        .symbol3 { top: 40%; right: 15%; transform: rotate(-30deg); }
+        .symbol4 { bottom: 10%; right: 5%; transform: rotate(20deg); }
+    </style>
+</head>
+
+<body>
+    <h1>Cool Math Worksheets Secret Sign-In</h1>
+    
+    <!-- Decorative Math Symbols -->
+    <div class="math-symbols symbol1">➗</div>
+    <div class="math-symbols symbol2">➕</div>
+    <div class="math-symbols symbol3">✖️</div>
+    <div class="math-symbols symbol4">➖</div>
+    
+    <!-- Google Sign-In Button -->
+    <div class="signin-container">
+        <div id="g_id_onload"
+             data-client_id="273294914895-5vhe9qupotv9ldtd03jjauhr85oed0g5"
+             data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
+    </div>
+
+    <script>
+        let WHITELISTED_EMAILS = [];
+
+        function fetchWhitelistedEmails() {
+            return fetch('authorized.html')
+                .then(response => response.text())
+                .then(text => {
+                    WHITELISTED_EMAILS = text.split('\n').map(email => email.trim()).filter(email => email);
+                })
+                .catch(error => console.error('Error loading authorized emails:', error));
+        }
+
+        function handleCredentialResponse(response) {
+            const token = response.credential;
+            fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + token)
+                .then(res => res.json())
+                .then(data => {
+                    if (WHITELISTED_EMAILS.includes(data.email)) {
+                        localStorage.setItem("user_authenticated", "true");
+                        window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/index.html";
+                    } else {
+                        alert("Access denied: Your email has not been added to the list of authorized members on Cool Math Worksheets.");
+                        localStorage.removeItem("user_authenticated");
+                    }
+                })
+                .catch(error => console.error('Error verifying token:', error));
+        }
+
+        fetchWhitelistedEmails();
+    </script>
+</body>
+
+</html>

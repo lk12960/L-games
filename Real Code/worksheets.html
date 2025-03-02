@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        const SITE_VERSION = "5.0"; // Increment this whenever you want to reset storage
+    
+        if (localStorage.getItem("site_version") !== SITE_VERSION) {
+            localStorage.clear();  // Clear all stored data
+            localStorage.setItem("site_version", SITE_VERSION); // Store the new version
+        }
+    </script>
+
+    <script>
+  // Check if user is authenticated
+        if (localStorage.getItem("user_authenticated") !== "true") {
+            window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/signin.html"; // Replace with actual sign-in page URL
+        }
+    </script>    
+   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unblocked Games</title>
+
+    <!-- Favicon link -->
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #282828;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            height: 100%;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Buttons container */
+        .button-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .button-container button {
+            background-color: transparent;
+            border: 3px solid white;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            font-style: italic;
+            margin-top: 5vh; /* Reduced margin-top to bring text up */
+        }
+
+        .search-container {
+            margin-top: 5vh;
+            text-align: center;
+        }
+
+        .search-container input {
+            padding: 8px 30px; /* Shorter height, longer width */
+            font-size: 1rem;
+            width: 350px; /* Increased width */
+            height: 35px; /* Shortened height */
+            border-radius: 5px;
+            border: 2px solid #888888; /* Darker grey border */
+            outline: none;
+            background-color: rgba(51, 51, 51, 0.4); /* More transparent background */
+            color: #d0d0d0; /* Lighter text for readability */
+        }
+
+        /* Center game-container grid */
+        .game-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 4 cards per row */
+    gap: 15px; /* Spacing between cards */
+    margin: 30px auto;
+    padding: 0 10px;
+    max-width: 1200px;
+    align-items: center;
+    justify-items: center;
+}
+
+
+        /* Adjust grid layout for responsiveness */
+        @media (max-width: 700px) {
+            .game-container {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .game-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .game-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 400px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .game-card {
+            width: 200px;
+            text-align: center;
+            background-color: rgba(68, 68, 68, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-card img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .game-card b {
+            display: block;
+            margin-top: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #7b5bff;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 5px;
+        }
+
+        /* Center image above title with adjusted margin */
+        .favicon-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px; /* Adjust this to lower the logo */
+            margin-bottom: 0px; /* No gap between image and title */
+        }
+
+        .favicon-container img {
+            width: 150px; /* Logo size */
+            height: auto;
+            margin-top: 40px; /* Adjust this to position logo lower */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="particles-js"></div>
+
+    <!-- Favicon Image Above Title -->
+    <div class="favicon-container">
+        <img src="logo.png" alt="Logo Image">
+    </div>
+
+    <h1>Unblocked Games</h1>
+
+    <!-- Buttons container -->
+    <div class="button-container">
+        <button onclick="enableTabCloak()">Enable Tab Cloak</button>
+        <button onclick="openGameRequest()">Game Request</button>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="game-search" placeholder="Search for games..." onkeyup="filterGames()">
+    </div>
+
+    <!-- Game Cards container -->
+   
+    <div class="game-container">
+        <a href="https://l-games-bitlife.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Bitlife"><img src="./icons/bitlife.webp" alt="Bitlife"><b>Bitlife</b></a>
+        <a href="https://l-games-subway.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Subway Surfers"><img src="./icons/subway.avif" alt="Subway Surfers"><b>Subway Surfers</b></a>
+        <a href="https://l-games-snowrider.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Snow Rider 3D"><img src="./icons/snow.jpg" alt="Snow Rider 3D"><b>Snow Rider 3D</b></a>
+        <a href="https://l-games-stickmanhook.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Stickman Hook"><img src="./icons/stickmanhook.jpg" alt="Stickman Hook"><b>Stickman Hook</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/gunspin/index.html" class="game-card" data-name="Gunspin"><img src="./icons/gunspin.png" alt="Gunspin"><b>Gunspin</b></a>
+        <a href="https://l-games-paperio2.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Paper.io 2"><img src="./icons/paperio.webp" alt="Paper.io 2"><b>Paper.io 2</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/volley-random/index.html" class="game-card" data-name="Volley Random"><img src="./icons/volley.png" alt="Volley Random"><b>Volley Random</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/rooftop-snipers-2/index.html" class="game-card" data-name="Rooftop Snipers"><img src="./icons/rooftop.avif" alt="Rooftop Snipers"><b>Rooftop Snipers</b></a>
+        <a href="https://l-games-snakeio.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Snake.io"><img src="./icons/snakeio.png" alt="Snake.io"><b>Snake.io</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/soccerrandom/index.html" class="game-card" data-name="Soccer Random"><img src="./icons/soccerrandom.webp" alt="Soccer Random"><b>Soccer Random</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/arenaking/index.html" class="game-card" data-name="Survival Race: Arena King"><img src="./icons/arena.png" alt="Survival Race: Arena King"><b>Survival Race: Arena King</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/driftboss/index.html" class="game-card" data-name="Drift Boss"><img src="./icons/driftboss.png" alt="Drift Boss"><b>Drift Boss</b></a>
+        <a href="https://l-games-drifthunters.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Drift Hunters"><img src="./icons/drifthunters.png" alt="Drift Hunters"><b>Drift Hunters</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/basketrandom/index.html" class="game-card" data-name="Basket Random"><img src="./icons/basketrandom.webp" alt="Basket Random"><b>Basket Random</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/blockblast/index.html" class="game-card" data-name="Block Blast"><img src="./icons/blockblast.png" alt="Block Blast"><b>Block Blast</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/snowball/index.html" class="game-card" data-name="Snowball.io"><img src="./icons/snowball.png" alt="Snowball.io"><b>Snowball.io</b></a>
+        <a href="https://l-games-ovo.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="OvO"><img src="./icons/ovo.png" alt="OvO"><b>OvO</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/basketball-stars/index.html" class="game-card" data-name="Basketball Stars"><img src="./icons/basketball-stars.png" alt="Basketball Stars"><b>Basketball Stars</b></a>
+        <a href="https://l-games-rocketpult.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Rocket Pult"><img src="./icons/Rocketpult.webp" alt="Rocket Pult"><b>Rocket Pult</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/unicycle-hero/index.html" class="game-card" data-name="Unicycle Hero"><img src="./icons/unicycle-hero.webp" alt="Unicycle Hero"><b>Unicycle Hero</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/cookie/index.html" class="game-card" data-name="Cookie Clicker"><img src="./icons/cookie.webp" alt="Cookie Clicker"><b>Cookie Clicker</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/crossyroad/index.html" class="game-card" data-name="Crossy Road"><img src="./icons/crossyroad.webp" alt="Crossy Road"><b>Crossy Road</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/eatio/index.html" class="game-card" data-name="Eat.io"><img src="./icons/eatio.webp" alt="Eat.io"><b>Eat.io</b></a>
+        <a href="https://l-games-eggycar.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Eggy Car"><img src="./icons/eggy-car.webp" alt="Eggy Car"><b>Eggy Car</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/impossiblequiz/index.html" class="game-card" data-name="Impossible Quiz"><img src="./icons/impossiblequiz.webp" alt="Impossible Quiz"><b>Impossible Quiz</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/kitchen-gun-game/index.html" class="game-card" data-name="Kitchen Gun Game"><img src="./icons/kitchen-gun-game.webp" alt="Kitchen Gun Game"><b>Kitchen Gun Game</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/pong/index.html" class="game-card" data-name="Pong"><img src="./icons/pong.webp" alt="Pong"><b>Pong</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/retrobowl/index.html" class="game-card" data-name="Retro Bowl"><img src="./icons/retrobowl.webp" alt="Retro Bowl"><b>Retro Bowl</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
+        <a href="https://l-games.s3.us-east-2.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
+
+    </div>    
+
+        <!-- Additional game cards can go here -->
+    </div>
+
+</div> <!-- Closing for game-container -->
+
+<!-- Popup Container -->
+<div id="welcome-popup" class="popup-overlay">
+    <div class="popup-content">
+        <h2>Welcome Back!</h2>
+        <p>Congratulations on being one of the few people with access to this new site</p>
+        <button onclick="closePopup()">Close</button>
+    </div>
+</div>
+
+<!-- Popup Styles -->
+<style>
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+    }
+
+    .popup-content {
+        background-color: #444;
+        color: white;
+        border: 2px solid white;
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px;
+        width: 350px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-content h2 {
+        margin-bottom: 10px;
+    }
+
+    .popup-content button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: white;
+        color: black;
+        border: 2px solid black;
+        cursor: pointer;
+        font-size: 1rem;
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+
+    .popup-content button:hover {
+        background-color: black;
+        color: white;
+    }
+</style>
+
+<!-- Popup Script -->
+<script>
+    function closePopup() {
+        document.getElementById("welcome-popup").style.display = "none";
+    }
+
+    // Show the popup on page load
+    window.onload = function () {
+        document.getElementById("welcome-popup").style.display = "flex";
+    };
+</script>
+
+<!-- Particles.js CDN -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'particles.json', function () {
+        console.log('particles.json loaded...');
+    });
+
+    function filterGames() {
+        const searchInput = document.getElementById('game-search').value.toLowerCase();
+        const games = document.querySelectorAll('.game-card');
+        games.forEach(game => {
+            const name = game.dataset.name.toLowerCase();
+            if (name.includes(searchInput)) {
+                game.style.display = 'block';
+            } else {
+                game.style.display = 'none';
+            }
+        });
+    }
+
+    // Placeholder functions for buttons
+    function enableTabCloak() {
+        alert('Tab Cloak failed to enable!');
+    }
+
+    function openGameRequest() {
+        window.location.href = 'https://forms.gle/ZDg1L8915QNXnHFj6';
+    }
+</script>
+
+<script src="js/app.js"></script>
+<script src="js/particles.js"></script>
+</body>
+</html>
