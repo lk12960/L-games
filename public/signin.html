@@ -5,18 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sign-In</title>
+    <title>Cool Math Worksheets Teacher Sign-In</title>
 
     <!-- Google Sign-In API -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
-    <!-- Particles.js -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    
     <style>
         body {
-            background-color: #282828;
-            color: white;
+            background-color: white;
+            color: black;
             text-align: center;
             font-family: Arial, sans-serif;
             display: flex;
@@ -25,64 +22,41 @@
             justify-content: center;
             height: 100vh;
             overflow: hidden;
+            position: relative;
         }
         
-        #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 20px;
         }
         
         .signin-container {
-            margin-top: 20px;
+            margin-top: 100px;
         }
         
-        .g_id_signin button {
-            background-color: transparent !important;
-            border: 2px solid white !important;
-            color: white !important;
-            padding: 10px 20px !important;
-            border-radius: 5px !important;
-            font-size: 1rem !important;
-            cursor: pointer !important;
-            transition: all 0.3s ease !important;
-        }
-        
-        .g_id_signin button:hover {
-            background-color: white !important;
-            color: black !important;
-        }
-        
-        .header-container {
+        .math-symbols {
+            font-size: 50px;
             position: absolute;
-            top: 20px;
-            text-align: center;
+            opacity: 0.2;
         }
-
-        .header-container img {
-            width: 150px;
-            height: 150px;
-        }
-
-        .header-container b {
-            display: block;
-            font-size: 32px;
-            font-style: italic;
-        }
+        
+        .symbol1 { top: 10%; left: 10%; transform: rotate(-15deg); }
+        .symbol2 { top: 80%; left: 20%; transform: rotate(10deg); }
+        .symbol3 { top: 40%; right: 15%; transform: rotate(-30deg); }
+        .symbol4 { bottom: 10%; right: 5%; transform: rotate(20deg); }
     </style>
 </head>
 
 <body>
-    <div id="particles-js"></div>
+    <h1>Cool Math Worksheets Secret Sign-In</h1>
     
-    <div class="header-container">
-        <img src="favicon.png" alt="Favicon">
-        <br>
-        <b>Math Worksheets</b>
-    </div>
+    <!-- Decorative Math Symbols -->
+    <div class="math-symbols symbol1">➗</div>
+    <div class="math-symbols symbol2">➕</div>
+    <div class="math-symbols symbol3">✖️</div>
+    <div class="math-symbols symbol4">➖</div>
     
     <!-- Google Sign-In Button -->
     <div class="signin-container">
@@ -94,11 +68,16 @@
     </div>
 
     <script>
-        particlesJS.load('particles-js', 'particles.json', function () {
-            console.log('particles.json loaded...');
-        });
+        let WHITELISTED_EMAILS = [];
 
-        const WHITELISTED_EMAILS = ["lking12960@gmail.com", "mikey33157@gmail.com", "hooy1317@gmail.com", "cudzilmason@gmail.com", "jimmyzesty529@gmail.com", "aalexxxxx17@gmail.com", "bconroy534@gmail.com", "adrian.mt.tremper@gmail.com", "to4091100@gmail.com", "iamzesty34@gmail.com"];
+        function fetchWhitelistedEmails() {
+            return fetch('authorized.html')
+                .then(response => response.text())
+                .then(text => {
+                    WHITELISTED_EMAILS = text.split('\n').map(email => email.trim()).filter(email => email);
+                })
+                .catch(error => console.error('Error loading authorized emails:', error));
+        }
 
         function handleCredentialResponse(response) {
             const token = response.credential;
@@ -107,19 +86,17 @@
                 .then(data => {
                     if (WHITELISTED_EMAILS.includes(data.email)) {
                         localStorage.setItem("user_authenticated", "true");
-                        window.location.href = "https://l-games.s3.us-east-2.amazonaws.com/index.html";
+                        window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/worksheets.html";
                     } else {
-                        alert("Access denied: Your email is not whitelisted.");
+                        alert("Access denied: Your email has not been added to the list of authorized members on Cool Math Worksheets.");
                         localStorage.removeItem("user_authenticated");
                     }
                 })
                 .catch(error => console.error('Error verifying token:', error));
         }
-    </script>
 
-    <!-- Additional Scripts -->
-    <script src="js/app.js"></script>
-    <script src="js/particles.js"></script>
+        fetchWhitelistedEmails();
+    </script>
 </body>
 
 </html>
