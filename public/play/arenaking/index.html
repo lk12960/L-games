@@ -1,61 +1,288 @@
-<body><div id="fr" data="<iframe width=&quot;100%&quot; height=&quot;100%&quot; src=&quot;https://classrom-opensocial.googleusercontent.com/gadgets/ifr?url=https://groups.google.com/u/6/group/54r7m5resdndren65dx/attach/714665069651d/99999.xml?part=0.1&amp;view=1&amp;authuser=6&amp;container=ig&quot; frameborder=&quot;0&quot; allowfullscreen></iframe>"></div>
-    <button class="c-button" type="button" onclick="PlayTo(this)">CLICK TO PLAY</button>
-    <div class="bottom-text">L Unblocked Games</div>
-    
-    <style>
-      .c-button {
-        min-width: 100%;
-        font-family: fantasy;
-        appearance: auto;
-        border: 0;
-        border-color: #fff;
-        border-radius: 5px;
-        background: #000;
-        color: #fff;
-        font-size: 30px;
-        cursor: pointer;
+<html lang="en-us"><head></head><body class="dark"><module>
+  <moduleprefs title="Google.com">
+  <content type="html"><!--[CDATA[
+  
+  
+  <!DOCTYPE html-->
+  
+  
+  
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/z-f3-f1/1@main/style.css">
+  <!-- Yandex Games SDK -->
+  <style>
+          /* Убираем выделение по нажатию клавиш */
+          canvas:focus {
+              outline: none;
+          }
+  
+          html, body {
+              /* Убираем отступы */
+              padding: 0;
+              margin: 0;
+              /* Отключаем скролл и лонгтап на IOS */
+              overflow: hidden;
+              -webkit-touch-callout: none;
+              -webkit-user-select: none;
+              -khtml-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+              -webkit-tap-highlight-color: rgba(0,0,0,0);
+              /* Ставим высоту на 100% */
+              height: 100%;
+          }
+      </style>
+  <!-- Additional head modules -->
+  
+  
+  <div id="unity-container" class="unity-desktop">
+  <canvas id="unity-canvas" tabindex="-1" width="700" height="454" style="cursor: default;"></canvas>
+  </div>
+  <div id="loading-cover" style="background: url(&quot;https://media.discordapp.net/attachments/1267287637580845088/1352834339637035121/image.png?ex=67df74a9&is=67de2329&hm=f71fd7cbe9a96d14468d5c9dbb282826a7f4638f93d6fbceab12858e50461397&=&width=1093&height=542&quot;) center center / cover; display: none;">
+  <div id="unity-loading-bar">
+  <div id="unity-logo"><img src="https://media.discordapp.net/attachments/1267287637580845088/1352834915359785030/favicon_1.png?ex=67df7532&is=67de23b2&hm=84bbac69634954f764f2aa13c7a7ce7689b80e199337e5d6463b83eba9946751&=&width=646&height=646"></div>
+  <div id="unity-progress-bar-empty" style="">
+  <div id="unity-progress-bar-full" style="width: 100%;"></div>
+  </div>
+  <div class="spinner" style="display: none;"></div>
+  </div>
+  </div>
+  <!-- Additional body modules -->
+  <script>
+      const hideFullScreenButton = "";
+      const buildUrl = "https://cdn.jsdelivr.net/gh/z-f3-f1/1@main/Build"; // jsDelivr URL
+      const loaderUrl = buildUrl + "/yandexBrotli.loader.js";  // Loader dosyası
+  
+      // Birleştirilmiş dosyanın yükleneceği URL'ler
+      const config = {
+          dataUrl: buildUrl + "/yandexBrotli.data.br",  // .data.br dosyasını doğrudan yüklüyoruz
+          frameworkUrl: buildUrl + "/yandexBrotli.framewor.js", // .framework.js.br dosyasını doğrudan yüklüyoruz
+          // Bu satırdaki kodu değiştirdik: Artık .wasm.br dosyasını doğrudan yüklemeyeceğiz.
+          // codeUrl: buildUrl + "/yandexBrotli.wasm.br",  // Buradaki satırı kaldırdık
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "Brain massage",
+          productName: "Supercar Battle Royale",
+          productVersion: "0.0.197"
+      };
+  
+      // Dosyaları birleştirip yüklemek için kullanılan fonksiyon
+      function loadAndMergeFiles(files, callback) {
+          var mergedBlob = [];
+  
+          // Her dosyayı sırayla yükle
+          var loadNextFile = function (index) {
+              if (index < files.length) {
+                  var file = files[index];
+                  fetch(buildUrl + "/" + file)
+                      .then(response => response.arrayBuffer())
+                      .then(data => {
+                          mergedBlob.push(new Uint8Array(data));
+                          loadNextFile(index + 1);
+                      })
+                      .catch(error => {
+                          console.error('Dosya yüklenemedi:', file, error);
+                      });
+              } else {
+                  // Tüm dosyalar yüklendiğinde, birleştirilmiş dosya ile callback'i çağır
+                  callback(new Blob(mergedBlob));
+              }
+          };
+  
+          loadNextFile(0);
       }
-      
-      .c-button:hover {
-        background: #320d90;
+  
+      // .wasm dosyası için parçalar
+      var wasmFiles = [
+          "yandexBrotli.wasm.br.part1",
+          "yandexBrotli.wasm.br.part2"
+      ];
+  
+      const container = document.querySelector("#unity-container");
+      const canvas = document.querySelector("#unity-canvas");
+      const loadingCover = document.querySelector("#loading-cover");
+      const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
+      const progressBarFull = document.querySelector("#unity-progress-bar-full");
+      const spinner = document.querySelector('.spinner');
+  
+      const canFullscreen = (function () {
+          for (const key of [
+              'exitFullscreen',
+              'webkitExitFullscreen',
+              'webkitCancelFullScreen',
+              'mozCancelFullScreen',
+              'msExitFullscreen',
+          ]) {
+              if (key in document) {
+                  return true;
+              }
+          }
+          return false;
+      }());
+  
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          container.className = "unity-mobile";
       }
-      
-      .c-button:focus {
-        outline: 0;
-        box-shadow: 0 0 0 4px #cbd6ee;
-      }
-      
-      .c-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-      }
-      
-      .bottom-text {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-family: Arial, sans-serif;
-        font-size: 20px;
-        color: #fff;
-        background-color: rgba(0, 0, 0, 0.7);
-        padding: 5px 10px;
-        border-radius: 5px;
-      }
-    </style>
-    
-    <script>
-      function PlayTo(i) {
-        // Önceki sibling metin düğümü olabilir, bu yüzden bir önceki "element" siblingi bulalım
-        var n = i.previousElementSibling;
-        if (n) {
-          // Div'in içeriğini iframe ile güncelleyelim
-          n.innerHTML = n.getAttribute("data");
-          // Butonu gizleyelim
-          i.style.display = "none";
-        }
-      }
-    </script>
-    </body>
+  
+      // .wasm dosyasını birleştirip yükle
+      loadAndMergeFiles(wasmFiles, function (mergedWasmBlob) {
+          var mergedWasmFile = URL.createObjectURL(mergedWasmBlob);
+  
+          // Birleştirilen dosyayı Unity'ye yüklemek için kullanıyoruz
+          config.codeUrl = mergedWasmFile;  // Birleştirilmiş .wasm dosyasının yolu
+  
+          // Unity başlatma ve yükleme
+          var myGameInstance = null;
+          var script = document.createElement("script");
+          script.src = loaderUrl;
+          script.onload = () => {
+              createUnityInstance(canvas, config, (progress) => {
+                  progressBarFull.style.width = 100 * progress + "%";
+              }).then((unityInstance) => {
+                  myGameInstance = unityInstance;
+                  loadingCover.style.display = "none";
+              }).catch((message) => {
+                  alert(message);
+              });
+          };
+  
+          document.body.appendChild(script);
+      });
+  </script>
+  
+  <script>
+  
+          // Фоновое изображение при загрузке игры. При сборке билда код меняется взависимости от настроек проекта.
+          
+          loadingCover.style.background = "url('https://media.discordapp.net/attachments/1267287637580845088/1352834339637035121/image.png?ex=67df74a9&is=67de2329&hm=f71fd7cbe9a96d14468d5c9dbb282826a7f4638f93d6fbceab12858e50461397&=&width=1093&height=542') center / cover";
+  
+          loadingCover.style.display = "";
+  
+          // Выключаем появление меню при правом клике мыши
+          document.addEventListener('contextmenu', event => event.preventDefault());
+  
+          // Возвращаем фокус, если кликнули по экрану
+         function FocusGame() {
+              window.focus();
+              canvas.focus();
+          }
+  
+          window.addEventListener('pointerdown', FocusGame);
+          window.addEventListener('touchstart', FocusGame);
+  
+          let StartUnityInstance;
+          let myGameInstance;
+          let ysdk = null; // Yandex SDK pasif
+  
+          // Varsayılan değerlerle environmentData, cloudSaves, paymentsData ve playerData gibi değişkenlerin tanımlanması
+          let environmentData = {
+              language: "en",
+              domain: "default_domain",
+              deviceType: "desktop",
+              isMobile: false,
+              isDesktop: true,
+              isTablet: false,
+              isTV: false,
+              appID: "default_app_id",
+              browserLang: navigator.language || "en",
+              payload: null,
+              promptCanShow: false,
+              reviewCanShow: false,
+              platform: navigator.platform,
+              browser: (function() {
+                  let userAgent = navigator.userAgent;
+                  if (userAgent.includes("YaBrowser")) return "Yandex";
+                  if (userAgent.includes("OPR") || userAgent.includes("Opera")) return "Opera";
+                  if (userAgent.includes("Firefox")) return "Firefox";
+                  if (userAgent.includes("MSIE") || userAgent.includes("Trident")) return "IE";
+                  if (userAgent.includes("Edge")) return "Edge";
+                  if (userAgent.includes("Chrome")) return "Chrome";
+                  if (userAgent.includes("Safari")) return "Safari";
+                  return "Other";
+              })()
+          };
+          
+          let cloudSaves = 'noData';
+          let paymentsData = 'none';
+          let playerData = 'noData'; // Varsayılan playerData tanımı
+          let player = null;
+          let payments = null;
+          let initGame = false;
+          let nowFullAdOpen = false;
+  
+          // Eksik olabilecek tüm SDK işlevlerini varsayılan olarak tanımla
+          function GetPayments() { console.warn("GetPayments is not implemented"); return Promise.resolve("none"); }
+          function SaveCloud() { console.warn("SaveCloud is not implemented"); }
+          function LoadCloud() { console.warn("LoadCloud is not implemented"); return Promise.resolve("noData"); }
+          function InitPlayer() { console.warn("InitPlayer is not implemented"); return Promise.resolve("noData"); }
+          function FullAdShow() { console.warn("FullAdShow is not implemented"); }
+          function RewardedShow() { console.warn("RewardedShow is not implemented"); }
+          function StickyAdActivity() { console.warn("StickyAdActivity is not implemented"); }
+          function Review() { console.warn("Review is not implemented"); }
+          function PromptShow() { console.warn("PromptShow is not implemented"); }
+          function InitLeaderboards() { console.warn("InitLeaderboards is not implemented"); }
+          function GetLeaderboardScores() { console.warn("GetLeaderboardScores is not implemented"); }
+          function SetLeaderboardScores() { console.warn("SetLeaderboardScores is not implemented"); }
+          function ConsumePurchase() { console.warn("ConsumePurchase is not implemented"); }
+          function ConsumePurchases() { console.warn("ConsumePurchases is not implemented"); } // Varsayılan tanım eklendi
+  
+          function InitLeaderboard() { console.warn("ConsumePurchases is not implemented"); }
+  
+          function BuyPayments() { console.warn("ConsumePurchases is not implemented"); }
+  
+  
+  
+  
+  
+  
+  
+          // Hata yakalama ile Unity başlatma işlemi
+          try {
+              const script = document.createElement("script");
+              script.src = loaderUrl;
+              script.onload = () => {
+                  StartUnityInstance = function () {
+                      createUnityInstance(canvas, config, (progress) => {
+                          spinner.style.display = "none";
+                          progressBarEmpty.style.display = "";
+                          progressBarFull.style.width = `${100 * progress}%`;
+                      }).then((unityInstance) => {
+                          myGameInstance = unityInstance;
+                          loadingCover.style.display = "none";
+                      }).catch((message) => {
+                          console.error("Unity yükleme hatası:", message);
+                      });
+                  };
+                  StartUnityInstance();
+              };
+              document.body.appendChild(script);
+          } catch (error) {
+              console.error("Başlatma sırasında hata:", error);
+          }
+  
+          function InitGame() {
+              try {
+                  console.log('Init Game Success');
+                  initGame = true;
+                  if (nowFullAdOpen === true && myGameInstance != null) {
+                      myGameInstance.SendMessage('YandexGame', 'OpenFullAd');
+                  }
+              } catch (error) {
+                  console.error("InitGame sırasında hata:", error);
+              }
+          }
+  
+          // Hata oluştuğunda oyuna devam etmek için tüm hataları global olarak yakalayan yapı
+          window.addEventListener("unhandledrejection", function(event) {
+              console.warn("Hata es geçildi:", event.reason);
+              event.preventDefault();
+          });
+      </script>
+  
+  
+  
+  ]]&gt;</content>
+  </moduleprefs></module><script src="https://cdn.jsdelivr.net/gh/z-f3-f1/1@main/Build/yandexBrotli.loader.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/z-f3-f1/1@main/Build/yandexBrotli.framewor.js"></script><script src="https://cdn.jsdelivr.net/gh/z-f3-f1/1@main/Build/yandexBrotli.loader.js"></script><script src="https://cdn.jsdelivr.net/gh/z-f3-f1/1@main/Build/yandexBrotli.framewor.js"></script></body></html>

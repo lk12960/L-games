@@ -224,7 +224,7 @@
 
     <!-- Buttons container -->
     <div class="button-container">
-        <button onclick="enableTabCloak()">Enable Tab Cloak</button>
+        <button onclick="enableTabCloak()">Update Log</button>
         <button onclick="openGameRequest()">Game Request</button>
     </div>
 
@@ -235,6 +235,9 @@
     <!-- Game Cards container -->
    
     <div class="game-container">
+        <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/crazycrash/index.html" class="game-card" data-name="Crazy Crash Landing"><img src="./icons/crazy.webp" alt="Crazy Crash Landing"><b>Crazy Crash Landing</b></a>
+        <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/Granny/index.html" class="game-card" data-name="Bitlife"><img src="./icons/granny.jpg" alt="Granny"><b>Granny</b></a>
+        <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/Granny2/index.html" class="game-card" data-name="Bitlife"><img src="./icons/granny2.png" alt="Granny 2"><b>Granny 2</b></a>
         <a href="https://l-games-bitlife.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Bitlife"><img src="./icons/bitlife.webp" alt="Bitlife"><b>Bitlife</b></a>
         <a href="https://l-games-subway.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Subway Surfers"><img src="./icons/subway.avif" alt="Subway Surfers"><b>Subway Surfers</b></a>
         <a href="https://l-games-snowrider.s3.us-east-2.amazonaws.com/index.html" class="game-card" data-name="Snow Rider 3D"><img src="./icons/snow.jpg" alt="Snow Rider 3D"><b>Snow Rider 3D</b></a>
@@ -273,75 +276,6 @@
 
 </div> <!-- Closing for game-container -->
 
-<!-- Popup Container -->
-<div id="welcome-popup" class="popup-overlay">
-    <div class="popup-content">
-        <h2>Welcome Back!</h2>
-        <p>Congratulations on being one of the few people with access to this new site</p>
-        <button onclick="closePopup()">Close</button>
-    </div>
-</div>
-
-<!-- Popup Styles -->
-<style>
-    .popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-    }
-
-    .popup-content {
-        background-color: #444;
-        color: white;
-        border: 2px solid white;
-        padding: 20px;
-        text-align: center;
-        border-radius: 10px;
-        width: 350px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .popup-content h2 {
-        margin-bottom: 10px;
-    }
-
-    .popup-content button {
-        margin-top: 15px;
-        padding: 10px 20px;
-        background-color: white;
-        color: black;
-        border: 2px solid black;
-        cursor: pointer;
-        font-size: 1rem;
-        border-radius: 5px;
-        transition: all 0.3s;
-    }
-
-    .popup-content button:hover {
-        background-color: black;
-        color: white;
-    }
-</style>
-
-<!-- Popup Script -->
-<script>
-    function closePopup() {
-        document.getElementById("welcome-popup").style.display = "none";
-    }
-
-    // Show the popup on page load
-    window.onload = function () {
-        document.getElementById("welcome-popup").style.display = "flex";
-    };
-</script>
-
 <!-- Particles.js CDN -->
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
@@ -364,7 +298,7 @@
 
     // Placeholder functions for buttons
     function enableTabCloak() {
-        alert('Tab Cloak failed to enable!');
+        window.location.href = 'https://docs.google.com/document/d/1DgpBLhzh8H1Hbj9CR9esT39qhlUNh1a5XXJVjinOe6o/edit?usp=sharing';
     }
 
     function openGameRequest() {
