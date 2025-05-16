@@ -307,5 +307,64 @@
 
 <script src="js/app.js"></script>
 <script src="js/particles.js"></script>
+
+<script>
+  // Get the signed-in email from localStorage
+  const userEmail = localStorage.getItem("user_email") || "Unknown";
+
+  // Track when the user starts using the site
+  const sessionStart = Date.now();
+
+  // Log game clicks
+  const logGameClick = (gameName) => {
+    const timestamp = new Date().toISOString();
+
+    // Data to send
+    const data = {
+      email: userEmail,
+      game: gameName,
+      timestamp: timestamp,
+      event: "click"
+    };
+
+    // Replace with your actual Google Apps Script web app URL
+    fetch("https://script.google.com/macros/s/PASTE_YOUR_WEBAPP_URL_HERE/exec", {
+      method: "POST",
+      mode: "no-cors", // prevent CORS errors (but no response will be returned)
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+  };
+
+  // Attach click listeners to all games
+  document.querySelectorAll(".game-card").forEach(card => {
+    const gameName = card.getAttribute("data-name") || "Unknown Game";
+    card.addEventListener("click", () => logGameClick(gameName));
+  });
+
+  // Optionally: send session duration when the user leaves the page
+  window.addEventListener("beforeunload", () => {
+    const durationSeconds = Math.floor((Date.now() - sessionStart) / 1000);
+    const timestamp = new Date().toISOString();
+
+    const data = {
+      email: userEmail,
+      duration: durationSeconds,
+      timestamp: timestamp,
+      event: "session_end"
+    };
+
+    navigator.sendBeacon(
+      "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbw3X1NjTrvwCU7miRvz4iAjJQHC7m3EDv1IeGn882L_m91Xl34P3CS4mCFsktq1JZ69/exec/exec",
+      JSON.stringify(data)
+    );
+  });
+</script>
+
+<footer style="color: gray; font-style: italic; font-size: 0.9em; text-align: center; padding: 1em; margin-top: 50px; border-top: 1px solid #ccc;">
+  Please do not play these games in school without permission. Doing so can result in losing a computer or other school punishment. You also agree that we are using analysis to collect data like how you are on the website, how many live users are on our website, and what games you play.
+</footer>
 </body>
 </html>
