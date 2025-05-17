@@ -2,6 +2,31 @@
 <html lang="en">
 
 <head>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ELC1SXB08M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-ELC1SXB08M');
+  </script>
+
+  <script>
+    // Example: track when user starts a game
+    function logGamePlay(gameName) {
+      gtag('event', 'game_played', {
+        'game_name': gameName,
+        'event_category': 'Games',
+        'event_label': 'Game Started',
+        'value': 1
+      });
+    }
+  </script>
+</head>
+
+<head>
+
     <script>
         const SITE_VERSION = "6.1"; // Increment this whenever you want to reset storage
     
@@ -236,7 +261,7 @@
    
 <div class="game-container">
     <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/retrobowl/index.html" class="game-card" data-name="Retro Bowl"><img src="./icons/retrobowl.webp" alt="Retro Bowl"><b>Retro Bowl</b></a>
-        <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/retrobowlcollege/index.html" class="game-card" data-name="Retro Bowl College"><img src="https://img.poki-cdn.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,f=auto/d98547374c4129bf441b754d495e41aa.png" alt="Retro Bowl College"><b>Retro Bowl College</b></a>
+    <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/retrobowlcollege/index.html" class="game-card" data-name="Retro Bowl College"><img src="https://img.poki-cdn.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,f=auto/d98547374c4129bf441b754d495e41aa.png" alt="Retro Bowl College"><b>Retro Bowl College</b></a>
     <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/minecraft/index.html" class="game-card" data-name="Minecraft"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbW-cgHv1BkSkFomjmiU-RqoXRj4UMWfIsog&s" alt="Minecraft"><b>Minecraft 1.12.2</b></a>
     <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/arenaking/index.html" class="game-card" data-name="Survival Race: Arena King"><img src="./icons/arena.png" alt="Survival Race: Arena King"><b>Survival Race: Arena King</b></a>
     <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/gunspin/index.html" class="game-card" data-name="Gunspin"><img src="./icons/gunspin.png" alt="Gunspin"><b>Gunspin</b></a>
@@ -308,30 +333,38 @@
 <script src="js/app.js"></script>
 <script src="js/particles.js"></script>
 
-<script>
-  // Replace this with your actual Google Apps Script URL for logging clicks
- const LOGGING_URL = 'https://script.google.com/macros/s/AKfycbyJkcpoXKK8iQl_rUY6gAItrMD8vYQQ44ANyGi-OVx-FySstCOe_SfyN7cfwgp1GyN-mg/exec';
-
-  // Attach click listeners to all game cards
-  document.querySelectorAll('.game-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const gameName = card.getAttribute('data-name');
-      if (!gameName) return;
-
-      const params = new URLSearchParams({
-        game: gameName,
-        timestamp: new Date().toISOString(),
-      });
-
-      fetch(`${LOGGING_URL}?${params.toString()}`)
-        .catch(err => console.error('Logging error:', err));
-    });
-  });
-</script>
-
-
 <footer style="color: gray; font-style: italic; font-size: 0.9em; text-align: center; padding: 1em; margin-top: 50px; border-top: 1px solid #ccc;">
   Please do not play these games in school without permission. Doing so can result in losing a computer or other school punishment. You also agree that we are using analysis to collect data like how you are on the website, how many live users are on our website, and what games you play.
 </footer>
+
+<div class="game-container">
+  <!-- your game cards here -->
+</div>
+
+<!-- Google Analytics gtag.js snippet (in the <head>) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ELC1SXB08M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ELC1SXB08M');
+</script>
+
+<!-- Your new script to track clicks -->
+<script>
+const gameCards = document.querySelectorAll(".game-card");
+
+gameCards.forEach(card => {
+  card.addEventListener("click", () => {
+    const gameName = card.getAttribute("data-name");
+    gtag("event", "click_game", {
+      event_category: "game",
+      event_label: gameName,
+    });
+  });
+});
+
+</script>
+
 </body>
 </html>
