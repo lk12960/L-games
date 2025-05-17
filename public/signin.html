@@ -80,14 +80,17 @@
     <script>
         let WHITELISTED_EMAILS = [];
 
-        function fetchWhitelistedEmails() {
-            return fetch('authorized.html')
-                .then(response => response.text())
-                .then(text => {
-                    WHITELISTED_EMAILS = text.split('\n').map(email => email.trim()).filter(email => email);
-                })
-                .catch(error => console.error('Error loading authorized emails:', error));
-        }
+function fetchWhitelistedEmails() {
+    const docUrl = 'https://docs.google.com/document/d/e/2PACX-1vRTbFyaNYre0sxlQmzpvBmjw7F4pITEsGLlsZsod3M0yE4LAZUGhCBVMCdBkuZtIIFgFpVadthwGG96/pub';  // Replace with your published Google Doc URL
+    return fetch(docUrl)
+        .then(response => response.text())
+        .then(text => {
+            // The published doc might have some extra whitespace or newlines; clean it up
+            WHITELISTED_EMAILS = text.split('\n').map(email => email.trim()).filter(email => email);
+            console.log('Authorized emails loaded:', WHITELISTED_EMAILS);
+        })
+        .catch(error => console.error('Error loading authorized emails:', error));
+}
 
         function handleCredentialResponse(response) {
             const token = response.credential;
