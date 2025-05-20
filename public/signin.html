@@ -5,21 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cool Math Worksheets Sign-In</title>
+    <title>Cool Math Worksheets Teacher Sign-In</title>
 
     <!-- Google Sign-In API -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ELC1SXB08M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-ELC1SXB08M');
-    </script>
-
+    
     <style>
         body {
             background-color: white;
@@ -77,46 +67,35 @@
         <div class="g_id_signin" data-type="standard"></div>
     </div>
 
-<script>
-    let WHITELISTED_EMAILS = [];
-    let whitelistLoaded = false;
+    <script>
+        let WHITELISTED_EMAILS = [];
 
-    async function fetchWhitelistedEmails() {
-        try {
-            const response = await fetch('authorized.html');
-            const text = await response.text();
-            WHITELISTED_EMAILS = text.split('\n').map(email => email.trim()).filter(email => email);
-            whitelistLoaded = true;
-            console.log('Whitelist loaded:', WHITELISTED_EMAILS);
-        } catch (error) {
-            console.error('Error loading authorized emails:', error);
-        }
-    }
-
-    async function handleCredentialResponse(response) {
-        if (!whitelistLoaded) {
-            alert("Please wait, loading authorization list...");
-            return;
+        function fetchWhitelistedEmails() {
+            return fetch('authorized.html')
+                .then(response => response.text())
+                .then(text => {
+                    WHITELISTED_EMAILS = text.split('\n').map(email => email.trim()).filter(email => email);
+                })
+                .catch(error => console.error('Error loading authorized emails:', error));
         }
 
-        const token = response.credential;
-        try {
-            const res = await fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + token);
-            const data = await res.json();
-            if (WHITELISTED_EMAILS.includes(data.email)) {
-                localStorage.setItem("user_authenticated", "true");
-                localStorage.setItem("user_email", data.email);
-                window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/worksheets.html";
-            } else {
-                alert("Access denied: Your email has not been added to the list of authorized members on Cool Math Worksheets.");
-                localStorage.removeItem("user_authenticated");
-            }
-        } catch (error) {
-            console.error('Error verifying token:', error);
+        function handleCredentialResponse(response) {
+            const token = response.credential;
+            fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + token)
+                .then(res => res.json())
+                .then(data => {
+                    if (WHITELISTED_EMAILS.includes(data.email)) {
+                        localStorage.setItem("user_authenticated", "true");
+                        window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/worksheets.html";
+                    } else {
+                        alert("Access denied: Your email has not been added to the list of authorized members on Cool Math Worksheets.");
+                        localStorage.removeItem("user_authenticated");
+                    }
+                })
+                .catch(error => console.error('Error verifying token:', error));
         }
-    }
 
-    fetchWhitelistedEmails();
+        fetchWhitelistedEmails();
     </script>
 </body>
 
