@@ -245,6 +245,83 @@
         <img src="logo.png" alt="Logo Image">
     </div>
 
+<div id="welcome-popup" class="popup-overlay">
+    <div class="popup-content">
+        <h2>Important Announcement</h2>
+        <p>The L Unblocked Games website will officially shut down for the 2024–2025 school year, starting Monday, June 2, 2025.</p>
+        <button onclick="closePopup()" class="close-btn">Close</button>
+    </div>
+</div>
+
+<!-- Popup Styles -->
+<style>
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+    }
+
+    .popup-content {
+        background-color: #444;
+        color: white;
+        border: 2px solid white;
+        padding: 30px 40px; /* increased padding */
+        text-align: center;
+        border-radius: 10px;
+        width: 450px; /* wider popup */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .popup-content h2 {
+        margin-bottom: 15px;
+    }
+
+    .popup-content p {
+        line-height: 1.5;
+        font-size: 1.1rem;
+    }
+
+    .close-btn {
+        margin-top: 25px;
+        padding: 10px 25px;
+        background-color: #444; /* same as popup background */
+        color: white;
+        border: 2px solid white;
+        cursor: pointer;
+        font-size: 1rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+
+    .close-btn:hover {
+        background-color: white;
+        color: #444;
+        border-color: #444;
+    }
+</style>
+
+<!-- Popup Script -->
+<script>
+    function closePopup() {
+        document.getElementById("welcome-popup").style.display = "none";
+    }
+
+    // Show the popup on page load
+    window.onload = function () {
+        document.getElementById("welcome-popup").style.display = "flex";
+    };
+</script>
+
+
     <h1>Unblocked Games</h1>
 
     <!-- Buttons container -->
@@ -261,7 +338,6 @@
    
 <div class="game-container">
     <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/retrobowl/index.html" class="game-card" data-name="Retro Bowl"><img src="./icons/retrobowl.webp" alt="Retro Bowl"><b>Retro Bowl</b></a>
-    <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/retrobowlcollege/index.html" class="game-card" data-name="Retro Bowl College"><img src="https://img.poki-cdn.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,f=auto/d98547374c4129bf441b754d495e41aa.png" alt="Retro Bowl College"><b>Retro Bowl College</b></a>
     <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/minecraft/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.12.2</b></a>
     <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/arenaking/index.html" class="game-card" data-name="Survival Race: Arena King"><img src="./icons/arena.png" alt="Survival Race: Arena King"><b>Survival Race: Arena King</b></a>
     <a href="https://cool-math-worksheets.s3.us-east-2.amazonaws.com/play/gunspin/index.html" class="game-card" data-name="Gunspin"><img src="./icons/gunspin.png" alt="Gunspin"><b>Gunspin</b></a>
@@ -330,6 +406,8 @@
         window.location.href = 'https://forms.gle/ZDg1L8915QNXnHFj6';
     }
 </script>
+
+
 
 <script src="js/app.js"></script>
 <script src="js/particles.js"></script>

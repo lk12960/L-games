@@ -13,6 +13,13 @@
       gtag('config', 'G-ELC1SXB08M');
     </script>
 
+            <script>
+  // Check if user is authenticated
+        if (localStorage.getItem("user_authenticated") !== "true") {
+            window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/signin.html"; // Replace with actual sign-in page URL
+        }
+    </script>  
+
     <meta name="robots" content="index" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <meta name="viewport" content="width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no, style='width:120%'" />

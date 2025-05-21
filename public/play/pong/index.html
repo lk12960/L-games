@@ -4,6 +4,12 @@ It's not strictly necessary in most cases, but it does keep IE from pooping the 
 <!-- every HTML document starts with the HTML tag -->
 <html>
 
+    <script>
+  // Check if user is authenticated
+        if (localStorage.getItem("user_authenticated") !== "true") {
+            window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/signin.html"; // Replace with actual sign-in page URL
+        }
+    </script>   
 <!-- the HEAD is where we put everything that is NOT actual, visible content. -->
 <head>
 

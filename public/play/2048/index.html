@@ -13,6 +13,13 @@
     gtag('config', 'G-ELC1SXB08M');
   </script>
 
+      <script>
+  // Check if user is authenticated
+        if (localStorage.getItem("user_authenticated") !== "true") {
+            window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/signin.html"; // Replace with actual sign-in page URL
+        }
+    </script>   
+
   <link href="style/main.css" rel="stylesheet" type="text/css">
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
