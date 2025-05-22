@@ -5,34 +5,33 @@ It's not strictly necessary in most cases, but it does keep IE from pooping the 
 <html>
 
 <script>
-  fetch('data-template.html')
-    .then(response => response.text())
-    .then(data => {
-      // Create a temporary container to hold the HTML
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = data;
+fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
+  .then(response => response.text())
+  .then(data => {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = data;
 
-      // Append styles and HTML content
-      Array.from(tempDiv.children).forEach(el => {
-        if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
-          document.body.appendChild(el);
-        }
-      });
+    // Append styles and DIVs
+    Array.from(tempDiv.children).forEach(el => {
+      if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+        document.body.appendChild(el);
+      }
+    });
 
-      // Manually re-run all <script> tags
-      const scripts = tempDiv.querySelectorAll('script');
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement('script');
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-          newScript.async = oldScript.async;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
-      });
-    })
-    .catch(err => console.error('Error loading external content:', err));
+    // Re-run all <script> tags
+    const scripts = tempDiv.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+        newScript.async = oldScript.async;
+      } else {
+        newScript.textContent = oldScript.textContent;
+      }
+      document.body.appendChild(newScript);
+    });
+  })
+  .catch(err => console.error('Error loading external content:', err));
 </script>
   
 <!-- the HEAD is where we put everything that is NOT actual, visible content. -->
