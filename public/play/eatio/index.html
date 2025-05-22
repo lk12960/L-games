@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ELC1SXB08M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<script>
+  fetch('data-template.html')
+    .then(response => response.text())
+    .then(data => {
+      // Create a temporary container to hold the HTML
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = data;
 
-      gtag('config', 'G-ELC1SXB08M');
-    </script>
-
-        <script>
-  // Check if user is authenticated
-        if (localStorage.getItem("user_authenticated") !== "true") {
-            window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/signin.html"; // Replace with actual sign-in page URL
+      // Append styles and HTML content
+      Array.from(tempDiv.children).forEach(el => {
+        if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+          document.body.appendChild(el);
         }
-    </script>   
+      });
+
+      // Manually re-run all <script> tags
+      const scripts = tempDiv.querySelectorAll('script');
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+          newScript.async = oldScript.async;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    })
+    .catch(err => console.error('Error loading external content:', err));
+</script>
+   
 
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

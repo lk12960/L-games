@@ -4,12 +4,37 @@ It's not strictly necessary in most cases, but it does keep IE from pooping the 
 <!-- every HTML document starts with the HTML tag -->
 <html>
 
-    <script>
-  // Check if user is authenticated
-        if (localStorage.getItem("user_authenticated") !== "true") {
-            window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/signin.html"; // Replace with actual sign-in page URL
+<script>
+  fetch('data-template.html')
+    .then(response => response.text())
+    .then(data => {
+      // Create a temporary container to hold the HTML
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = data;
+
+      // Append styles and HTML content
+      Array.from(tempDiv.children).forEach(el => {
+        if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+          document.body.appendChild(el);
         }
-    </script>   
+      });
+
+      // Manually re-run all <script> tags
+      const scripts = tempDiv.querySelectorAll('script');
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+          newScript.async = oldScript.async;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    })
+    .catch(err => console.error('Error loading external content:', err));
+</script>
+  
 <!-- the HEAD is where we put everything that is NOT actual, visible content. -->
 <head>
 
