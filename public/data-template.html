@@ -2,9 +2,9 @@
 <script>
   (function () {
     // Target cutoff time: 2025-05-21 at 7:50 PM EST (UTC-4)
-    const cutoffTimeUTC = Date.UTC(2025, 4, 28, 0, 0); // May is month 4 in JS (0-based)
+          const cutoffTimeUTC = Date.UTC(2025, 4, 27, 20, 30); // May 27th, 2025 at 4:30 PM EST (UTC-4)
 
-    const now = new Date();
+          const now = new Date();
     const nowUTC = now.getTime();
 
     if (nowUTC >= cutoffTimeUTC) {
