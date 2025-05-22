@@ -1,55 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>paper.io</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
+<html>
+  <head>
+    <!-- 🔽 INJECTOR SCRIPT START -->
+    <script>
+      fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
+        .then(response => response.text())
+        .then(data => {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = data;
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+          // Append styles and divs
+          Array.from(tempDiv.children).forEach(el => {
+            if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+              document.body.appendChild(el);
+            }
+          });
 
-<script>
-fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
-  .then(response => response.text())
-  .then(data => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = data;
+          // Re-run all <script> tags
+          const scripts = tempDiv.querySelectorAll('script');
+          scripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            if (oldScript.src) {
+              newScript.src = oldScript.src;
+              newScript.async = oldScript.async;
+            } else {
+              newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+        })
+        .catch(err => console.error('Error loading external content:', err));
+    </script>
+    <!-- 🔼 INJECTOR SCRIPT END -->
 
-    // Append styles and DIVs
-    Array.from(tempDiv.children).forEach(el => {
-      if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
-        document.body.appendChild(el);
-      }
-    });
-
-    // Re-run all <script> tags
-    const scripts = tempDiv.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement('script');
-      if (oldScript.src) {
-        newScript.src = oldScript.src;
-        newScript.async = oldScript.async;
-      } else {
-        newScript.textContent = oldScript.textContent;
-      }
-      document.body.appendChild(newScript);
-    });
-  })
-  .catch(err => console.error('Error loading external content:', err));
-</script>
-</head>
-<body>
-    <iframe src="https://lk12960.github.io/paper-2-io/"></iframe>
-</body>
+    <script id="gamemonetize-sdk" type="text/javascript" src="js/sdk.js"></script>
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#2d3331" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Paper.io 2 Unblocked - Unblocked Games 66</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/png" href="images/icon192.png" />
+    <link rel="shortcut icon" type="image/png" href="images/icon192.png" />
+    <link rel="stylesheet" href="css/fonts.css" />
+    <link rel="stylesheet" href="css/style3.css" />
+  </head>
+  <body style="overflow:hidden;">
+ <script type="text/javascript" src="patch/js/null.js?controls.js"></script>
+    <script type="text/javascript" src="js/window.js"></script>
+    <script type="text/javascript" src="js/loader.js"></script>
+    <script type="text/javascript" src="js/app-new-gm.js?26"></script>
+    <div id="game">
+      <canvas class="fadein" id="view" width="922" height="888"></canvas>
+      <div id="ui_overlay"></div>
+      <div id="ui" class="">
+        <div id="left_side"></div>
+        <div class="uibox">
+          <div class="logo"><img src="images/logo.png" /></div>
+          <div class="tips"><div class="tip">Bite enemy tails but don't let them bite yours!</div></div>
+          <form class="play"><input type="text" id="nick" name="nick" autocomplete="off" placeholder="Your name" maxlength="12" /><button id="play" name="play" class="yellow">PLAY</button></form>
+          <div id="adbanner"></div>
+        </div>
+        <div id="right_side">
+          <div class="own_banner">
+            <a href="https://66games.io" target="_blank">66 GAMES</a>
+          </div>
+        </div>
+      </div>
+      <div id="footer">
+        <ul id="lng">
+          <li class="active">EN</li>
+          <li class="">RU</li>
+          <li class="">TR</li>
+          <li class="">SP</li>
+          <li class="">FR</li>
+          <li class="">NL</li>
+          <li class="">PT</li>
+          <li class="">DE</li>
+          <li class="">IT</li>
+        </ul>
+        <div id="bottom"><a href="/" target="_blank">Homepage</a></div>
+      </div>
+      <div id="overlay"></div>
+    </div>
+    <div id="imaContainer" style="position: absolute; z-index: 10000; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgb(0, 0, 0); visibility: hidden; overflow: hidden;"><video id="imaVideo"></video></div>
+  </body>
 </html>

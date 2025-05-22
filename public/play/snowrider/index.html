@@ -1,55 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snow Rider 3D</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
+    <!-- 🔽 INJECTOR SCRIPT START -->
+    <script>
+      fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
+        .then(response => response.text())
+        .then(data => {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = data;
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+          // Append styles and divs to body
+          Array.from(tempDiv.children).forEach(el => {
+            if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+              document.body.appendChild(el);
+            }
+          });
 
-<script>
-fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
-  .then(response => response.text())
-  .then(data => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = data;
+          // Re-insert scripts to execute them
+          const scripts = tempDiv.querySelectorAll('script');
+          scripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            if (oldScript.src) {
+              newScript.src = oldScript.src;
+              newScript.async = oldScript.async;
+            } else {
+              newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+        })
+        .catch(err => console.error('Error loading external content:', err));
+    </script>
+    <!-- 🔼 INJECTOR SCRIPT END -->
 
-    // Append styles and DIVs
-    Array.from(tempDiv.children).forEach(el => {
-      if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
-        document.body.appendChild(el);
-      }
-    });
-
-    // Re-run all <script> tags
-    const scripts = tempDiv.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement('script');
-      if (oldScript.src) {
-        newScript.src = oldScript.src;
-        newScript.async = oldScript.async;
-      } else {
-        newScript.textContent = oldScript.textContent;
-      }
-      document.body.appendChild(newScript);
-    });
-  })
-  .catch(err => console.error('Error loading external content:', err));
-</script>   
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Snow Rider 3D Unblocked - ClassRoom6x</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <meta name="description" content="Snow Rider 3D, Snow Rider 3D Mathnook, Snow Rider 3D Unblocked">
+    <meta property="og:image" content="snow-rider-3d.png" />
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="Build/UnityLoader.js"></script>
+    <script>
+        var gameInstance = UnityLoader.instantiate("gameContainer", "Build/SnowRider3D-gd-1.json", { onProgress: UnityProgress, Module: { onRuntimeInitialized: function () { UnityProgress(gameInstance, "complete") } } });
+    </script>
 </head>
-<body>
-    <iframe src="https://lk12960.github.io/snow-rider-3d/"></iframe>
+
+<body style="overflow:hidden; margin:0; padding:0;">
+    <div class="webgl-content" style="position: absolute; width: 100%; height: 100%;">
+        <div id="gameContainer" style="width: 960px; height: 600px; margin: auto"></div>
+    </div>
 </body>
+
 </html>

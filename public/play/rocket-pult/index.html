@@ -1,56 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rocket Pult</title>
-    
-<script>
-fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
-  .then(response => response.text())
-  .then(data => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = data;
+  <!-- 🔽 INJECTOR SCRIPT START -->
+  <script>
+    fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
+      .then(response => response.text())
+      .then(data => {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data;
 
-    // Append styles and DIVs
-    Array.from(tempDiv.children).forEach(el => {
-      if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
-        document.body.appendChild(el);
-      }
-    });
+        // Append styles and divs
+        Array.from(tempDiv.children).forEach(el => {
+          if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+            document.body.appendChild(el);
+          }
+        });
 
-    // Re-run all <script> tags
-    const scripts = tempDiv.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement('script');
-      if (oldScript.src) {
-        newScript.src = oldScript.src;
-        newScript.async = oldScript.async;
-      } else {
-        newScript.textContent = oldScript.textContent;
-      }
-      document.body.appendChild(newScript);
-    });
-  })
-  .catch(err => console.error('Error loading external content:', err));
-</script>   
+        // Re-run all <script> tags
+        const scripts = tempDiv.querySelectorAll('script');
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+            newScript.async = oldScript.async;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+      })
+      .catch(err => console.error('Error loading external content:', err));
+  </script>
+  <!-- 🔼 INJECTOR SCRIPT END -->
 
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+  <meta name="website" content="classroom6x.gitlab.io" />
+  <meta charset="UTF-8"/>
+  <title>ROCKET PULT Unblocked - ClassRoom6x</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+  <link rel="manifest" href="appmanifest.json" />
+  <link rel="icon" type="image/png" href="icons/icon-512.png" />
+  <link rel="stylesheet" href="style.css"/>
 </head>
-<body>
-    <iframe src="https://lk12960.github.io/rocket-pult/"></iframe>
+<body style="overflow:hidden;">
+  <div id="fb-root"></div>
+  <script src="opusDecoder.js"></script>
+  <script src="c2runtime.js"></script>
+  <script src="start.js"></script>
+  <script src="register-sw.js"></script>
 </body>
 </html>

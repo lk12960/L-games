@@ -241,7 +241,7 @@ globalThis.WebSdkWrapper = (function () {
       get sdk() {
         return globalThis.gdsdk;
       },
-      scriptSrc: "patch/js/gd-sdk.js?html5.api.gamedistribution.com/main.min.js",
+      scriptSrc: "//html5.api.gamedistribution.com/main.min.js",
       hasAds: true,
       enableOnlyInProduction: true,
       hasBanner: false,
@@ -320,7 +320,7 @@ globalThis.WebSdkWrapper = (function () {
       get sdk() {
         return globalThis.sdk;
       },
-      scriptSrc: "patch/js/gd-sdk.js?html5.api.gamedistribution.com/main.min.js",
+      scriptSrc: "//html5.api.gamedistribution.com/main.min.js",
       hasAds: true,
       enableOnlyInProduction: true,
       hasBanner: false,

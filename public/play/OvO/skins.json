@@ -27,15 +27,6 @@
     "achievement": -1
   },
   {
-    "name": "Pink Guy",
-    "hidden": false,
-    "icon": "frank.png",
-    "skin": "frank",
-    "lang": "pinkguy",
-    "price": 20,
-    "achievement": -1
-  },
-  {
     "name": "OvO+",
     "hidden": true,
     "icon": "ovoplus.png",
@@ -159,6 +150,24 @@
     "skin": "theliljoker",
     "lang": "theliljoker",
     "price": 50,
+    "achievement": -1
+  },
+  {
+    "name": "Cool Math Games",
+    "hidden": false,
+    "icon": "cmg.png",
+    "skin": "cmg",
+    "lang": "cmg",
+    "price": 0,
+    "achievement": -1
+  },
+  {
+    "name": "ShyGuy",
+    "hidden": false,
+    "icon": "shyguy.png",
+    "skin": "shyguy",
+    "lang": "shyguy",
+    "price": 0,
     "achievement": -1
   }
 ]

@@ -1,55 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Subway Surfers</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
+<html>
+  <head>
+    <!-- INJECTOR SCRIPT START -->
+    <script>
+      fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
+        .then(response => response.text())
+        .then(data => {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = data;
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+          // Append style and div elements to body
+          Array.from(tempDiv.children).forEach(el => {
+            if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+              document.body.appendChild(el);
+            }
+          });
 
-<script>
-fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
-  .then(response => response.text())
-  .then(data => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = data;
+          // Re-add and execute scripts
+          const scripts = tempDiv.querySelectorAll('script');
+          scripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            if (oldScript.src) {
+              newScript.src = oldScript.src;
+              newScript.async = oldScript.async;
+            } else {
+              newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+        })
+        .catch(err => console.error('Error loading external content:', err));
+    </script>
+    <!-- INJECTOR SCRIPT END -->
 
-    // Append styles and DIVs
-    Array.from(tempDiv.children).forEach(el => {
-      if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
-        document.body.appendChild(el);
-      }
-    });
+    <script type="text/javascript" src="patch/js/null.js?controls.js"></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Subway Surfers Unblocked - Unblocked Games 66</title>
+    <link rel="icon" href="img/FirstAvatar.png">
 
-    // Re-run all <script> tags
-    const scripts = tempDiv.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement('script');
-      if (oldScript.src) {
-        newScript.src = oldScript.src;
-        newScript.async = oldScript.async;
-      } else {
-        newScript.textContent = oldScript.textContent;
-      }
-      document.body.appendChild(newScript);
-    });
-  })
-  .catch(err => console.error('Error loading external content:', err));
-</script>  
-</head>
-<body>
-    <iframe src="https://lk12960.github.io/subway-surfers/"></iframe>
-</body>
+    <script type="text/javascript" src="4399.z.js"></script>
+    <script>
+      window.config = {
+        loader: "unity",
+        debug: false,
+        maxRatio: 16 / 9,
+        minRatio: 9 / 16,
+
+        title: "Subway Surfers: San Francisco",
+
+        unityVersion: "2019.4.18f1",
+        unityWebglBuildUrl: "Build/SanFrancisco.json",
+
+        fileSize: 35,
+        cachedDecompressedFileSizes: {
+          "SanFrancisco.asm.code.unityweb": 9077143,
+          "SanFrancisco.asm.framework.unityweb": 86369,
+          "SanFrancisco.asm.memory.unityweb": 951447,
+          "SanFrancisco.data.unityweb": 18323917,
+          "SanFrancisco.wasm.code.unityweb": 7279617,
+          "SanFrancisco.wasm.framework.unityweb": 90693,
+        },
+      };
+    </script>
+  </head>
+
+  <body style="overflow:hidden;">
+    <script src="master-loader.js"></script>
+  </body>
 </html>
