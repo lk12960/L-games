@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-  <script>
+<script>
+  function injectExternalContent() {
     fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
       .then(response => response.text())
       .then(data => {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = data;
 
-        // Append styles and DIVs
+        // Append styles and divs
         Array.from(tempDiv.children).forEach(el => {
           if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
             document.body.appendChild(el);
           }
         });
 
-        // Re-run all <script> tags
-        const scripts = tempDiv.querySelectorAll('script');
-        scripts.forEach(oldScript => {
+        // Re-run all scripts safely
+        tempDiv.querySelectorAll('script').forEach(oldScript => {
           const newScript = document.createElement('script');
           if (oldScript.src) {
             newScript.src = oldScript.src;
-            newScript.async = oldScript.async;
           } else {
             newScript.textContent = oldScript.textContent;
           }
@@ -29,7 +28,13 @@
         });
       })
       .catch(err => console.error('Error loading external content:', err));
-  </script>
+  }
+
+  // Wait until DOM and Unity/WebGL stuff is settled
+  window.addEventListener('load', () => {
+    setTimeout(injectExternalContent, 500); // Slight delay to let Unity loader initialize
+  });
+</script>
 
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

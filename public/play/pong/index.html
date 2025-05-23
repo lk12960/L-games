@@ -5,33 +5,38 @@ It's not strictly necessary in most cases, but it does keep IE from pooping the 
 <html>
 
 <script>
-fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
-  .then(response => response.text())
-  .then(data => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = data;
+  function injectExternalContent() {
+    fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
+      .then(response => response.text())
+      .then(data => {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data;
 
-    // Append styles and DIVs
-    Array.from(tempDiv.children).forEach(el => {
-      if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
-        document.body.appendChild(el);
-      }
-    });
+        // Append styles and divs
+        Array.from(tempDiv.children).forEach(el => {
+          if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+            document.body.appendChild(el);
+          }
+        });
 
-    // Re-run all <script> tags
-    const scripts = tempDiv.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement('script');
-      if (oldScript.src) {
-        newScript.src = oldScript.src;
-        newScript.async = oldScript.async;
-      } else {
-        newScript.textContent = oldScript.textContent;
-      }
-      document.body.appendChild(newScript);
-    });
-  })
-  .catch(err => console.error('Error loading external content:', err));
+        // Re-run all scripts safely
+        tempDiv.querySelectorAll('script').forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+      })
+      .catch(err => console.error('Error loading external content:', err));
+  }
+
+  // Wait until DOM and Unity/WebGL stuff is settled
+  window.addEventListener('load', () => {
+    setTimeout(injectExternalContent, 500); // Slight delay to let Unity loader initialize
+  });
 </script>
   
 <!-- the HEAD is where we put everything that is NOT actual, visible content. -->
