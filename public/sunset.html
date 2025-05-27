@@ -2,244 +2,163 @@
 <html lang="en">
 
 <head>
-    <script>
-        const SITE_VERSION = "5.0"; // Increment this whenever you want to reset storage
-    
-        if (localStorage.getItem("site_version") !== SITE_VERSION) {
-            localStorage.clear();  // Clear all stored data
-            localStorage.setItem("site_version", SITE_VERSION); // Store the new version
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unblocked Games</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    <script>
-  // Check if user is authenticated
-  //      if (localStorage.getItem("user_authenticated") !== "true") {
-  //          window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/signin.html"; // Replace with actual sign-in page URL
- //       }
-    </script>    
-   
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unblocked Games</title>
+    body {
+      background: url('https://kval.com/resources/media2/16x9/572/1320/388x77/90/2160aef4-0425-4bf0-b427-1bba9b9885ec-HouseExplosion.00_00_04_26.Still001.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
 
-    <!-- Favicon link -->
-    <link rel="icon" type="image/png" href="logo.png">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    .explosion-border {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+      background-image: repeating-linear-gradient(
+        45deg,
+        #ff0000,
+        #ff0000 10px,
+        #000 10px,
+        #000 20px
+      );
+      opacity: 0.1;
+    }
 
-        body {
-            background-color: #282828;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            height: 100%;
-        }
+    .under-construction {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffcc00;
+      color: black;
+      padding: 8px 20px;
+      border: 2px solid black;
+      font-weight: bold;
+      font-size: 1.1rem;
+      z-index: 1001;
+      border-radius: 6px;
+      animation: pulse 2s infinite;
+    }
 
-        #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
+    @keyframes pulse {
+      0% {
+        background-color: #ffcc00;
+      }
+      50% {
+        background-color: #ff9900;
+      }
+      100% {
+        background-color: #ffcc00;
+      }
+    }
 
-        /* Buttons container */
-        .button-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 1000;
-        }
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
 
-        .button-container button {
-            background-color: transparent;
-            border: 3px solid white;
-            color: white;
-            font-size: 0.9rem;
-            font-weight: bold;
-            padding: 8px 16px;
-            border-radius: 50px;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.3s ease;
-        }
+    h1 {
+      font-size: 3rem;
+      margin-top: 10vh;
+      font-style: italic;
+      color: #fff;
+      text-shadow: 0 0 10px #ff0000;
+    }
 
-        .button-container button:hover {
-            background-color: white;
-            color: black;
-        }
+    .favicon-container {
+      margin-top: 40px;
+    }
 
-        h1 {
-            font-size: 3rem;
-            font-weight: bold;
-            color: white;
-            font-style: italic;
-            margin-top: 5vh; /* Reduced margin-top to bring text up */
-        }
+    .favicon-container img {
+      width: 150px;
+    }
 
-        .badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #7b5bff;
-            color: white;
-            font-size: 0.8rem;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 5px;
-        }
+    /* Popup Styles */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
 
-        /* Center image above title with adjusted margin */
-        .favicon-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-top: 40px; /* Adjust this to lower the logo */
-            margin-bottom: 0px; /* No gap between image and title */
-        }
+    .popup-content {
+      background-color: #222;
+      color: red;
+      border: 4px dashed yellow;
+      padding: 40px;
+      border-radius: 10px;
+      width: 500px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 0 30px red;
+      font-size: 1.4rem;
+      animation: flicker 1s infinite alternate;
+    }
 
-        .favicon-container img {
-            width: 150px; /* Logo size */
-            height: auto;
-            margin-top: 40px; /* Adjust this to position logo lower */
-        }
-    </style>
+    @keyframes flicker {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0.7;
+      }
+    }
+
+    .popup-content h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: yellow;
+      text-shadow: 0 0 10px #fff000;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="particles-js"></div>
-
-    <!-- Favicon Image Above Title -->
-    <div class="favicon-container">
-        <img src="logo.png" alt="Logo Image">
-    </div>
-
-    <h1>Unblocked Games</h1>
-
-<!-- Popup HTML -->
-<div id="welcome-popup" class="popup-overlay">
-  <div class="popup-content">
-    <h2>L Games Sunset</h2>
-    <p>
-      I want to thank you for your support—and even your criticism—since the creation of this site back in late November. Over the past few months, the site has improved a lot thanks to the feedback I’ve received from other students.
-    </p>
-    <p>
-      Over the summer, I’ll be working on improving the site by adding more games and making it more user-friendly. During the 25–26 school year, I’ll continue listening to feedback to add new games, fix glitches, improve data saving, and make the overall experience better.
-    </p>
-    <p>
-      Thank you for being part of our journey through the 24–25 school year. Goodbye for now.
-    </p>
-    <div class="ai-note">*AI Generated Paragraphs But True</div>
+  <div id="particles-js"></div>
+  <div class="explosion-border"></div>
+  <div class="favicon-container">
+    <img src="logo.png" alt="Logo Image">
   </div>
-</div>
+  <h1>Unblocked Games</h1>
+  <div id="welcome-popup" class="popup-overlay">
+    <div class="popup-content">
+      <h2>💥 BOOM! 💥</h2>
+      <p>This site has self destructed,<br>see ya next year!</p>
+    </div>
+  </div>
 
-<!-- Popup Styles -->
-<style>
-  .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-  }
-
-  .popup-content {
-    position: relative;
-    background-color: #444;
-    color: white;
-    border: 2px solid white;
-    padding: 35px 45px;
-    text-align: left;
-    border-radius: 12px;
-    width: 600px;
-    max-width: 90%;
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-
-  .popup-content h2 {
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 1.8rem;
-  }
-
-  .popup-content p {
-    line-height: 1.6;
-    font-size: 1.05rem;
-    margin-bottom: 15px;
-  }
-
-  .close-btn {
-    display: block;
-    margin: 25px auto 0;
-    padding: 10px 30px;
-    background-color: #444;
-    color: white;
-    border: 2px solid white;
-    cursor: pointer;
-    font-size: 1rem;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    font-weight: bold;
-  }
-
-  .close-btn:hover {
-    background-color: white;
-    color: #444;
-    border-color: #444;
-  }
-
-  .ai-note {
-    position: absolute;
-    bottom: 10px;
-    right: 15px;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
-    font-style: italic;
-    pointer-events: none;
-    user-select: none;
-  }
-</style>
-
-<!-- Popup Script -->
-<script>
-  function closePopup() {
-    document.getElementById("welcome-popup").style.display = "none";
-  }
-
-  window.onload = function () {
-    document.getElementById("welcome-popup").style.display = "flex";
-  };
-</script>
-
-<!-- Particles.js CDN -->
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script>
-    particlesJS.load('particles-js', 'particles.json', function () {
-        console.log('particles.json loaded...');
-    });
-</script>
-
-<script src="js/app.js"></script>
-<script src="js/particles.js"></script>
+  <!-- Scripts -->
+  <script>
+    window.onload = function () {
+      document.getElementById("welcome-popup").style.display = "flex";
+    };
+  </script>
 </body>
 </html>
