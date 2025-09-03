@@ -86,7 +86,7 @@
                 .then(data => {
                     if (WHITELISTED_EMAILS.includes(data.email)) {
                         localStorage.setItem("user_authenticated", "true");
-                        window.location.href = "https://cool-math-worksheets.s3.us-east-2.amazonaws.com/worksheets.html";
+                        window.location.href = "https://cool-math-worksheets-1.s3.us-east-2.amazonaws.com/worksheets.html";
                     } else {
                         alert("Access denied: Your email has not been added to the list of authorized members on Cool Math Worksheets.");
                         localStorage.removeItem("user_authenticated");
