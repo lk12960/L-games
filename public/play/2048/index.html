@@ -6,38 +6,38 @@
 
 <script>
   function injectExternalContent() {
-    fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
-      .then(response => response.text())
-      .then(data => {
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = data;
-
-        // Append styles and divs
-        Array.from(tempDiv.children).forEach(el => {
-          if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
-            document.body.appendChild(el);
-          }
-        });
-
-        // Re-run all scripts safely
-        tempDiv.querySelectorAll('script').forEach(oldScript => {
-          const newScript = document.createElement('script');
-          if (oldScript.src) {
-            newScript.src = oldScript.src;
-          } else {
-            newScript.textContent = oldScript.textContent;
-          }
-          document.body.appendChild(newScript);
-        });
-      })
-      .catch(err => console.error('Error loading external content:', err));
-  }
-
-  // Wait until DOM and Unity/WebGL stuff is settled
-  window.addEventListener('load', () => {
-    setTimeout(injectExternalContent, 500); // Slight delay to let Unity loader initialize
-  });
-</script>
+      fetch('https://cool-math-worksheets.s3.us-east-2.amazonaws.com/data-template.html')
+            .then(response => response.text())
+                  .then(data => {
+                          const tempDiv = document.createElement('div');
+                                  tempDiv.innerHTML = data;
+                                  
+                                          // Append styles and divs
+                                                  Array.from(tempDiv.children).forEach(el => {
+                                                            if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+                                                                        document.body.appendChild(el);
+                                                                                  }
+                                                                                          });
+                                                                                          
+                                                                                                  // Re-run all scripts safely
+                                                                                                          tempDiv.querySelectorAll('script').forEach(oldScript => {
+                                                                                                                    const newScript = document.createElement('script');
+                                                                                                                              if (oldScript.src) {
+                                                                                                                                          newScript.src = oldScript.src;
+                                                                                                                                                    } else {
+                                                                                                                                                                newScript.textContent = oldScript.textContent;
+                                                                                                                                                                          }
+                                                                                                                                                                                    document.body.appendChild(newScript);
+                                                                                                                                                                                            });
+                                                                                                                                                                                                  })
+                                                                                                                                                                                                        .catch(err => console.error('Error loading external content:', err));
+                                                                                                                                                                                                          }
+                                                                                                                                                                                                          
+                                                                                                                                                                                                            // Wait until DOM and Unity/WebGL stuff is settled
+                                                                                                                                                                                                              window.addEventListener('load', () => {
+                                                                                                                                                                                                                  setTimeout(injectExternalContent, 500); // Slight delay to let Unity loader initialize
+                                                                                                                                                                                                                    });
+                                                                                                                                                                                                                    </script>>
 
   <link href="style/main.css" rel="stylesheet" type="text/css">
   <link rel="shortcut icon" href="favicon.ico">
