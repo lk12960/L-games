@@ -55,19 +55,6 @@
 <script>
 (function safeRunner(){
   try {
-    // --- Time Check ---
-    (function() {
-      try {
-        const cutoffTimeUTC = Date.UTC(2025, 4, 27, 20, 30);
-        const nowUTC = Date.now();
-        if (nowUTC >= cutoffTimeUTC) {
-          setTimeout(() => {
-            window.location.href = "https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/sunset.html";
-          }, 0);
-        }
-      } catch(e){ console.error("Time check error", e); }
-    })();
-
     // --- Popup ---
     function closePopup() {
       try {
