@@ -559,10 +559,9 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         const chatMessages = document.getElementById('chatMessages');
         const chatInput = document.getElementById('chatInput');
         let welcomed = false;
-        const HF_TOKEN = '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'; // Replace with your Hugging Face API token from https://huggingface.co/settings/tokens
-        const MODEL = 'facebook/blenderbot-400M-distill'; // Conversational model
-        let pastUserInputs = [];
-        let generatedResponses = [];
+        const HF_TOKEN = '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'; // Replace with your actual Hugging Face API token from https://huggingface.co/settings/tokens
+        const MODEL = 'openai-community/gpt2'; // Using GPT-2 as requested
+        let conversationHistory = []; // Array to store {role: 'user' or 'assistant', content: text}
 
         chatButton.addEventListener('click', () => {
             chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
@@ -581,20 +580,26 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             addMessage('user', message);
             chatInput.value = '';
 
-            // Prepare payload for HF API
+            // Add user message to history
+            conversationHistory.push({ role: 'user', content: message });
+
+            // Build prompt from history
+            let prompt = '';
+            conversationHistory.forEach(msg => {
+                prompt += `${msg.role === 'user' ? 'User' : 'AI'}: ${msg.content}\n`;
+            });
+            prompt += 'AI:';
+
+            // Prepare payload for HF API (text-generation for GPT-2)
             const payload = {
-                inputs: {
-                    past_user_inputs: pastUserInputs,
-                    generated_responses: generatedResponses,
-                    text: message
-                },
+                inputs: prompt,
                 parameters: {
-                    min_length: 20,
-                    max_length: 100,
-                    top_k: 50,
-                    top_p: 0.95,
+                    max_new_tokens: 100,
                     temperature: 0.7,
-                    repetition_penalty: 1.2
+                    top_p: 0.95,
+                    repetition_penalty: 1.2,
+                    do_sample: true,
+                    num_return_sequences: 1
                 }
             };
 
@@ -609,18 +614,32 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
                 });
 
                 if (!response.ok) {
-                    throw new Error('API request failed');
+                    throw new Error(`API request failed with status ${response.status}`);
                 }
 
                 const data = await response.json();
-                const botReply = data.generated_text;
+                if (!data || !data[0] || !data[0].generated_text) {
+                    throw new Error('Invalid response format');
+                }
+
+                let botReply = data[0].generated_text.trim();
+                // Extract only the new AI response (after the prompt)
+                if (botReply.startsWith(prompt)) {
+                    botReply = botReply.slice(prompt.length).trim();
+                }
+                // Truncate at first newline or end of response to avoid continuing the conversation
+                botReply = botReply.split('\n')[0].trim();
+
+                if (!botReply) {
+                    botReply = 'Sorry, I couldn\'t generate a response.';
+                }
+
                 addMessage('bot', botReply);
 
-                // Update history
-                pastUserInputs.push(message);
-                generatedResponses.push(botReply);
+                // Add bot reply to history
+                conversationHistory.push({ role: 'assistant', content: botReply });
             } catch (error) {
-                addMessage('bot', 'Sorry, there was an error. Please try again.');
+                addMessage('bot', 'Sorry, there was an error. Please make sure your HF token is valid and try again.');
                 console.error(error);
             }
         }
