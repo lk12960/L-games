@@ -218,6 +218,123 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             height: auto;
             margin-top: 40px;
         }
+
+        /* New styles for chat widget */
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #7b5bff;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 30px;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 320px;
+            height: 420px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #7b5bff;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            background-color: #282828;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            max-width: 80%;
+            font-size: 0.95rem;
+        }
+
+        .bot {
+            background-color: #555;
+            color: white;
+            align-self: flex-start;
+        }
+
+        .user {
+            background-color: #7b5bff;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: #444;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background-color: #555;
+            color: white;
+            outline: none;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .chat-input button {
+            padding: 10px 16px;
+            border: none;
+            background-color: #7b5bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+        }
+
+        .quick-button {
+            background-color: #7b5bff;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -275,6 +392,27 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappy/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
+    </div>
+
+    <!-- New chat widget elements -->
+    <div class="chat-button" id="chatButton">💬</div>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">AI Virtual Assistant</div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">Hi there! 👋</div>
+            <div class="message bot">Welcome to Unblocked Games!</div>
+            <div class="message bot">How can I help you today?</div>
+            <div class="quick-buttons">
+                <div class="quick-button" onclick="sendQuickMessage('What can this assistant do?')">What can this assistant do?</div>
+                <div class="quick-button" onclick="sendQuickMessage('Tell me about your widgets')">Tell me about your widgets</div>
+                <div class="quick-button" onclick="sendQuickMessage('I have an issue with my widget')">I have an issue with my widget</div>
+                <div class="quick-button" onclick="sendQuickMessage('I want to leave a review')">I want to leave a review</div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Write your message..." onkeyup="handleKeyUp(event)">
+            <button onclick="sendMessage()">➤</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -426,6 +564,62 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
 
         function openGameRequest() {
             cloak('https://forms.gle/ZDg1L8915QNXnHFj6', true);
+        }
+
+        // New chat widget scripts
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+
+        chatButton.addEventListener('click', () => {
+            chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+            if (chatWindow.style.display === 'flex') {
+                chatInput.focus();
+            }
+        });
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            addMessage('user', message);
+            chatInput.value = '';
+            // Simulate AI response (replace with real AI API integration, e.g., via xAI API at https://x.ai/api)
+            setTimeout(() => {
+                addMessage('bot', 'This is a placeholder AI response. For a real AI backend, integrate an API like xAI\'s Grok API (see https://x.ai/api for details).');
+            }, 800);
+        }
+
+        function sendQuickMessage(text) {
+            addMessage('user', text);
+            // Simulate AI response based on quick button
+            setTimeout(() => {
+                let response = 'This is a placeholder response.';
+                if (text === 'What can this assistant do?') {
+                    response = 'I can help with game recommendations, troubleshooting, and more!';
+                } else if (text === 'Tell me about your widgets') {
+                    response = 'Our widgets include various unblocked games and tools.';
+                } else if (text === 'I have an issue with my widget') {
+                    response = 'Please describe the issue, and I\'ll assist.';
+                } else if (text === 'I want to leave a review') {
+                    response = 'Great! Share your feedback here.';
+                }
+                addMessage('bot', response);
+            }, 800);
+        }
+
+        function addMessage(sender, text) {
+            const div = document.createElement('div');
+            div.classList.add('message', sender);
+            div.textContent = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleKeyUp(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
         }
     </script>
 
