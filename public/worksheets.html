@@ -35,7 +35,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unblocked Games</title>
+    <title id="page-title">Unblocked Games</title>
 
     <!-- Favicon link -->
     <link rel="icon" type="image/png" href="logo.png">
@@ -68,7 +68,6 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             z-index: -1;
         }
 
-        /* Buttons container */
         .button-container {
             position: fixed;
             top: 20px;
@@ -101,7 +100,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             font-weight: bold;
             color: white;
             font-style: italic;
-            margin-top: 5vh; /* Reduced margin-top to bring text up */
+            margin-top: 5vh;
         }
 
         .search-container {
@@ -110,31 +109,28 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         }
 
         .search-container input {
-            padding: 8px 30px; /* Shorter height, longer width */
+            padding: 8px 30px;
             font-size: 1rem;
-            width: 350px; /* Increased width */
-            height: 35px; /* Shortened height */
+            width: 350px;
+            height: 35px;
             border-radius: 5px;
-            border: 2px solid #888888; /* Darker grey border */
+            border: 2px solid #888888;
             outline: none;
-            background-color: rgba(51, 51, 51, 0.4); /* More transparent background */
-            color: #d0d0d0; /* Lighter text for readability */
+            background-color: rgba(51, 51, 51, 0.4);
+            color: #d0d0d0;
         }
 
-        /* Center game-container grid */
         .game-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 4 cards per row */
-    gap: 15px; /* Spacing between cards */
-    margin: 30px auto;
-    padding: 0 10px;
-    max-width: 1200px;
-    align-items: center;
-    justify-items: center;
-}
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 30px auto;
+            padding: 0 10px;
+            max-width: 1200px;
+            align-items: center;
+            justify-items: center;
+        }
 
-
-        /* Adjust grid layout for responsiveness */
         @media (max-width: 700px) {
             .game-container {
                 grid-template-columns: repeat(6, 1fr);
@@ -208,20 +204,19 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             border-radius: 5px;
         }
 
-        /* Center image above title with adjusted margin */
         .favicon-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-top: 40px; /* Adjust this to lower the logo */
-            margin-bottom: 0px; /* No gap between image and title */
+            margin-top: 40px;
+            margin-bottom: 0px;
         }
 
         .favicon-container img {
-            width: 150px; /* Logo size */
+            width: 150px;
             height: auto;
-            margin-top: 40px; /* Adjust this to position logo lower */
+            margin-top: 40px;
         }
     </style>
 </head>
@@ -229,16 +224,14 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
 <body>
     <div id="particles-js"></div>
 
-    <!-- Favicon Image Above Title -->
     <div class="favicon-container">
         <img src="logo.png" alt="Logo Image">
     </div>
 
     <h1>Unblocked Games</h1>
 
-    <!-- Buttons container -->
     <div class="button-container">
-        <button onclick="enableTabCloak()">Update Log</button>
+        <button id="tabCloakButton" onclick="toggleTabCloak()">Enable Tab Cloak</button>
         <button onclick="openGameRequest()">Game Request</button>
     </div>
 
@@ -246,110 +239,151 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         <input type="text" id="game-search" placeholder="Search for games..." onkeyup="filterGames()">
     </div>
 
-    <!-- Game Cards container -->
-   
-<div class="game-container">
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/retrobowl/index.html" class="game-card" data-name="Retro Bowl"><img src="./icons/retrobowl.webp" alt="Retro Bowl"><b>Retro Bowl</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraftstable/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.8.8 (LESS LAGGY)</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraft/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.12.2</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/arenaking/index.html" class="game-card" data-name="Survival Race: Arena King"><img src="./icons/arena.png" alt="Survival Race: Arena King"><b>Survival Race: Arena King</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/gunspin/index.html" class="game-card" data-name="Gunspin"><img src="./icons/gunspin.png" alt="Gunspin"><b>Gunspin</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/sprinterflash/index.html" class="game-card" data-name="Sprinter Flash"><img src="./icons/sprinter.webp" alt="Stickman Hook"><b>Sprinter Flash</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/stickmanhook/index.html" class="game-card" data-name="Stickman Hook"><img src="./icons/stickmanhook.jpg" alt="Stickman Hook"><b>Stickman Hook</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/bitlife/index.html" class="game-card" data-name="Bitlife"><img src="./icons/bitlife.webp" alt="Bitlife"><b>Bitlife</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rooftop-snipers-2/index.html" class="game-card" data-name="Rooftop Snipers"><img src="./icons/rooftop.avif" alt="Rooftop Snipers"><b>Rooftop Snipers</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/soccerrandom/index.html" class="game-card" data-name="Soccer Random"><img src="./icons/soccerrandom.webp" alt="Soccer Random"><b>Soccer Random</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketrandom/index.html" class="game-card" data-name="Basket Random"><img src="./icons/basketrandom.webp" alt="Basket Random"><b>Basket Random</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/drifthunters/index.html" class="game-card" data-name="Drift Hunters"><img src="./icons/drifthunters.png" alt="Drift Hunters"><b>Drift Hunters</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crazycrash/index.html" class="game-card" data-name="Crazy Crash Landing"><img src="./icons/crazy.webp" alt="Crazy Crash Landing"><b>Crazy Crash Landing</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/subway-surfers/index.html" class="game-card" data-name="Subway Surfers"><img src="./icons/subway.avif" alt="Subway Surfers"><b>Subway Surfers</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowrider/index.html" class="game-card" data-name="Snow Rider 3D"><img src="./icons/snow.jpg" alt="Snow Rider 3D"><b>Snow Rider 3D</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/paperio/index.html" class="game-card" data-name="Paper.io 2"><img src="./icons/paperio.webp" alt="Paper.io 2"><b>Paper.io 2</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snakeio/index.html" class="game-card" data-name="Snake.io"><img src="./icons/snakeio.png" alt="Snake.io"><b>Snake.io</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/driftboss/index.html" class="game-card" data-name="Drift Boss"><img src="./icons/driftboss.png" alt="Drift Boss"><b>Drift Boss</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/blockblast/index.html" class="game-card" data-name="Block Blast"><img src="./icons/blockblast.png" alt="Block Blast"><b>Block Blast</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowball/index.html" class="game-card" data-name="Snowball.io"><img src="./icons/snowball.png" alt="Snowball.io"><b>Snowball.io</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/OvO/index.html" class="game-card" data-name="OvO"><img src="./icons/ovo.png" alt="OvO"><b>OvO</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketball-stars/index.html" class="game-card" data-name="Basketball Stars"><img src="./icons/basketball-stars.png" alt="Basketball Stars"><b>Basketball Stars</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rocket-pult/index.html" class="game-card" data-name="Rocket Pult"><img src="./icons/Rocketpult.webp" alt="Rocket Pult"><b>Rocket Pult</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/unicycle-hero/index.html" class="game-card" data-name="Unicycle Hero"><img src="./icons/unicycle-hero.webp" alt="Unicycle Hero"><b>Unicycle Hero</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/cookie/index.html" class="game-card" data-name="Cookie Clicker"><img src="./icons/cookie.webp" alt="Cookie Clicker"><b>Cookie Clicker</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crossyroad/index.html" class="game-card" data-name="Crossy Road"><img src="./icons/crossyroad.webp" alt="Crossy Road"><b>Crossy Road</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eatio/index.html" class="game-card" data-name="Eat.io"><img src="./icons/eatio.webp" alt="Eat.io"><b>Eat.io</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eggy-car/index.html" class="game-card" data-name="Eggy Car"><img src="./icons/eggy-car.webp" alt="Eggy Car"><b>Eggy Car</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/impossiblequiz/index.html" class="game-card" data-name="Impossible Quiz"><img src="./icons/impossiblequiz.webp" alt="Impossible Quiz"><b>Impossible Quiz</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/kitchen-gun-game/index.html" class="game-card" data-name="Kitchen Gun Game"><img src="./icons/kitchen-gun-game.webp" alt="Kitchen Gun Game"><b>Kitchen Gun Game</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/pong/index.html" class="game-card" data-name="Pong"><img src="./icons/pong.webp" alt="Pong"><b>Pong</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/slope/index.html" class="game-card" data-name="Slope"><img src="./icons/slope.webp" alt="Retro Bowl"><b>Slope</b></a>
-        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappy/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Retro Bowl"><b>Flappy Bird</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
-
-</div>   
-
-        <!-- Additional game cards can go here -->
+    <div class="game-container">
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/retrobowl/index.html" class="game-card" data-name="Retro Bowl"><img src="./icons/retrobowl.webp" alt="Retro Bowl"><b>Retro Bowl</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraftstable/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.8.8 (LESS LAGGY)</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraft/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.12.2</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/arenaking/index.html" class="game-card" data-name="Survival Race: Arena King"><img src="./icons/arena.png" alt="Survival Race: Arena King"><b>Survival Race: Arena King</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/gunspin/index.html" class="game-card" data-name="Gunspin"><img src="./icons/gunspin.png" alt="Gunspin"><b>Gunspin</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/sprinterflash/index.html" class="game-card" data-name="Sprinter Flash"><img src="./icons/sprinter.webp" alt="Stickman Hook"><b>Sprinter Flash</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/stickmanhook/index.html" class="game-card" data-name="Stickman Hook"><img src="./icons/stickmanhook.jpg" alt="Stickman Hook"><b>Stickman Hook</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/bitlife/index.html" class="game-card" data-name="Bitlife"><img src="./icons/bitlife.webp" alt="Bitlife"><b>Bitlife</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rooftop-snipers-2/index.html" class="game-card" data-name="Rooftop Snipers"><img src="./icons/rooftop.avif" alt="Rooftop Snipers"><b>Rooftop Snipers</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/soccerrandom/index.html" class="game-card" data-name="Soccer Random"><img src="./icons/soccerrandom.webp" alt="Soccer Random"><b>Soccer Random</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketrandom/index.html" class="game-card" data-name="Basket Random"><img src="./icons/basketrandom.webp" alt="Basket Random"><b>Basket Random</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/drifthunters/index.html" class="game-card" data-name="Drift Hunters"><img src="./icons/drifthunters.png" alt="Drift Hunters"><b>Drift Hunters</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crazycrash/index.html" class="game-card" data-name="Crazy Crash Landing"><img src="./icons/crazy.webp" alt="Crazy Crash Landing"><b>Crazy Crash Landing</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/subway-surfers/index.html" class="game-card" data-name="Subway Surfers"><img src="./icons/subway.avif" alt="Subway Surfers"><b>Subway Surfers</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowrider/index.html" class="game-card" data-name="Snow Rider 3D"><img src="./icons/snow.jpg" alt="Snow Rider 3D"><b>Snow Rider 3D</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/paperio/index.html" class="game-card" data-name="Paper.io 2"><img src="./icons/paperio.webp" alt="Paper.io 2"><b>Paper.io 2</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snakeio/index.html" class="game-card" data-name="Snake.io"><img src="./icons/snakeio.png" alt="Snake.io"><b>Snake.io</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/driftboss/index.html" class="game-card" data-name="Drift Boss"><img src="./icons/driftboss.png" alt="Drift Boss"><b>Drift Boss</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/blockblast/index.html" class="game-card" data-name="Block Blast"><img src="./icons/blockblast.png" alt="Block Blast"><b>Block Blast</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowball/index.html" class="game-card" data-name="Snowball.io"><img src="./icons/snowball.png" alt="Snowball.io"><b>Snowball.io</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/OvO/index.html" class="game-card" data-name="OvO"><img src="./icons/ovo.png" alt="OvO"><b>OvO</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketball-stars/index.html" class="game-card" data-name="Basketball Stars"><img src="./icons/basketball-stars.png" alt="Basketball Stars"><b>Basketball Stars</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rocket-pult/index.html" class="game-card" data-name="Rocket Pult"><img src="./icons/Rocketpult.webp" alt="Rocket Pult"><b>Rocket Pult</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/unicycle-hero/index.html" class="game-card" data-name="Unicycle Hero"><img src="./icons/unicycle-hero.webp" alt="Unicycle Hero"><b>Unicycle Hero</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/cookie/index.html" class="game-card" data-name="Cookie Clicker"><img src="./icons/cookie.webp" alt="Cookie Clicker"><b>Cookie Clicker</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crossyroad/index.html" class="game-card" data-name="Crossy Road"><img src="./icons/crossyroad.webp" alt="Crossy Road"><b>Crossy Road</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eatio/index.html" class="game-card" data-name="Eat.io"><img src="./icons/eatio.webp" alt="Eat.io"><b>Eat.io</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eggy-car/index.html" class="game-card" data-name="Eggy Car"><img src="./icons/eggy-car.webp" alt="Eggy Car"><b>Eggy Car</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/impossiblequiz/index.html" class="game-card" data-name="Impossible Quiz"><img src="./icons/impossiblequiz.webp" alt="Impossible Quiz"><b>Impossible Quiz</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/kitchen-gun-game/index.html" class="game-card" data-name="Kitchen Gun Game"><img src="./icons/kitchen-gun-game.webp" alt="Kitchen Gun Game"><b>Kitchen Gun Game</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/pong/index.html" class="game-card" data-name="Pong"><img src="./icons/pong.webp" alt="Pong"><b>Pong</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/slope/index.html" class="game-card" data-name="Slope"><img src="./icons/slope.webp" alt="Slope"><b>Slope</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappy/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
     </div>
 
-</div> <!-- Closing for game-container -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS.load('particles-js', 'particles.json', function () {
+            console.log('particles.json loaded...');
+        });
 
-<!-- Particles.js CDN -->
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script>
-    particlesJS.load('particles-js', 'particles.json', function () {
-        console.log('particles.json loaded...');
-    });
+        function filterGames() {
+            const searchInput = document.getElementById('game-search').value.toLowerCase();
+            const games = document.querySelectorAll('.game-card');
+            games.forEach(game => {
+                const name = game.dataset.name.toLowerCase();
+                if (name.includes(searchInput)) {
+                    game.style.display = 'block';
+                } else {
+                    game.style.display = 'none';
+                }
+            });
+        }
 
-    function filterGames() {
-        const searchInput = document.getElementById('game-search').value.toLowerCase();
-        const games = document.querySelectorAll('.game-card');
-        games.forEach(game => {
-            const name = game.dataset.name.toLowerCase();
-            if (name.includes(searchInput)) {
-                game.style.display = 'block';
+        function openGameRequest() {
+            window.location.href = 'https://forms.gle/ZDg1L8915QNXnHFj6';
+        }
+
+        // Tab cloak functionality
+        const cloakTitle = "About Me";
+        const cloakFavicon = "https://example.com/aboutme-favicon.png"; // Replace with actual favicon URL
+        const originalTitle = document.title;
+        const originalFavicon = document.querySelector("link[rel='icon']").href;
+
+        function toggleTabCloak() {
+            const isCloaked = localStorage.getItem('tabCloak') === 'true';
+            if (isCloaked) {
+                document.title = originalTitle;
+                document.querySelector("link[rel='icon']").href = originalFavicon;
+                document.getElementById('tabCloakButton').textContent = 'Enable Tab Cloak';
+                localStorage.setItem('tabCloak', 'false');
             } else {
-                game.style.display = 'none';
+                document.title = cloakTitle;
+                document.querySelector("link[rel='icon']").href = cloakFavicon;
+                document.getElementById('tabCloakButton').textContent = 'Disable Tab Cloak';
+                localStorage.setItem('tabCloak', 'true');
+            }
+        }
+
+        // Load saved cloak state on page load
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('tabCloak') === 'true') {
+                document.title = cloakTitle;
+                document.querySelector("link[rel='icon']").href = cloakFavicon;
+                document.getElementById('tabCloakButton').textContent = 'Disable Tab Cloak';
+            } else {
+                document.getElementById('tabCloakButton').textContent = 'Enable Tab Cloak';
             }
         });
-    }
 
-    // Placeholder functions for buttons
-    function enableTabCloak() {
-        window.location.href = 'https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/retrobowl/index.html';
-    }
+        // Embed all links in about:me page
+        function createEmbeddedPage(url) {
+            const embeddedPage = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>About Me</title>
+                    <link rel="icon" type="image/png" href="${cloakFavicon}">
+                    <style>
+                        body { margin: 0; padding: 0; height: 100vh; overflow: hidden; }
+                        iframe { width: 100%; height: 100%; border: none; }
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${url}" title="Embedded Game"></iframe>
+                </body>
+                </html>
+            `;
+            const blob = new Blob([embeddedPage], { type: 'text/html' });
+            return URL.createObjectURL(blob);
+        }
 
-    function openGameRequest() {
-        window.location.href = 'https://forms.gle/ZDg1L8915QNXnHFj6';
-    }
-</script>
+        // Intercept all game card clicks
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = card.getAttribute('href');
+                const gameName = card.getAttribute('data-name');
+                window.location.href = createEmbeddedPage(url);
+                gtag("event", "click_game", {
+                    event_category: "game",
+                    event_label: gameName,
+                });
+            });
+        });
 
+        // Handle homepage reload to embed itself
+        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+            const currentUrl = window.location.href;
+            if (!window.location.href.includes('blob:')) {
+                window.location.href = createEmbeddedPage(currentUrl);
+            }
+        }
+    </script>
 
+    <script src="js/app.js"></script>
+    <script src="js/particles.js"></script>
 
-<script src="js/app.js"></script>
-<script src="js/particles.js"></script>
-
-<footer style="color: gray; font-style: italic; font-size: 0.9em; text-align: center; padding: 1em; margin-top: 50px; border-top: 1px solid #ccc;">
-  Please do not play these games in school without permission. Doing so can result in losing a computer or other school punishment. You also agree that we are using analysis to collect data like how you are on the website, how many live users are on our website, and what games you play.
-</footer>
-
-<div class="game-container">
-  <!-- your game cards here -->
-</div>
-
-<!-- Your new script to track clicks -->
-<script>
-const gameCards = document.querySelectorAll(".game-card");
-
-gameCards.forEach(card => {
-  card.addEventListener("click", () => {
-    const gameName = card.getAttribute("data-name");
-    gtag("event", "click_game", {
-      event_category: "game",
-      event_label: gameName,
-    });
-  });
-});
-
-</script>
-
+    <footer style="color: gray; font-style: italic; font-size: 0.9em; text-align: center; padding: 1em; margin-top: 50px; border-top: 1px solid #ccc;">
+        Please do not play these games in school without permission. Doing so can result in losing a computer or other school punishment. You also agree that we are using analysis to collect data like how you are on the website, how many live users are on our website, and what games you play.
+    </footer>
 </body>
 </html>
