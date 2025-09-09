@@ -282,30 +282,28 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         // ABC class for cloaking
         class ABC {
             constructor(config = {}) {
-                this.type = config.type || "overwrite";
                 this.url = config.url || "about:blank";
-            }
-            setType(type) {
-                if (!type) return;
-                this.type = type;
-            }
-            setUrl(url) {
-                if (!url) return;
-                this.url = url;
             }
             getCode() {
                 return `<iframe style="height:100%; width: 100%; border: none; position: fixed; top: 0; right: 0; left: 0; bottom: 0; border: none" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation" src="${this.url}"></iframe>`;
             }
             open() {
-                if (this.type === "overwrite") {
-                    try {
-                        document.body.innerHTML = this.getCode();
-                        document.title = "about:blank";
-                        return true;
-                    } catch (e) {
-                        console.error("Error overwriting page:", e);
-                        return false;
-                    }
+                try {
+                    document.documentElement.innerHTML = `
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <title>about:blank</title>
+                            <link rel="icon" type="image/png" href="about:blank">
+                        </head>
+                        <body style="margin:0;padding:0;">
+                            ${this.getCode()}
+                        </body>
+                        </html>`;
+                    return true;
+                } catch (e) {
+                    console.error("Error overwriting page:", e);
+                    return false;
                 }
             }
         }
@@ -338,12 +336,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         function cloak(url, absolute = false) {
             url = absolute ? url : window.location.href.replace(/\/$/, "") + url;
             if (window.doCloak) {
-                var page = new ABC({
-                    type: "overwrite",
-                    url: url
-                });
-                page.setType("overwrite");
-                page.setUrl(url);
+                var page = new ABC({ url: url });
                 return page.open();
             } else {
                 window.location.href = url;
@@ -373,7 +366,6 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
                 cloak(window.location.href, true);
             } else {
                 if (!inIframe()) {
-                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
                     window.doCloak = false;
                 } else {
                     window.doCloak = true;
