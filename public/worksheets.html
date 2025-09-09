@@ -282,28 +282,33 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         // ABC class for cloaking
         class ABC {
             constructor(config = {}) {
+                this.type = config.type || "blank";
                 this.url = config.url || "about:blank";
+            }
+            setType(type) {
+                if (!type) return;
+                this.type = type;
+            }
+            setUrl(url) {
+                if (!url) return;
+                this.url = url;
             }
             getCode() {
                 return `<iframe style="height:100%; width: 100%; border: none; position: fixed; top: 0; right: 0; left: 0; bottom: 0; border: none" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation" src="${this.url}"></iframe>`;
             }
             open() {
-                try {
-                    document.documentElement.innerHTML = `
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <title>about:blank</title>
-                            <link rel="icon" type="image/png" href="about:blank">
-                        </head>
-                        <body style="margin:0;padding:0;">
-                            ${this.getCode()}
-                        </body>
-                        </html>`;
-                    return true;
-                } catch (e) {
-                    console.error("Error overwriting page:", e);
-                    return false;
+                if (this.type === "blank") {
+                    try {
+                        var page = window.open('about:blank');
+                        if (!page) {
+                            throw new Error('Popup blocked');
+                        }
+                        page.document.body.innerHTML = this.getCode();
+                        return page;
+                    } catch (e) {
+                        alert("Fatal Error:\n\nNAME: ERR_POPUP_BLOCKED\nDESCRIPTION: Allow pop-ups to enable tab cloaking and try again.");
+                        return false;
+                    }
                 }
             }
         }
@@ -336,11 +341,21 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         function cloak(url, absolute = false) {
             url = absolute ? url : window.location.href.replace(/\/$/, "") + url;
             if (window.doCloak) {
-                var page = new ABC({ url: url });
-                return page.open();
+                var page = new ABC({
+                    type: "blank",
+                    url: url
+                });
+                page.setType("blank");
+                page.setUrl(url);
+                var win = page.open();
+                if (!win) {
+                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                    window.doCloak = false;
+                    return false;
+                }
+                return true;
             } else {
                 window.location.href = url;
-                return true;
             }
         }
 
@@ -363,9 +378,12 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             const urlParams = new URLSearchParams(queryString);
             if (!inIframe() && getCookie("cloak") && !urlParams.get("disable")) {
                 window.doCloak = true;
-                cloak(window.location.href, true);
+                if (cloak(window.location.href, true)) {
+                    window.location.replace("https://google.com");
+                }
             } else {
                 if (!inIframe()) {
+                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
                     window.doCloak = false;
                 } else {
                     window.doCloak = true;
