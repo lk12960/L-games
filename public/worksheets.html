@@ -231,7 +231,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
     <h1>Unblocked Games</h1>
 
     <div class="button-container">
-        <button id="tabCloakButton" onclick="toggleTabCloak()">Enable Tab Cloak</button>
+        <button id="tabCloakButton" onclick="toggleCloak()">Enable Tab Cloak</button>
         <button onclick="openGameRequest()">Game Request</button>
     </div>
 
@@ -272,13 +272,141 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/kitchen-gun-game/index.html" class="game-card" data-name="Kitchen Gun Game"><img src="./icons/kitchen-gun-game.webp" alt="Kitchen Gun Game"><b>Kitchen Gun Game</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/pong/index.html" class="game-card" data-name="Pong"><img src="./icons/pong.webp" alt="Pong"><b>Pong</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/slope/index.html" class="game-card" data-name="Slope"><img src="./icons/slope.webp" alt="Slope"><b>Slope</b></a>
-        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappy/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappybird/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // ABC class for cloaking
+        class ABC {
+            constructor(config = {}) {
+                this.type = config.type || "blank";
+                this.url = config.url || "about:blank";
+            }
+            setType(type) {
+                if (!type) return;
+                this.type = type;
+            }
+            setUrl(url) {
+                if (!url) return;
+                this.url = url;
+            }
+            getCode() {
+                return `<iframe style="height:100%; width: 100%; border: none; position: fixed; top: 0; right: 0; left: 0; bottom: 0; border: none" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation" src="${this.url}"></iframe>`;
+            }
+            open() {
+                if (this.type === "blank") {
+                    try {
+                        var page = window.open('about:blank');
+                        if (!page) {
+                            throw new Error('Popup blocked');
+                        }
+                        page.document.body.innerHTML = this.getCode();
+                        return page;
+                    } catch (e) {
+                        alert("Fatal Error:\n\nNAME: ERR_POPUP_BLOCKED\nDESCRIPTION: Allow pop-ups to enable tab cloaking and try again.");
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // Cookie and cloak handling
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function inIframe() {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return true;
+            }
+        }
+
+        function cloak(url, absolute = false) {
+            url = absolute ? url : window.location.href.replace(/\/$/, "") + url;
+            if (window.doCloak) {
+                var page = new ABC({
+                    type: "blank",
+                    url: url
+                });
+                page.setType("blank");
+                page.setUrl(url);
+                var win = page.open();
+                if (!win) {
+                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                    window.doCloak = false;
+                    return false;
+                }
+                return true;
+            } else {
+                window.location.href = url;
+            }
+        }
+
+        function toggleCloak() {
+            if (getCookie("cloak")) {
+                document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                window.doCloak = false;
+                document.getElementById('tabCloakButton').textContent = 'Enable Tab Cloak';
+                window.location.reload();
+            } else {
+                document.cookie = "cloak=1; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                window.doCloak = true;
+                cloak(window.location.href, true);
+            }
+        }
+
+        // Initialize cloak state
+        window.addEventListener('load', () => {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            if (!inIframe() && getCookie("cloak") && !urlParams.get("disable")) {
+                window.doCloak = true;
+                if (cloak(window.location.href, true)) {
+                    window.location.replace("https://google.com");
+                }
+            } else {
+                if (!inIframe()) {
+                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                    window.doCloak = false;
+                } else {
+                    window.doCloak = true;
+                }
+                document.getElementById('tabCloakButton').textContent = getCookie('cloak') ? 'Disable Tab Cloak' : 'Enable Tab Cloak';
+            }
+        });
+
+        // Intercept game card clicks
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = card.getAttribute('href');
+                const gameName = card.getAttribute('data-name');
+                cloak(url, true);
+                gtag("event", "click_game", {
+                    event_category: "game",
+                    event_label: gameName,
+                });
+            });
+        });
+
+        // Other existing scripts
         particlesJS.load('particles-js', 'particles.json', function () {
             console.log('particles.json loaded...');
         });
@@ -297,85 +425,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         }
 
         function openGameRequest() {
-            window.location.href = 'https://forms.gle/ZDg1L8915QNXnHFj6';
-        }
-
-        // Tab cloak functionality
-        const cloakTitle = "About Me";
-        const cloakFavicon = "https://example.com/aboutme-favicon.png"; // Replace with actual favicon URL
-        const originalTitle = document.title;
-        const originalFavicon = document.querySelector("link[rel='icon']").href;
-
-        function toggleTabCloak() {
-            const isCloaked = localStorage.getItem('tabCloak') === 'true';
-            if (isCloaked) {
-                document.title = originalTitle;
-                document.querySelector("link[rel='icon']").href = originalFavicon;
-                document.getElementById('tabCloakButton').textContent = 'Enable Tab Cloak';
-                localStorage.setItem('tabCloak', 'false');
-            } else {
-                document.title = cloakTitle;
-                document.querySelector("link[rel='icon']").href = cloakFavicon;
-                document.getElementById('tabCloakButton').textContent = 'Disable Tab Cloak';
-                localStorage.setItem('tabCloak', 'true');
-            }
-        }
-
-        // Load saved cloak state on page load
-        window.addEventListener('load', () => {
-            if (localStorage.getItem('tabCloak') === 'true') {
-                document.title = cloakTitle;
-                document.querySelector("link[rel='icon']").href = cloakFavicon;
-                document.getElementById('tabCloakButton').textContent = 'Disable Tab Cloak';
-            } else {
-                document.getElementById('tabCloakButton').textContent = 'Enable Tab Cloak';
-            }
-        });
-
-        // Embed all links in about:me page
-        function createEmbeddedPage(url) {
-            const embeddedPage = `
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>About Me</title>
-                    <link rel="icon" type="image/png" href="${cloakFavicon}">
-                    <style>
-                        body { margin: 0; padding: 0; height: 100vh; overflow: hidden; }
-                        iframe { width: 100%; height: 100%; border: none; }
-                    </style>
-                </head>
-                <body>
-                    <iframe src="${url}" title="Embedded Game"></iframe>
-                </body>
-                </html>
-            `;
-            const blob = new Blob([embeddedPage], { type: 'text/html' });
-            return URL.createObjectURL(blob);
-        }
-
-        // Intercept all game card clicks
-        document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
-                const url = card.getAttribute('href');
-                const gameName = card.getAttribute('data-name');
-                window.location.href = createEmbeddedPage(url);
-                gtag("event", "click_game", {
-                    event_category: "game",
-                    event_label: gameName,
-                });
-            });
-        });
-
-        // Handle homepage reload to embed itself
-        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-            const currentUrl = window.location.href;
-            if (!window.location.href.includes('blob:')) {
-                window.location.href = createEmbeddedPage(currentUrl);
-            }
+            cloak('https://forms.gle/ZDg1L8915QNXnHFj6', true);
         }
     </script>
 
