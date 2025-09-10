@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FlappyBird</title>
-    <link rel="stylesheet" href="style.css" > 
+    <link rel="stylesheet" href="style.css"> 
     <link href="https://fonts.googleapis.com/css?family=Squada+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* prevent scrolling */
+        }
+        canvas {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    <canvas id="canvas" width="276" height="414"></canvas>
+    <canvas id="canvas"></canvas>
     <script src="game.js"></script>
+    <script>
+        // Make canvas fullscreen
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        // Resize on load and when window is resized
+        window.addEventListener("load", resizeCanvas);
+        window.addEventListener("resize", resizeCanvas);
+    </script>
 </body>
 </html>
