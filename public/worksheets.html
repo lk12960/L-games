@@ -35,7 +35,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unblocked Games</title>
+    <title id="page-title">Unblocked Games</title>
 
     <!-- Favicon link -->
     <link rel="icon" type="image/png" href="logo.png">
@@ -68,7 +68,6 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             z-index: -1;
         }
 
-        /* Buttons container */
         .button-container {
             position: fixed;
             top: 20px;
@@ -101,7 +100,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             font-weight: bold;
             color: white;
             font-style: italic;
-            margin-top: 5vh; /* Reduced margin-top to bring text up */
+            margin-top: 5vh;
         }
 
         .search-container {
@@ -110,31 +109,28 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         }
 
         .search-container input {
-            padding: 8px 30px; /* Shorter height, longer width */
+            padding: 8px 30px;
             font-size: 1rem;
-            width: 350px; /* Increased width */
-            height: 35px; /* Shortened height */
+            width: 350px;
+            height: 35px;
             border-radius: 5px;
-            border: 2px solid #888888; /* Darker grey border */
+            border: 2px solid #888888;
             outline: none;
-            background-color: rgba(51, 51, 51, 0.4); /* More transparent background */
-            color: #d0d0d0; /* Lighter text for readability */
+            background-color: rgba(51, 51, 51, 0.4);
+            color: #d0d0d0;
         }
 
-        /* Center game-container grid */
         .game-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 4 cards per row */
-    gap: 15px; /* Spacing between cards */
-    margin: 30px auto;
-    padding: 0 10px;
-    max-width: 1200px;
-    align-items: center;
-    justify-items: center;
-}
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 30px auto;
+            padding: 0 10px;
+            max-width: 1200px;
+            align-items: center;
+            justify-items: center;
+        }
 
-
-        /* Adjust grid layout for responsiveness */
         @media (max-width: 700px) {
             .game-container {
                 grid-template-columns: repeat(6, 1fr);
@@ -208,20 +204,132 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             border-radius: 5px;
         }
 
-        /* Center image above title with adjusted margin */
         .favicon-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-top: 40px; /* Adjust this to lower the logo */
-            margin-bottom: 0px; /* No gap between image and title */
+            margin-top: 40px;
+            margin-bottom: 0px;
         }
 
         .favicon-container img {
-            width: 150px; /* Logo size */
+            width: 150px;
             height: auto;
-            margin-top: 40px; /* Adjust this to position logo lower */
+            margin-top: 40px;
+        }
+
+        /* New styles for chat widget */
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffffff;
+            color: #000000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 30px;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 320px;
+            height: 420px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            background-color: #282828;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #282828;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            max-width: 80%;
+            font-size: 0.95rem;
+        }
+
+        .bot {
+            background-color: #555;
+            color: white;
+            align-self: flex-start;
+        }
+
+        .user {
+            background-color: #ffffff;
+            color: #000000;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: #444;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background-color: #555;
+            color: white;
+            outline: none;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .chat-input button {
+            padding: 10px 16px;
+            border: none;
+            background-color: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            border-radius: 0 5px 5px 0;
         }
     </style>
 </head>
@@ -229,16 +337,14 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
 <body>
     <div id="particles-js"></div>
 
-    <!-- Favicon Image Above Title -->
     <div class="favicon-container">
         <img src="logo.png" alt="Logo Image">
     </div>
 
     <h1>Unblocked Games</h1>
 
-    <!-- Buttons container -->
     <div class="button-container">
-        <button onclick="enableTabCloak()">Update Log</button>
+        <button id="tabCloakButton" onclick="toggleCloak()">Enable Tab Cloak</button>
         <button onclick="openGameRequest()">Game Request</button>
     </div>
 
@@ -246,110 +352,299 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         <input type="text" id="game-search" placeholder="Search for games..." onkeyup="filterGames()">
     </div>
 
-    <!-- Game Cards container -->
-   
-<div class="game-container">
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/retrobowl/index.html" class="game-card" data-name="Retro Bowl"><img src="./icons/retrobowl.webp" alt="Retro Bowl"><b>Retro Bowl</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraftstable/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.8.8 (LESS LAGGY)</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraft/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.12.2</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/arenaking/index.html" class="game-card" data-name="Survival Race: Arena King"><img src="./icons/arena.png" alt="Survival Race: Arena King"><b>Survival Race: Arena King</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/gunspin/index.html" class="game-card" data-name="Gunspin"><img src="./icons/gunspin.png" alt="Gunspin"><b>Gunspin</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/sprinterflash/index.html" class="game-card" data-name="Sprinter Flash"><img src="./icons/sprinter.webp" alt="Stickman Hook"><b>Sprinter Flash</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/stickmanhook/index.html" class="game-card" data-name="Stickman Hook"><img src="./icons/stickmanhook.jpg" alt="Stickman Hook"><b>Stickman Hook</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/bitlife/index.html" class="game-card" data-name="Bitlife"><img src="./icons/bitlife.webp" alt="Bitlife"><b>Bitlife</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rooftop-snipers-2/index.html" class="game-card" data-name="Rooftop Snipers"><img src="./icons/rooftop.avif" alt="Rooftop Snipers"><b>Rooftop Snipers</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/soccerrandom/index.html" class="game-card" data-name="Soccer Random"><img src="./icons/soccerrandom.webp" alt="Soccer Random"><b>Soccer Random</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketrandom/index.html" class="game-card" data-name="Basket Random"><img src="./icons/basketrandom.webp" alt="Basket Random"><b>Basket Random</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/drifthunters/index.html" class="game-card" data-name="Drift Hunters"><img src="./icons/drifthunters.png" alt="Drift Hunters"><b>Drift Hunters</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crazycrash/index.html" class="game-card" data-name="Crazy Crash Landing"><img src="./icons/crazy.webp" alt="Crazy Crash Landing"><b>Crazy Crash Landing</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/subway-surfers/index.html" class="game-card" data-name="Subway Surfers"><img src="./icons/subway.avif" alt="Subway Surfers"><b>Subway Surfers</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowrider/index.html" class="game-card" data-name="Snow Rider 3D"><img src="./icons/snow.jpg" alt="Snow Rider 3D"><b>Snow Rider 3D</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/paperio/index.html" class="game-card" data-name="Paper.io 2"><img src="./icons/paperio.webp" alt="Paper.io 2"><b>Paper.io 2</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snakeio/index.html" class="game-card" data-name="Snake.io"><img src="./icons/snakeio.png" alt="Snake.io"><b>Snake.io</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/driftboss/index.html" class="game-card" data-name="Drift Boss"><img src="./icons/driftboss.png" alt="Drift Boss"><b>Drift Boss</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/blockblast/index.html" class="game-card" data-name="Block Blast"><img src="./icons/blockblast.png" alt="Block Blast"><b>Block Blast</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowball/index.html" class="game-card" data-name="Snowball.io"><img src="./icons/snowball.png" alt="Snowball.io"><b>Snowball.io</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/OvO/index.html" class="game-card" data-name="OvO"><img src="./icons/ovo.png" alt="OvO"><b>OvO</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketball-stars/index.html" class="game-card" data-name="Basketball Stars"><img src="./icons/basketball-stars.png" alt="Basketball Stars"><b>Basketball Stars</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rocket-pult/index.html" class="game-card" data-name="Rocket Pult"><img src="./icons/Rocketpult.webp" alt="Rocket Pult"><b>Rocket Pult</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/unicycle-hero/index.html" class="game-card" data-name="Unicycle Hero"><img src="./icons/unicycle-hero.webp" alt="Unicycle Hero"><b>Unicycle Hero</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/cookie/index.html" class="game-card" data-name="Cookie Clicker"><img src="./icons/cookie.webp" alt="Cookie Clicker"><b>Cookie Clicker</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crossyroad/index.html" class="game-card" data-name="Crossy Road"><img src="./icons/crossyroad.webp" alt="Crossy Road"><b>Crossy Road</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eatio/index.html" class="game-card" data-name="Eat.io"><img src="./icons/eatio.webp" alt="Eat.io"><b>Eat.io</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eggy-car/index.html" class="game-card" data-name="Eggy Car"><img src="./icons/eggy-car.webp" alt="Eggy Car"><b>Eggy Car</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/impossiblequiz/index.html" class="game-card" data-name="Impossible Quiz"><img src="./icons/impossiblequiz.webp" alt="Impossible Quiz"><b>Impossible Quiz</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/kitchen-gun-game/index.html" class="game-card" data-name="Kitchen Gun Game"><img src="./icons/kitchen-gun-game.webp" alt="Kitchen Gun Game"><b>Kitchen Gun Game</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/pong/index.html" class="game-card" data-name="Pong"><img src="./icons/pong.webp" alt="Pong"><b>Pong</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/slope/index.html" class="game-card" data-name="Slope"><img src="./icons/slope.webp" alt="Retro Bowl"><b>Slope</b></a>
-        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappy/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Retro Bowl"><b>Flappy Bird</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
-    <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
-
-</div>   
-
-        <!-- Additional game cards can go here -->
+    <div class="game-container">
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/retrobowl/index.html" class="game-card" data-name="Retro Bowl"><img src="./icons/retrobowl.webp" alt="Retro Bowl"><b>Retro Bowl</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraftstable/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.8.8 (LESS LAGGY)</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraft/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.12.2</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/arenaking/index.html" class="game-card" data-name="Survival Race: Arena King"><img src="./icons/arena.png" alt="Survival Race: Arena King"><b>Survival Race: Arena King</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/gunspin/index.html" class="game-card" data-name="Gunspin"><img src="./icons/gunspin.png" alt="Gunspin"><b>Gunspin</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/sprinterflash/index.html" class="game-card" data-name="Sprinter Flash"><img src="./icons/sprinter.webp" alt="Stickman Hook"><b>Sprinter Flash</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/stickmanhook/index.html" class="game-card" data-name="Stickman Hook"><img src="./icons/stickmanhook.jpg" alt="Stickman Hook"><b>Stickman Hook</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/bitlife/index.html" class="game-card" data-name="Bitlife"><img src="./icons/bitlife.webp" alt="Bitlife"><b>Bitlife</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rooftop-snipers-2/index.html" class="game-card" data-name="Rooftop Snipers"><img src="./icons/rooftop.avif" alt="Rooftop Snipers"><b>Rooftop Snipers</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/soccerrandom/index.html" class="game-card" data-name="Soccer Random"><img src="./icons/soccerrandom.webp" alt="Soccer Random"><b>Soccer Random</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketrandom/index.html" class="game-card" data-name="Basket Random"><img src="./icons/basketrandom.webp" alt="Basket Random"><b>Basket Random</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/drifthunters/index.html" class="game-card" data-name="Drift Hunters"><img src="./icons/drifthunters.png" alt="Drift Hunters"><b>Drift Hunters</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crazycrash/index.html" class="game-card" data-name="Crazy Crash Landing"><img src="./icons/crazy.webp" alt="Crazy Crash Landing"><b>Crazy Crash Landing</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/subway-surfers/index.html" class="game-card" data-name="Subway Surfers"><img src="./icons/subway.avif" alt="Subway Surfers"><b>Subway Surfers</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowrider/index.html" class="game-card" data-name="Snow Rider 3D"><img src="./icons/snow.jpg" alt="Snow Rider 3D"><b>Snow Rider 3D</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/paperio/index.html" class="game-card" data-name="Paper.io 2"><img src="./icons/paperio.webp" alt="Paper.io 2"><b>Paper.io 2</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snakeio/index.html" class="game-card" data-name="Snake.io"><img src="./icons/snakeio.png" alt="Snake.io"><b>Snake.io</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/driftboss/index.html" class="game-card" data-name="Drift Boss"><img src="./icons/driftboss.png" alt="Drift Boss"><b>Drift Boss</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/blockblast/index.html" class="game-card" data-name="Block Blast"><img src="./icons/blockblast.png" alt="Block Blast"><b>Block Blast</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowball/index.html" class="game-card" data-name="Snowball.io"><img src="./icons/snowball.png" alt="Snowball.io"><b>Snowball.io</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/OvO/index.html" class="game-card" data-name="OvO"><img src="./icons/ovo.png" alt="OvO"><b>OvO</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketball-stars/index.html" class="game-card" data-name="Basketball Stars"><img src="./icons/basketball-stars.png" alt="Basketball Stars"><b>Basketball Stars</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rocket-pult/index.html" class="game-card" data-name="Rocket Pult"><img src="./icons/Rocketpult.webp" alt="Rocket Pult"><b>Rocket Pult</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/unicycle-hero/index.html" class="game-card" data-name="Unicycle Hero"><img src="./icons/unicycle-hero.webp" alt="Unicycle Hero"><b>Unicycle Hero</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/cookie/index.html" class="game-card" data-name="Cookie Clicker"><img src="./icons/cookie.webp" alt="Cookie Clicker"><b>Cookie Clicker</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crossyroad/index.html" class="game-card" data-name="Crossy Road"><img src="./icons/crossyroad.webp" alt="Crossy Road"><b>Crossy Road</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eatio/index.html" class="game-card" data-name="Eat.io"><img src="./icons/eatio.webp" alt="Eat.io"><b>Eat.io</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eggy-car/index.html" class="game-card" data-name="Eggy Car"><img src="./icons/eggy-car.webp" alt="Eggy Car"><b>Eggy Car</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/impossiblequiz/index.html" class="game-card" data-name="Impossible Quiz"><img src="./icons/impossiblequiz.webp" alt="Impossible Quiz"><b>Impossible Quiz</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/kitchen-gun-game/index.html" class="game-card" data-name="Kitchen Gun Game"><img src="./icons/kitchen-gun-game.webp" alt="Kitchen Gun Game"><b>Kitchen Gun Game</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/pong/index.html" class="game-card" data-name="Pong"><img src="./icons/pong.webp" alt="Pong"><b>Pong</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/slope/index.html" class="game-card" data-name="Slope"><img src="./icons/slope.webp" alt="Slope"><b>Slope</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappy/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
     </div>
 
-</div> <!-- Closing for game-container -->
+    <!-- New chat widget elements -->
+    <div class="chat-button" id="chatButton">💬</div>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">AI Virtual Assistant</div>
+        <div class="chat-messages" id="chatMessages">
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Write your message..." onkeyup="handleKeyUp(event)">
+            <button onclick="sendMessage()">➤</button>
+        </div>
+    </div>
 
-<!-- Particles.js CDN -->
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script>
-    particlesJS.load('particles-js', 'particles.json', function () {
-        console.log('particles.json loaded...');
-    });
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // ABC class for cloaking
+        class ABC {
+            constructor(config = {}) {
+                this.type = config.type || "blank";
+                this.url = config.url || "about:blank";
+            }
+            setType(type) {
+                if (!type) return;
+                this.type = type;
+            }
+            setUrl(url) {
+                if (!url) return;
+                this.url = url;
+            }
+            getCode() {
+                return `<iframe style="height:100%; width: 100%; border: none; position: fixed; top: 0; right: 0; left: 0; bottom: 0; border: none" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation" src="${this.url}"></iframe>`;
+            }
+            open() {
+                if (this.type === "blank") {
+                    try {
+                        var page = window.open('about:blank');
+                        if (!page) {
+                            throw new Error('Popup blocked');
+                        }
+                        page.document.body.innerHTML = this.getCode();
+                        return page;
+                    } catch (e) {
+                        alert("Fatal Error:\n\nNAME: ERR_POPUP_BLOCKED\nDESCRIPTION: Allow pop-ups to enable tab cloaking and try again.");
+                        return false;
+                    }
+                }
+            }
+        }
 
-    function filterGames() {
-        const searchInput = document.getElementById('game-search').value.toLowerCase();
-        const games = document.querySelectorAll('.game-card');
-        games.forEach(game => {
-            const name = game.dataset.name.toLowerCase();
-            if (name.includes(searchInput)) {
-                game.style.display = 'block';
+        // Cookie and cloak handling
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function inIframe() {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return true;
+            }
+        }
+
+        function cloak(url, absolute = false) {
+            url = absolute ? url : window.location.href.replace(/\/$/, "") + url;
+            if (window.doCloak) {
+                var page = new ABC({
+                    type: "blank",
+                    url: url
+                });
+                page.setType("blank");
+                page.setUrl(url);
+                var win = page.open();
+                if (!win) {
+                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                    window.doCloak = false;
+                    return false;
+                }
+                return true;
             } else {
-                game.style.display = 'none';
+                window.location.href = url;
+            }
+        }
+
+        function toggleCloak() {
+            if (getCookie("cloak")) {
+                document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                window.doCloak = false;
+                document.getElementById('tabCloakButton').textContent = 'Enable Tab Cloak';
+                window.location.reload();
+            } else {
+                document.cookie = "cloak=1; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                window.doCloak = true;
+                cloak(window.location.href, true);
+            }
+        }
+
+        // Initialize cloak state
+        window.addEventListener('load', () => {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            if (!inIframe() && getCookie("cloak") && !urlParams.get("disable")) {
+                window.doCloak = true;
+                if (cloak(window.location.href, true)) {
+                    window.location.replace("https://google.com");
+                }
+            } else {
+                if (!inIframe()) {
+                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                    window.doCloak = false;
+                } else {
+                    window.doCloak = true;
+                }
+                document.getElementById('tabCloakButton').textContent = getCookie('cloak') ? 'Disable Tab Cloak' : 'Enable Tab Cloak';
             }
         });
-    }
 
-    // Placeholder functions for buttons
-    function enableTabCloak() {
-        window.location.href = 'https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/retrobowl/index.html';
-    }
+        // Intercept game card clicks
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = card.getAttribute('href');
+                const gameName = card.getAttribute('data-name');
+                cloak(url, true);
+                gtag("event", "click_game", {
+                    event_category: "game",
+                    event_label: gameName,
+                });
+            });
+        });
 
-    function openGameRequest() {
-        window.location.href = 'https://forms.gle/ZDg1L8915QNXnHFj6';
-    }
-</script>
+        // Other existing scripts
+        particlesJS.load('particles-js', 'particles.json', function () {
+            console.log('particles.json loaded...');
+        });
 
+        function filterGames() {
+            const searchInput = document.getElementById('game-search').value.toLowerCase();
+            const games = document.querySelectorAll('.game-card');
+            games.forEach(game => {
+                const name = game.dataset.name.toLowerCase();
+                if (name.includes(searchInput)) {
+                    game.style.display = 'block';
+                } else {
+                    game.style.display = 'none';
+                }
+            });
+        }
 
+        function openGameRequest() {
+            cloak('https://forms.gle/ZDg1L8915QNXnHFj6', true);
+        }
 
-<script src="js/app.js"></script>
-<script src="js/particles.js"></script>
+// New chat widget scripts
+    const chatButton = document.getElementById('chatButton');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    let welcomed = false;
+    const GEMINI_API_KEY = 'AIzaSyC8ExoCzx1s2jKu8lq79zFnWAde6H3Z7nU'; // Replace with your Google Gemini API key
+    let conversationHistory = []; // Array to store {role: 'user' or 'assistant', content: text}
 
-<footer style="color: gray; font-style: italic; font-size: 0.9em; text-align: center; padding: 1em; margin-top: 50px; border-top: 1px solid #ccc;">
-  Please do not play these games in school without permission. Doing so can result in losing a computer or other school punishment. You also agree that we are using analysis to collect data like how you are on the website, how many live users are on our website, and what games you play.
-</footer>
-
-<div class="game-container">
-  <!-- your game cards here -->
-</div>
-
-<!-- Your new script to track clicks -->
-<script>
-const gameCards = document.querySelectorAll(".game-card");
-
-gameCards.forEach(card => {
-  card.addEventListener("click", () => {
-    const gameName = card.getAttribute("data-name");
-    gtag("event", "click_game", {
-      event_category: "game",
-      event_label: gameName,
+    chatButton.addEventListener('click', () => {
+        chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+        if (chatWindow.style.display === 'flex') {
+            if (!welcomed) {
+                addMessage('bot', 'Hello! How can I assist you today?');
+                welcomed = true;
+            }
+            chatInput.focus();
+        }
     });
-  });
-});
 
+    async function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+        addMessage('user', message);
+        chatInput.value = '';
+
+        // Add user message to history
+        conversationHistory.push({ role: 'user', content: message });
+
+        // Build prompt as an array of messages for Gemini
+        const contents = conversationHistory.map(msg => ({
+            role: msg.role === 'user' ? 'user' : 'model',
+            parts: [{ text: msg.content }]
+        }));
+
+        try {
+            const response = await fetch('https://api.google.ai/gemini/v1/models/gemini-pro:generateContent', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${GEMINI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: contents,
+                    generationConfig: {
+                        temperature: 0.7,
+                        topP: 0.95,
+                        maxOutputTokens: 100
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`API request failed with status ${response.status}: ${errorText}`);
+            }
+
+            const data = await response.json();
+            console.log('API Response:', data); // Log the full response for debugging
+            let botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I couldn\'t generate a response.';
+            if (!botReply) {
+                botReply = 'Sorry, I couldn\'t generate a response.';
+            }
+
+            addMessage('bot', botReply);
+            conversationHistory.push({ role: 'assistant', content: botReply });
+        } catch (error) {
+            console.error('Error details:', error);
+            addMessage('bot', `Sorry, there was an error. Please check the console for details. Status: ${error.message}`);
+        }
+    }
+
+    function addMessage(sender, text) {
+        const div = document.createElement('div');
+        div.classList.add('message', sender);
+        div.textContent = text;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function handleKeyUp(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
 </script>
 
+    <script src="js/app.js"></script>
+    <script src="js/particles.js"></script>
+
+    <footer style="color: gray; font-style: italic; font-size: 0.9em; text-align: center; padding: 1em; margin-top: 50px; border-top: 1px solid #ccc;">
+        Please do not play these games in school without permission. Doing so can result in losing a computer or other school punishment. You also agree that we are using analysis to collect data like how you are on the website, how many live users are on our website, and what games you play.
+    </footer>
 </body>
 </html>
