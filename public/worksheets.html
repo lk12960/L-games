@@ -393,7 +393,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
     <!-- New chat widget elements -->
     <div class="chat-button" id="chatButton">💬</div>
     <div class="chat-window" id="chatWindow">
-        <div class="chat-header">AI Virtual Assistant</div>
+        <div class="chat-header">AI Assistant</div>
         <div class="chat-messages" id="chatMessages">
         </div>
         <div class="chat-input">
@@ -560,7 +560,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         const chatInput = document.getElementById('chatInput');
         let welcomed = false;
         const HF_TOKEN = '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'; // Replace with your actual Hugging Face API token from https://huggingface.co/settings/tokens
-        const MODEL = 'openai-community/gpt2'; // Using GPT-2 as requested
+        const MODEL = 'gpt2'; // Using GPT-2 as requested
         let conversationHistory = []; // Array to store {role: 'user' or 'assistant', content: text}
 
         chatButton.addEventListener('click', () => {
