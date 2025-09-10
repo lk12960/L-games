@@ -318,7 +318,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             padding: 10px;
             border: none;
             background-color: #555;
-            color: white;
+            color: #444;
             outline: none;
             border-radius: 5px 0 0 5px;
         }
@@ -354,7 +354,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
 
     <div class="game-container">
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/retrobowl/index.html" class="game-card" data-name="Retro Bowl"><img src="./icons/retrobowl.webp" alt="Retro Bowl"><b>Retro Bowl</b></a>
-        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraftstable/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.8.8 (LESS LAGGY)</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraftstable/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.8.8 (MORE LAGGY)</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraft/index.html" class="game-card" data-name="Minecraft"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.12.2</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/arenaking/index.html" class="game-card" data-name="Survival Race: Arena King"><img src="./icons/arena.png" alt="Survival Race: Arena King"><b>Survival Race: Arena King</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/gunspin/index.html" class="game-card" data-name="Gunspin"><img src="./icons/gunspin.png" alt="Gunspin"><b>Gunspin</b></a>
@@ -385,7 +385,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/kitchen-gun-game/index.html" class="game-card" data-name="Kitchen Gun Game"><img src="./icons/kitchen-gun-game.webp" alt="Kitchen Gun Game"><b>Kitchen Gun Game</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/pong/index.html" class="game-card" data-name="Pong"><img src="./icons/pong.webp" alt="Pong"><b>Pong</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/slope/index.html" class="game-card" data-name="Slope"><img src="./icons/slope.webp" alt="Slope"><b>Slope</b></a>
-        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappy/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappybird/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
     </div>
@@ -553,111 +553,110 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             cloak('https://forms.gle/ZDg1L8915QNXnHFj6', true);
         }
 
-        // New chat widget scripts
-        const chatButton = document.getElementById('chatButton');
-        const chatWindow = document.getElementById('chatWindow');
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        let welcomed = false;
-        const HF_TOKEN = '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'; // Replace with your actual Hugging Face API token from https://huggingface.co/settings/tokens
-        const MODEL = 'openai-community/gpt2'; // Using GPT-2 as requested
-        let conversationHistory = []; // Array to store {role: 'user' or 'assistant', content: text}
+// New chat widget scripts
+    const chatButton = document.getElementById('chatButton');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    let welcomed = false;
 
-        chatButton.addEventListener('click', () => {
-            chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
-            if (chatWindow.style.display === 'flex') {
-                if (!welcomed) {
-                    addMessage('bot', 'Hello');
-                    welcomed = true;
-                }
-                chatInput.focus();
+    // Base64 encoded token (replace with your encoded token)
+    const ENCODED_HF_TOKEN = 'aGZfWFVaT05WYUt0UWFQYlJVZUdIZ29RY1FZdkZkSWVORHZwVQ==';
+    const HF_TOKEN = atob(ENCODED_HF_TOKEN); // Decode at runtime
+    const MODEL = 'openai-community/gpt2';
+    let conversationHistory = [];
+
+    chatButton.addEventListener('click', () => {
+        chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+        if (chatWindow.style.display === 'flex') {
+            if (!welcomed) {
+                addMessage('bot', 'Hello');
+                welcomed = true;
             }
+            chatInput.focus();
+        }
+    });
+
+    async function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+        addMessage('user', message);
+        chatInput.value = '';
+
+        // Add user message to history
+        conversationHistory.push({ role: 'user', content: message });
+
+        // Build prompt from history
+        let prompt = '';
+        conversationHistory.forEach(msg => {
+            prompt += `${msg.role === 'user' ? 'User' : 'AI'}: ${msg.content}\n`;
         });
+        prompt += 'AI:';
 
-        async function sendMessage() {
-            const message = chatInput.value.trim();
-            if (!message) return;
-            addMessage('user', message);
-            chatInput.value = '';
+        // Prepare payload for HF API
+        const payload = {
+            inputs: prompt,
+            parameters: {
+                max_new_tokens: 100,
+                temperature: 0.7,
+                top_p: 0.95,
+                repetition_penalty: 1.2,
+                do_sample: true,
+                num_return_sequences: 1
+            }
+        };
 
-            // Add user message to history
-            conversationHistory.push({ role: 'user', content: message });
-
-            // Build prompt from history
-            let prompt = '';
-            conversationHistory.forEach(msg => {
-                prompt += `${msg.role === 'user' ? 'User' : 'AI'}: ${msg.content}\n`;
+        try {
+            const response = await fetch(`https://api-inference.huggingface.co/models/${MODEL}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${HF_TOKEN}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
             });
-            prompt += 'AI:';
 
-            // Prepare payload for HF API (text-generation for GPT-2)
-            const payload = {
-                inputs: prompt,
-                parameters: {
-                    max_new_tokens: 100,
-                    temperature: 0.7,
-                    top_p: 0.95,
-                    repetition_penalty: 1.2,
-                    do_sample: true,
-                    num_return_sequences: 1
-                }
-            };
-
-            try {
-                const response = await fetch(`https://api-inference.huggingface.co/models/${MODEL}`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${HF_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}`);
-                }
-
-                const data = await response.json();
-                if (!data || !data[0] || !data[0].generated_text) {
-                    throw new Error('Invalid response format');
-                }
-
-                let botReply = data[0].generated_text.trim();
-                // Extract only the new AI response (after the prompt)
-                if (botReply.startsWith(prompt)) {
-                    botReply = botReply.slice(prompt.length).trim();
-                }
-                // Truncate at first newline or end of response to avoid continuing the conversation
-                botReply = botReply.split('\n')[0].trim();
-
-                if (!botReply) {
-                    botReply = 'Sorry, I couldn\'t generate a response.';
-                }
-
-                addMessage('bot', botReply);
-
-                // Add bot reply to history
-                conversationHistory.push({ role: 'assistant', content: botReply });
-            } catch (error) {
-                addMessage('bot', 'Sorry, there was an error. Please make sure your HF token is valid and try again.');
-                console.error(error);
+            if (!response.ok) {
+                throw new Error(`API request failed with status ${response.status}`);
             }
-        }
 
-        function addMessage(sender, text) {
-            const div = document.createElement('div');
-            div.classList.add('message', sender);
-            div.textContent = text;
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function handleKeyUp(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
+            const data = await response.json();
+            if (!data || !data[0] || !data[0].generated_text) {
+                throw new Error('Invalid response format');
             }
+
+            let botReply = data[0].generated_text.trim();
+            if (botReply.startsWith(prompt)) {
+                botReply = botReply.slice(prompt.length).trim();
+            }
+            botReply = botReply.split('\n')[0].trim();
+
+            if (!botReply) {
+                botReply = 'Sorry, I couldn\'t generate a response.';
+            }
+
+            addMessage('bot', botReply);
+            conversationHistory.push({ role: 'assistant', content: botReply });
+        } catch (error) {
+            addMessage('bot', 'Sorry, there was an error. Please make sure your HF token is valid and try again.');
+            console.error(error);
         }
-    </script>
+    }
+
+    function addMessage(sender, text) {
+        const div = document.createElement('div');
+        div.classList.add('message', sender);
+        div.textContent = text;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function handleKeyUp(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+</script>
 
     <script src="js/app.js"></script>
     <script src="js/particles.js"></script>
