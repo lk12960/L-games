@@ -180,7 +180,7 @@
             if (!win) {
                 return false;
             }
-            return win;
+            return true;
         } else {
             window.location.href = url;
             return true;
@@ -199,11 +199,12 @@
             };
             const selected = presets[preset];
             if (selected) {
-                document.title = selected.title;
-                let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+                const doc = inIframe() ? window.parent.document : document;
+                doc.title = selected.title;
+                let link = doc.querySelector("link[rel*='icon']") || doc.createElement('link');
                 link.rel = 'icon';
-                link.href = selected.icon || 'data:,'; // Empty for blank
-                document.head.appendChild(link);
+                link.href = selected.icon || 'data:,';
+                doc.head.appendChild(link);
             }
         }
     }
@@ -213,8 +214,8 @@
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         if (aboutBlankEnabled && !inIframe() && !urlParams.get("disable")) {
-            const win = cloak(window.location.href, true);
-            if (win) {
+            const success = cloak(window.location.href, true);
+            if (success) {
                 window.location.replace("https://google.com");
             }
         }
@@ -227,7 +228,8 @@
         const panicUrl = localStorage.getItem('panicUrl') || 'https://google.com';
         document.addEventListener('keydown', (e) => {
             if (e.code === panicKey) {
-                window.location.href = panicUrl;
+                const loc = inIframe() ? window.parent.location : window.location;
+                loc.href = panicUrl;
             }
         });
     });

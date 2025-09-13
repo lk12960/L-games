@@ -2,33 +2,33 @@
 <html lang="en">
 <head>
     <script>
-fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.html')
-  .then(response => response.text())
-  .then(data => {
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.html', false);
+xhr.send();
+if (xhr.status === 200) {
+    const data = xhr.responseText;
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = data;
-
     // Append styles and DIVs
     Array.from(tempDiv.children).forEach(el => {
       if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
         document.body.appendChild(el);
       }
     });
-
-    // Re-run all <script> tags
+    // Run scripts
     const scripts = tempDiv.querySelectorAll('script');
     scripts.forEach(oldScript => {
       const newScript = document.createElement('script');
       if (oldScript.src) {
         newScript.src = oldScript.src;
-        newScript.async = oldScript.async;
       } else {
         newScript.textContent = oldScript.textContent;
       }
       document.body.appendChild(newScript);
     });
-  })
-  .catch(err => console.error('Error loading external content:', err));
+} else {
+    console.error('Error loading external content:', xhr.status);
+}
 </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -113,10 +113,29 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             font-size: 1rem;
             line-height: 1.5;
         }
+
+        .favicon-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 0px;
+        }
+
+        .favicon-container img {
+            width: 150px;
+            height: auto;
+            margin-top: 40px;
+        }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
+
+    <div class="favicon-container">
+        <img src="logo.png" alt="Logo Image">
+    </div>
 
     <h1>Settings</h1>
 
