@@ -68,31 +68,22 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             z-index: -1;
         }
 
-        .button-container {
+        .settings-button {
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             left: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 1000;
-        }
-
-        .button-container button {
-            background-color: transparent;
-            border: 3px solid white;
+            background-color: #333;
             color: white;
-            font-size: 0.9rem;
-            font-weight: bold;
-            padding: 8px 16px;
-            border-radius: 50px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .button-container button:hover {
-            background-color: white;
-            color: black;
+            font-size: 24px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         h1 {
@@ -343,10 +334,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
 
     <h1>Unblocked Games</h1>
 
-    <div class="button-container">
-        <button id="tabCloakButton" onclick="toggleCloak()">Enable Tab Cloak</button>
-        <button onclick="openGameRequest()">Game Request</button>
-    </div>
+    <div class="settings-button" onclick="cloak('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/settings.html', true)">⚙️</div>
 
     <div class="search-container">
         <input type="text" id="game-search" placeholder="Search for games..." onkeyup="filterGames()">
@@ -404,133 +392,6 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // ABC class for cloaking
-        class ABC {
-            constructor(config = {}) {
-                this.type = config.type || "blank";
-                this.url = config.url || "about:blank";
-            }
-            setType(type) {
-                if (!type) return;
-                this.type = type;
-            }
-            setUrl(url) {
-                if (!url) return;
-                this.url = url;
-            }
-            getCode() {
-                return `<iframe style="height:100%; width: 100%; border: none; position: fixed; top: 0; right: 0; left: 0; bottom: 0; border: none" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation" src="${this.url}"></iframe>`;
-            }
-            open() {
-                if (this.type === "blank") {
-                    try {
-                        var page = window.open('about:blank');
-                        if (!page) {
-                            throw new Error('Popup blocked');
-                        }
-                        page.document.body.innerHTML = this.getCode();
-                        return page;
-                    } catch (e) {
-                        alert("Fatal Error:\n\nNAME: ERR_POPUP_BLOCKED\nDESCRIPTION: Allow pop-ups to enable tab cloaking and try again.");
-                        return false;
-                    }
-                }
-            }
-        }
-
-        // Cookie and cloak handling
-        function getCookie(cname) {
-            let name = cname + "=";
-            let decodedCookie = decodeURIComponent(document.cookie);
-            let ca = decodedCookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) === 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-
-        function inIframe() {
-            try {
-                return window.self !== window.top;
-            } catch (e) {
-                return true;
-            }
-        }
-
-        function cloak(url, absolute = false) {
-            url = absolute ? url : window.location.href.replace(/\/$/, "") + url;
-            if (window.doCloak) {
-                var page = new ABC({
-                    type: "blank",
-                    url: url
-                });
-                page.setType("blank");
-                page.setUrl(url);
-                var win = page.open();
-                if (!win) {
-                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
-                    window.doCloak = false;
-                    return false;
-                }
-                return true;
-            } else {
-                window.location.href = url;
-            }
-        }
-
-        function toggleCloak() {
-            if (getCookie("cloak")) {
-                document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
-                window.doCloak = false;
-                document.getElementById('tabCloakButton').textContent = 'Enable Tab Cloak';
-                window.location.reload();
-            } else {
-                document.cookie = "cloak=1; expires=Thu, 18 Dec 2099 12:00:00 UTC";
-                window.doCloak = true;
-                cloak(window.location.href, true);
-            }
-        }
-
-        // Initialize cloak state
-        window.addEventListener('load', () => {
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            if (!inIframe() && getCookie("cloak") && !urlParams.get("disable")) {
-                window.doCloak = true;
-                if (cloak(window.location.href, true)) {
-                    window.location.replace("https://google.com");
-                }
-            } else {
-                if (!inIframe()) {
-                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
-                    window.doCloak = false;
-                } else {
-                    window.doCloak = true;
-                }
-                document.getElementById('tabCloakButton').textContent = getCookie('cloak') ? 'Disable Tab Cloak' : 'Enable Tab Cloak';
-            }
-        });
-
-        // Intercept game card clicks
-        document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
-                const url = card.getAttribute('href');
-                const gameName = card.getAttribute('data-name');
-                cloak(url, true);
-                gtag("event", "click_game", {
-                    event_category: "game",
-                    event_label: gameName,
-                });
-            });
-        });
-
         // Other existing scripts
         particlesJS.load('particles-js', 'particles.json', function () {
             console.log('particles.json loaded...');
@@ -549,9 +410,19 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             });
         }
 
-        function openGameRequest() {
-            cloak('https://forms.gle/ZDg1L8915QNXnHFj6', true);
-        }
+        // Intercept game card clicks
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = card.getAttribute('href');
+                const gameName = card.getAttribute('data-name');
+                cloak(url, true);
+                gtag("event", "click_game", {
+                    event_category: "game",
+                    event_label: gameName,
+                });
+            });
+        });
 
 // New chat widget scripts
     const chatButton = document.getElementById('chatButton');

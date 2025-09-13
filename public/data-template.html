@@ -129,6 +129,109 @@
       gtag('config', 'G-ELC1SXB08M');
     } catch(e){ console.error("GA error", e); }
 
+    // --- Cloak and Settings Logic ---
+    class ABC {
+        constructor(config = {}) {
+            this.type = config.type || "blank";
+            this.url = config.url || "about:blank";
+        }
+        setType(type) {
+            if (!type) return;
+            this.type = type;
+        }
+        setUrl(url) {
+            if (!url) return;
+            this.url = url;
+        }
+        getCode() {
+            return `<iframe style="height:100%; width: 100%; border: none; position: fixed; top: 0; right: 0; left: 0; bottom: 0; border: none" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation" src="${this.url}"></iframe>`;
+        }
+        open() {
+            if (this.type === "blank") {
+                try {
+                    var page = window.open('about:blank');
+                    if (!page) {
+                        throw new Error('Popup blocked');
+                    }
+                    page.document.body.innerHTML = this.getCode();
+                    return page;
+                } catch (e) {
+                    alert("Fatal Error:\n\nNAME: ERR_POPUP_BLOCKED\nDESCRIPTION: Allow pop-ups to enable tab cloaking and try again.");
+                    return false;
+                }
+            }
+        }
+    }
+
+    function inIframe() {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+
+    window.cloak = function(url, absolute = false) {
+        url = absolute ? url : window.location.origin + url;
+        const enabled = localStorage.getItem('aboutBlankEnabled') !== 'false';
+        if (enabled) {
+            const page = new ABC({ url });
+            const win = page.open();
+            if (!win) {
+                return false;
+            }
+            return win;
+        } else {
+            window.location.href = url;
+            return true;
+        }
+    };
+
+    function applyPageCloak() {
+        const preset = localStorage.getItem('cloakPreset') || 'none';
+        if (preset !== 'none') {
+            const presets = {
+                google: { title: 'Google', icon: 'https://www.google.com/favicon.ico' },
+                classroom: { title: 'Google Classroom', icon: 'https://classroom.google.com/favicon.ico' },
+                drive: { title: 'My Drive - Google Drive', icon: 'https://drive.google.com/favicon.ico' },
+                blank: { title: ' ', icon: '' }
+                // Add more presets here as needed
+            };
+            const selected = presets[preset];
+            if (selected) {
+                document.title = selected.title;
+                let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+                link.rel = 'icon';
+                link.href = selected.icon || 'data:,'; // Empty for blank
+                document.head.appendChild(link);
+            }
+        }
+    }
+
+    window.addEventListener('load', () => {
+        const aboutBlankEnabled = localStorage.getItem('aboutBlankEnabled') !== 'false'; // Default true
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        if (aboutBlankEnabled && !inIframe() && !urlParams.get("disable")) {
+            const win = cloak(window.location.href, true);
+            if (win) {
+                window.location.replace("https://google.com");
+            }
+        }
+
+        // Apply page cloak
+        applyPageCloak();
+
+        // Apply panic key
+        const panicKey = localStorage.getItem('panicKey') || 'Escape';
+        const panicUrl = localStorage.getItem('panicUrl') || 'https://google.com';
+        document.addEventListener('keydown', (e) => {
+            if (e.code === panicKey) {
+                window.location.href = panicUrl;
+            }
+        });
+    });
+
   } catch(e) {
     console.error("Fatal script error", e);
   }
