@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.html', false);
+xhr.send();
+if (xhr.status === 200) {
+    const data = xhr.responseText;
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = data;
+    // Append styles and DIVs
+    Array.from(tempDiv.children).forEach(el => {
+      if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+        document.body.appendChild(el);
+      }
+    });
+    // Run scripts
+    const scripts = tempDiv.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+      } else {
+        newScript.textContent = oldScript.textContent;
+      }
+      document.body.appendChild(newScript);
+    });
+} else {
+    console.error('Error loading external content:', xhr.status);
+}
+</script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #282828;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            height: 100%;
+            padding: 20px;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            font-style: italic;
+            margin-top: 5vh;
+            margin-bottom: 30px;
+        }
+
+        .settings-section {
+            background-color: rgba(68, 68, 68, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .settings-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .settings-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .settings-section input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .settings-section input[type="text"],
+        .settings-section select {
+            padding: 8px;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 2px solid #888888;
+            background-color: rgba(51, 51, 51, 0.4);
+            color: #d0d0d0;
+            outline: none;
+        }
+
+        .info-box {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .favicon-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 0px;
+        }
+
+        .favicon-container img {
+            width: 150px;
+            height: auto;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="favicon-container">
+        <img src="logo.png" alt="Logo Image">
+    </div>
+
+    <h1>Settings</h1>
+
+    <div class="settings-section">
+        <h2>About:Blank Toggle</h2>
+        <label>
+            <input type="checkbox" id="aboutBlankToggle">
+            Enable About:Blank (reopens pages in about:blank for cloaking)
+        </label>
+    </div>
+
+    <div class="settings-section">
+        <h2>Panic Key Settings</h2>
+        <label>
+            Panic Key (e.g., "Escape", "KeyA"):
+            <input type="text" id="panicKeyInput">
+        </label>
+        <label>
+            Redirect URL:
+            <input type="text" id="panicUrlInput">
+        </label>
+    </div>
+
+    <div class="settings-section">
+        <h2>Page Cloak Settings</h2>
+        <label>
+            Select Preset:
+            <select id="cloakPresetSelect">
+                <option value="none">None</option>
+                <option value="google">Google</option>
+                <option value="classroom">Google Classroom</option>
+                <option value="drive">Google Drive</option>
+                <option value="blank">Blank</option>
+                <!-- Add more presets here as needed -->
+            </select>
+        </label>
+    </div>
+
+    <div class="settings-section">
+        <h2>Information</h2>
+        <div class="info-box">
+            Version: 1.0<br>
+            Last Update: September 13, 2025
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS.load('particles-js', 'particles.json', function () {
+            console.log('particles.json loaded...');
+        });
+
+        // Load and save settings
+        document.addEventListener('DOMContentLoaded', () => {
+            const aboutBlankToggle = document.getElementById('aboutBlankToggle');
+            const panicKeyInput = document.getElementById('panicKeyInput');
+            const panicUrlInput = document.getElementById('panicUrlInput');
+            const cloakPresetSelect = document.getElementById('cloakPresetSelect');
+
+            // Load values
+            aboutBlankToggle.checked = localStorage.getItem('aboutBlankEnabled') !== 'false';
+            panicKeyInput.value = localStorage.getItem('panicKey') || 'Escape';
+            panicUrlInput.value = localStorage.getItem('panicUrl') || 'https://google.com';
+            cloakPresetSelect.value = localStorage.getItem('cloakPreset') || 'none';
+
+            // Save on change
+            aboutBlankToggle.addEventListener('change', () => {
+                localStorage.setItem('aboutBlankEnabled', aboutBlankToggle.checked);
+            });
+
+            panicKeyInput.addEventListener('input', () => {
+                localStorage.setItem('panicKey', panicKeyInput.value);
+            });
+
+            panicUrlInput.addEventListener('input', () => {
+                localStorage.setItem('panicUrl', panicUrlInput.value);
+            });
+
+            cloakPresetSelect.addEventListener('change', () => {
+                localStorage.setItem('cloakPreset', cloakPresetSelect.value);
+                // Apply immediately on settings page for preview
+                applyPageCloak();
+            });
+
+            // Apply page cloak on load for settings page
+            applyPageCloak();
+        });
+    </script>
+</body>
+</html>
