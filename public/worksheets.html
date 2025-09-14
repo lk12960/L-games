@@ -362,7 +362,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         <option value="">Default</option>
         <option value="docs">Google Docs</option>
         <option value="canvas">NLSD - Canvas</option>
-        <option value="drive">Google Drive</option>
+        <option value="smartpass">Smart Pass</option>
         <option value="clever">Clever</option>
       </select>
     </div>
@@ -417,7 +417,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
   const disguises = {
     "docs": { title: "Untitled document - Google Docs", icon: "https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico" },
     "canvas": { title: "Home", icon: "https://s3-us-west-2.amazonaws.com/scorestream-team-profile-pictures/14668/20220922124817_817_mascotOrig.png" },
-    "drive": { title: "My Drive - Google Drive", icon: "https://ssl.gstatic.com/images/branding/product/2x/drive_2020q4_32dp.png" },
+    "smartpass": { title: "Smartpass", icon: "https://assets.clever.com/resource-icons/apps/5fd279ea0ab69b00013f8036/icon_60043f6.png" },
     "clever": { title: "Clever | Portal", icon: "https://resources.finalsite.net/images/f_auto,q_auto/v1689877141/mooreschoolscom/emadd6nvplrnh1vsswjf/Clever-Logo.jpg" }
   };
 
@@ -522,7 +522,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/kitchen-gun-game/index.html" class="game-card" data-name="Kitchen Gun Game"><img src="./icons/kitchen-gun-game.webp" alt="Kitchen Gun Game"><b>Kitchen Gun Game</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/pong/index.html" class="game-card" data-name="Pong"><img src="./icons/pong.webp" alt="Pong"><b>Pong</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/slope/index.html" class="game-card" data-name="Slope"><img src="./icons/slope.webp" alt="Slope"><b>Slope</b></a>
-        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/flappybird/index.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/404.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
         <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
     </div>
@@ -625,7 +625,6 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             if (getCookie("cloak")) {
                 document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
                 window.doCloak = false;
-                document.getElementById('tabCloakButton').textContent = 'Enable Tab Cloak';
                 window.location.reload();
             } else {
                 document.cookie = "cloak=1; expires=Thu, 18 Dec 2099 12:00:00 UTC";
@@ -650,7 +649,6 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
                 } else {
                     window.doCloak = true;
                 }
-                document.getElementById('tabCloakSettingsBtn').textContent = getCookie('cloak') ? 'Disable Tab Cloak' : 'Enable Tab Cloak';
             }
         });
 
@@ -684,10 +682,6 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
                     game.style.display = 'none';
                 }
             });
-        }
-
-        function openGameRequest() {
-            cloak('https://forms.gle/ZDg1L8915QNXnHFj6', true);
         }
 
         // New chat widget scripts
