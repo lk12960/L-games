@@ -344,8 +344,145 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
     <h1>Unblocked Games</h1>
 
     <div class="button-container">
-        <button id="tabCloakButton" onclick="toggleCloak()">Enable Tab Cloak</button>
-        <button onclick="openGameRequest()">Game Request</button>
+        <!-- Replace the old Enable Tab Cloak button with this -->
+<button id="tabCloakSettingsBtn">Tab Cloak Settings</button>
+
+<!-- New Tab Cloak Settings Popup -->
+<div id="cloak-popup" class="popup-overlay" style="display:none;" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="popup-content">
+    <h2>Tab Cloak Settings</h2>
+    <div style="text-align:left; margin-top:10px;">
+      <label style="display:flex; align-items:center; gap:8px; margin-bottom:15px;">
+        <input type="checkbox" id="cloakCheckbox">
+        Enable About:Blank Cloaking
+      </label>
+
+      <label for="disguiseSelect"><b>Tab Disguises:</b></label><br>
+      <select id="disguiseSelect" style="margin-top:8px; width:100%; padding:6px;">
+        <option value="">Default</option>
+        <option value="docs">Google Docs</option>
+        <option value="classroom">Google Classroom</option>
+        <option value="drive">Google Drive</option>
+        <option value="schoology">Schoology</option>
+      </select>
+    </div>
+
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:20px;">
+      <button onclick="closeCloakPopup()" class="close-btn">Close</button>
+      <button onclick="saveCloakSettings()" class="close-btn">Save</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Reuse your existing popup style */
+  .popup-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+  }
+  .popup-content {
+    background: #444;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    width: 400px;
+    padding: 20px;
+    box-shadow: 0px 6px 12px rgba(0,0,0,0.3);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  .close-btn {
+    padding: 8px 20px;
+    background: #444;
+    border: 2px solid white;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  .close-btn:hover {
+    background: white;
+    color: #444;
+  }
+</style>
+
+<script>
+  // Preset disguises
+  const disguises = {
+    "docs": { title: "Untitled document - Google Docs", icon: "https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico" },
+    "classroom": { title: "Classes", icon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png" },
+    "drive": { title: "My Drive - Google Drive", icon: "https://ssl.gstatic.com/images/branding/product/2x/drive_2020q4_32dp.png" },
+    "schoology": { title: "Home | Schoology", icon: "https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/favicon.ico" }
+  };
+
+  const popup = document.getElementById("cloak-popup");
+  const cloakCheckbox = document.getElementById("cloakCheckbox");
+  const disguiseSelect = document.getElementById("disguiseSelect");
+
+  // Open settings popup
+  document.getElementById("tabCloakSettingsBtn").addEventListener("click", () => {
+    loadCloakSettings();
+    popup.style.display = "flex";
+  });
+
+  function closeCloakPopup() {
+    popup.style.display = "none";
+  }
+
+  function saveCloakSettings() {
+    // Save cloak state
+    const cloakEnabled = cloakCheckbox.checked;
+    if (cloakEnabled) {
+      document.cookie = "cloak=1; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+      window.doCloak = true;
+    } else {
+      document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+      window.doCloak = false;
+    }
+
+    // Save disguise
+    const disguise = disguiseSelect.value;
+    localStorage.setItem("tab_disguise", disguise);
+
+    applyDisguise(disguise);
+    closeCloakPopup();
+  }
+
+  function loadCloakSettings() {
+    // Load cloak state
+    cloakCheckbox.checked = !!getCookie("cloak");
+
+    // Load disguise
+    const disguise = localStorage.getItem("tab_disguise") || "";
+    disguiseSelect.value = disguise;
+  }
+
+  function applyDisguise(disguiseKey) {
+    const disguise = disguises[disguiseKey];
+    const link = document.querySelector("link[rel~='icon']");
+    if (disguise) {
+      document.title = disguise.title;
+      if (link) link.href = disguise.icon;
+    } else {
+      document.title = "Unblocked Games";
+      if (link) link.href = "logo.png";
+    }
+  }
+
+  // Apply disguise on page load
+  window.addEventListener("load", () => {
+    const savedDisguise = localStorage.getItem("tab_disguise");
+    if (savedDisguise) {
+      applyDisguise(savedDisguise);
+    }
+  });
+</script>
     </div>
 
     <div class="search-container">

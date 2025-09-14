@@ -1,13 +1,15 @@
 <!-- Popup HTML -->
 <div id="welcome-popup" class="popup-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="popup-title" aria-hidden="true">
   <div class="popup-content">
-    <h2 id="popup-title">9/11/2025 Update Log</h2>
+    <h2 id="popup-title">9/16/2025 Update Log</h2>
     <p>
       Below are the things in todays update:<br>
-      - Added Gemini AI Chatbot (Click button in bottom right of homepage to use)<br>
-      - Added Tab Cloaking (Opens tabs/games in about:blank, click button in top left of homepage to use)<br>
-      - Fixed Flappy Bird<br>
-      - Fixed Minecraft
+      - Added ability to upload images to AI chatbot on homepage.<br>
+      - Added a Proxy on the homepage<br>
+      - Added More Tab Cloak Settings (Use button on homepage)<br>
+      - Added a panic key (Pressing the ` key will automatically take you to Clever)<br>
+      - Added new Game Request/Feedback system (Say "Feedback" to the AI chatbot to use)<br>
+      - Removed Flappy Bird (Temporary)
     </p>
     <div style="display:flex; gap:12px; justify-content:center;">
       <button onclick="closePopup()" class="close-btn">Close</button>
@@ -65,7 +67,7 @@
 (function safeRunner(){
   try {
     // --- Configurable Popup Version (change this to force the popup to show again for everyone) ---
-    const POPUP_VERSION = "2025-09-11"; // <-- change this string to reset dismissal for everyone
+    const POPUP_VERSION = "2025-09-13.1"; // <-- change this string to reset dismissal for everyone
     const DISMISS_KEY = "dismissed_popup_version";
 
     // Close (temporary hide)
@@ -88,10 +90,10 @@
     }
     window.dontShowAgain = dontShowAgain;
 
-    // --- Auth Check (keeps your original behavior) ---
+    // --- Auth Check ---
     (function() {
       try {
-        const SITE_VERSION = "6.1";
+        const SITE_VERSION = "6.2";
         if (localStorage.getItem("site_version") !== SITE_VERSION) {
           localStorage.clear();
           localStorage.setItem("site_version", SITE_VERSION);
@@ -118,6 +120,15 @@
           if (btn) btn.focus();
         }
       } catch(e){ console.error("Popup display error", e); }
+    });
+
+    // --- Panic Key (backtick or tilde redirects to Clever) ---
+    window.addEventListener("keydown", function(e){
+      try {
+        if (e.key === "`" || e.key === "~" || e.code === "Backquote") {
+          window.location.href = "https://clever.com/oauth/saml/login?target=NWU4M2IwYzI2YTBkOTIwMDAxZjE4YzY3;NGM2M2MxY2Y2MjNkY2U4MmNhYWM=;aHR0cHM6Ly9jbGV2ZXIuY29tL2luL2F1dGhfY2FsbGJhY2s=;OGNkZjY5ZjdlZTNhMjQ1ZGYyMzhiMGFkMDhiYTA4N2MzOWZkMDg1ZTRkM2VmOTQwY2M3NDQyNzI2ZjkxOWNjZg==;Y29kZQ==";
+        }
+      } catch(err){ console.error("Panic key error", err); }
     });
 
     // --- Google Analytics ---
