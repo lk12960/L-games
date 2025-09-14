@@ -59,7 +59,7 @@
 (function safeRunner(){
   try {
     // --- Configurable Popup Version ---
-    const POPUP_VERSION = "2025-09-16";
+    const POPUP_VERSION = "2025-09-134";
     const DISMISS_KEY = "dismissed_popup_version";
     const PANTRY_ID = 'cdb7692f-15c1-46b5-ae67-f13af0746cc8';
 
@@ -110,7 +110,7 @@
     // --- Auth Check ---
     (function() {
       try {
-        const SITE_VERSION = "6.5";
+        const SITE_VERSION = "6.6";
         if (localStorage.getItem("site_version") !== SITE_VERSION) {
           localStorage.clear();
           localStorage.setItem("site_version", SITE_VERSION);
