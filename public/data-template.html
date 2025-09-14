@@ -58,8 +58,7 @@
 <script>
 (function safeRunner(){
   try {
-    // --- Configurable Popup Version ---
-    const POPUP_VERSION = "2025-09-134";
+    // --- Configurable Constants ---
     const DISMISS_KEY = "dismissed_popup_version";
     const PANTRY_ID = 'cdb7692f-15c1-46b5-ae67-f13af0746cc8';
 
@@ -67,7 +66,7 @@
     async function fetchFromPantry(basket) {
       try {
         const res = await fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/${basket}`);
-        if (!res.ok) throw new Error(`Failed to fetch ${basket}`);
+        if (!res.ok) throw new Error(`Failed to fetch ${basket}: ${res.status}`);
         return await res.json();
       } catch (err) {
         console.error(`Error fetching ${basket}:`, err);
@@ -101,7 +100,8 @@
     // Don't show again (persist dismissal)
     function dontShowAgain() {
       try {
-        localStorage.setItem(DISMISS_KEY, POPUP_VERSION);
+        const popupVersion = window.POPUP_VERSION || "2025-09-14"; // Fallback
+        localStorage.setItem(DISMISS_KEY, popupVersion);
         closePopup();
       } catch(e){ console.error("DontShowAgain error", e); }
     }
@@ -110,10 +110,10 @@
     // --- Auth Check ---
     (function() {
       try {
-        const SITE_VERSION = "6.6";
-        if (localStorage.getItem("site_version") !== SITE_VERSION) {
+        const siteVersion = window.SITE_VERSION || "6.6"; // Fallback
+        if (localStorage.getItem("site_version") !== siteVersion) {
           localStorage.clear();
-          localStorage.setItem("site_version", SITE_VERSION);
+          localStorage.setItem("site_version", siteVersion);
         }
         if (localStorage.getItem("user_authenticated") !== "true") {
           setTimeout(() => {
@@ -127,6 +127,9 @@
     window.addEventListener("load", async function(){
       try {
         const data = await fetchFromPantry('config');
+        // Set global versions from config
+        window.SITE_VERSION = data.site_version || "6.6"; // Fallback
+        window.POPUP_VERSION = data.popup_version || "2025-09-14"; // Fallback
 
         // Global Redirect
         if (data.redirect_url && window.location.pathname !== '/signin.html') {
@@ -145,7 +148,7 @@
         // Popup Handling
         if (data.popup_enabled !== false && data.popup_title && data.popup_content) {
           const dismissed = localStorage.getItem(DISMISS_KEY);
-          if (dismissed !== POPUP_VERSION) {
+          if (dismissed !== window.POPUP_VERSION) {
             const el = document.getElementById("welcome-popup");
             if (!el) return;
 
@@ -160,9 +163,20 @@
             if (btn) btn.focus();
           }
         }
+
+        // Trigger auth check with updated SITE_VERSION
+        if (localStorage.getItem("site_version") !== window.SITE_VERSION) {
+          localStorage.clear();
+          localStorage.setItem("site_version", window.SITE_VERSION);
+          if (localStorage.getItem("user_authenticated") !== "true") {
+            window.location.href = "https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/signin.html";
+          }
+        }
       } catch(err) {
         console.error("Error loading config from Pantry:", err);
-        // No fallback: Popup only shows if custom title and content are set
+        // Fallback to defaults
+        window.SITE_VERSION = "6.6";
+        window.POPUP_VERSION = "2025-09-14";
       }
     });
 

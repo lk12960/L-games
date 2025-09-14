@@ -597,37 +597,43 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         </div>
     </div>
 
-    <!-- Admin Panel Popup -->
-    <div id="admin-popup" class="admin-popup-overlay">
-        <div class="admin-popup-content">
-            <h2>Admin Panel</h2>
-            <label for="whitelist-textarea">Whitelisted Emails (one per line):</label>
-            <textarea id="whitelist-textarea"></textarea>
-            
-            <label for="blacklist-textarea">Blocked Emails for Chatbot (one per line):</label>
-            <textarea id="blacklist-textarea"></textarea>
-            
-            <label for="redirect-url">Global Redirect URL (leave blank for no redirect):</label>
-            <input type="text" id="redirect-url">
-            
-            <label for="disable-chatbot">Disable Chatbot for Everyone:</label>
-            <input type="checkbox" id="disable-chatbot">
-            
-            <label for="disable-popup">Disable Welcome Popup:</label>
-            <input type="checkbox" id="disable-popup">
-            
-            <label for="popup-title-input">Custom Welcome Popup Title (plain text):</label>
-            <input type="text" id="popup-title-input">
-            
-            <label for="popup-content-textarea">Custom Welcome Popup Content (plain text, use Enter for line breaks):</label>
-            <textarea id="popup-content-textarea"></textarea>
-            
-            <div class="btn-container">
-                <button class="admin-btn" onclick="closeAdminPopup()">Close</button>
-                <button class="admin-btn" onclick="saveAdminChanges()">Save Changes</button>
-            </div>
-        </div>
+  <!-- Admin Panel Popup -->
+  <div id="admin-popup" class="admin-popup-overlay">
+    <div class="admin-popup-content">
+      <h2>Admin Panel</h2>
+      <label for="whitelist-textarea">Whitelisted Emails (one per line):</label>
+      <textarea id="whitelist-textarea"></textarea>
+      
+      <label for="blacklist-textarea">Blocked Emails for Chatbot (one per line):</label>
+      <textarea id="blacklist-textarea"></textarea>
+      
+      <label for="redirect-url">Global Redirect URL (leave blank for no redirect):</label>
+      <input type="text" id="redirect-url">
+      
+      <label for="disable-chatbot">Disable Chatbot for Everyone:</label>
+      <input type="checkbox" id="disable-chatbot">
+      
+      <label for="disable-popup">Disable Welcome Popup:</label>
+      <input type="checkbox" id="disable-popup">
+      
+      <label for="popup-title-input">Custom Welcome Popup Title (plain text):</label>
+      <input type="text" id="popup-title-input">
+      
+      <label for="popup-content-textarea">Custom Welcome Popup Content (plain text, use Enter for line breaks):</label>
+      <textarea id="popup-content-textarea"></textarea>
+      
+      <label for="site-version-input">Site Version (e.g., 6.6):</label>
+      <input type="text" id="site-version-input">
+      
+      <label for="popup-version-input">Popup Version (e.g., 2025-09-14):</label>
+      <input type="text" id="popup-version-input">
+      
+      <div class="btn-container">
+        <button class="admin-btn" onclick="closeAdminPopup()">Close</button>
+        <button class="admin-btn" onclick="saveAdminChanges()">Save Changes</button>
+      </div>
     </div>
+  </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
@@ -981,87 +987,93 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             }
         }
 
-        // Admin Panel Functions
-        async function openAdminPanel() {
-            const userEmail = localStorage.getItem('user_email');
-            if (userEmail !== 'lking12960@gmail.com') {
-                alert('Unauthorized: Only lking12960@gmail.com can access the admin panel.');
-                return;
-            }
+    // Admin Panel Functions
+    async function openAdminPanel() {
+      const userEmail = localStorage.getItem('user_email');
+      if (userEmail !== 'lking12960@gmail.com') {
+        alert('Unauthorized: Only lking12960@gmail.com can access the admin panel.');
+        return;
+      }
 
-            const adminPopup = document.getElementById('admin-popup');
-            adminPopup.style.display = 'flex';
+      const adminPopup = document.getElementById('admin-popup');
+      adminPopup.style.display = 'flex';
 
-            try {
-                const whitelistData = await fetchFromPantry('whitelist');
-                document.getElementById('whitelist-textarea').value = (whitelistData.whitelisted_emails || []).join('\n');
+      try {
+        const whitelistData = await fetchFromPantry('whitelist');
+        document.getElementById('whitelist-textarea').value = (whitelistData.whitelisted_emails || []).join('\n');
 
-                const blacklistData = await fetchFromPantry('blacklist');
-                document.getElementById('blacklist-textarea').value = (blacklistData.blacklisted_emails || []).join('\n');
+        const blacklistData = await fetchFromPantry('blacklist');
+        document.getElementById('blacklist-textarea').value = (blacklistData.blacklisted_emails || []).join('\n');
 
-                const configData = await fetchFromPantry('config');
-                document.getElementById('redirect-url').value = configData.redirect_url || '';
-                document.getElementById('disable-chatbot').checked = configData.disable_chatbot || false;
-                document.getElementById('disable-popup').checked = !configData.popup_enabled || false;
-                document.getElementById('popup-title-input').value = configData.popup_title || '';
-                document.getElementById('popup-content-textarea').value = configData.popup_content || '';
-            } catch (err) {
-                console.error('Error loading admin data:', err);
-                alert('Error loading admin data. Check console.');
-            }
-        }
+        const configData = await fetchFromPantry('config');
+        document.getElementById('redirect-url').value = configData.redirect_url || '';
+        document.getElementById('disable-chatbot').checked = configData.disable_chatbot || false;
+        document.getElementById('disable-popup').checked = !configData.popup_enabled || false;
+        document.getElementById('popup-title-input').value = configData.popup_title || '';
+        document.getElementById('popup-content-textarea').value = configData.popup_content || '';
+        document.getElementById('site-version-input').value = configData.site_version || '6.6';
+        document.getElementById('popup-version-input').value = configData.popup_version || '2025-09-14';
+      } catch (err) {
+        console.error('Error loading admin data:', err);
+        alert('Error loading admin data. Check console.');
+      }
+    }
 
-        function closeAdminPopup() {
-            document.getElementById('admin-popup').style.display = 'none';
-        }
+    function closeAdminPopup() {
+      document.getElementById('admin-popup').style.display = 'none';
+    }
 
-        async function saveAdminChanges() {
-            const userEmail = localStorage.getItem('user_email');
-            if (userEmail !== 'lking12960@gmail.com') {
-                alert('Unauthorized: Only lking12960@gmail.com can save changes.');
-                return;
-            }
+    async function saveAdminChanges() {
+      const userEmail = localStorage.getItem('user_email');
+      if (userEmail !== 'lking12960@gmail.com') {
+        alert('Unauthorized: Only lking12960@gmail.com can save changes.');
+        return;
+      }
 
-            const newWhitelist = document.getElementById('whitelist-textarea').value.split('\n').map(e => e.trim()).filter(e => e);
-            const newBlacklist = document.getElementById('blacklist-textarea').value.split('\n').map(e => e.trim()).filter(e => e);
-            const newRedirect = document.getElementById('redirect-url').value;
-            const disableChatbot = document.getElementById('disable-chatbot').checked;
-            const disablePopup = document.getElementById('disable-popup').checked;
-            const newPopupTitle = document.getElementById('popup-title-input').value;
-            const newPopupContent = document.getElementById('popup-content-textarea').value;
+      const newWhitelist = document.getElementById('whitelist-textarea').value.split('\n').map(e => e.trim()).filter(e => e);
+      const newBlacklist = document.getElementById('blacklist-textarea').value.split('\n').map(e => e.trim()).filter(e => e);
+      const newRedirect = document.getElementById('redirect-url').value;
+      const disableChatbot = document.getElementById('disable-chatbot').checked;
+      const disablePopup = document.getElementById('disable-popup').checked;
+      const newPopupTitle = document.getElementById('popup-title-input').value;
+      const newPopupContent = document.getElementById('popup-content-textarea').value;
+      const newSiteVersion = document.getElementById('site-version-input').value;
+      const newPopupVersion = document.getElementById('popup-version-input').value;
 
-            try {
-                await Promise.all([
-                    fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/whitelist`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ whitelisted_emails: newWhitelist })
-                    }).then(res => { if (!res.ok) throw new Error('Failed to update whitelist'); }),
-                    fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/blacklist`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ blacklisted_emails: newBlacklist })
-                    }).then(res => { if (!res.ok) throw new Error('Failed to update blacklist'); }),
-                    fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/config`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            redirect_url: newRedirect,
-                            disable_chatbot: disableChatbot,
-                            popup_enabled: !disablePopup,
-                            popup_title: newPopupTitle,
-                            popup_content: newPopupContent
-                        })
-                    }).then(res => { if (!res.ok) throw new Error('Failed to update config'); })
-                ]);
+      try {
+        await Promise.all([
+          fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/whitelist`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ whitelisted_emails: newWhitelist })
+          }).then(res => { if (!res.ok) throw new Error('Failed to update whitelist'); }),
+          fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/blacklist`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ blacklisted_emails: newBlacklist })
+          }).then(res => { if (!res.ok) throw new Error('Failed to update blacklist'); }),
+          fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/config`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              redirect_url: newRedirect,
+              disable_chatbot: disableChatbot,
+              popup_enabled: !disablePopup,
+              popup_title: newPopupTitle,
+              popup_content: newPopupContent,
+              site_version: newSiteVersion,
+              popup_version: newPopupVersion
+            })
+          }).then(res => { if (!res.ok) throw new Error('Failed to update config'); })
+        ]);
 
-                alert('Changes saved automatically! Refresh other tabs/devices to see updates.');
-                closeAdminPopup();
-            } catch (err) {
-                console.error('Save error:', err);
-                alert('Error saving changes—check console for details.');
-            }
-        }
+        alert('Changes saved automatically! Refresh other tabs/devices to see updates.');
+        closeAdminPopup();
+      } catch (err) {
+        console.error('Save error:', err);
+        alert('Error saving changes—check console for details.');
+      }
+    }
 
         // Fetch and apply config on load
         window.addEventListener('load', async () => {
