@@ -58,7 +58,8 @@
 <script>
 (function safeRunner(){
   try {
-    // --- Configurable Constants ---
+    // --- Configurable Popup Version ---
+    const POPUP_VERSION = "2025-09-16";
     const DISMISS_KEY = "dismissed_popup_version";
     const PANTRY_ID = 'cdb7692f-15c1-46b5-ae67-f13af0746cc8';
 
@@ -66,8 +67,7 @@
     async function fetchFromPantry(basket) {
       try {
         const res = await fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/${basket}`);
-        console.log(`Fetching ${basket}: Status ${res.status}`);
-        if (!res.ok) throw new Error(`Failed to fetch ${basket}: ${res.statusText}`);
+        if (!res.ok) throw new Error(`Failed to fetch ${basket}`);
         return await res.json();
       } catch (err) {
         console.error(`Error fetching ${basket}:`, err);
@@ -101,55 +101,35 @@
     // Don't show again (persist dismissal)
     function dontShowAgain() {
       try {
-        const popupVersion = window.POPUP_VERSION || "2025-09-14"; // Fallback
-        localStorage.setItem(DISMISS_KEY, popupVersion);
+        localStorage.setItem(DISMISS_KEY, POPUP_VERSION);
         closePopup();
       } catch(e){ console.error("DontShowAgain error", e); }
     }
     window.dontShowAgain = dontShowAgain;
 
+    // --- Auth Check ---
+    (function() {
+      try {
+        const SITE_VERSION = "6.5";
+        if (localStorage.getItem("site_version") !== SITE_VERSION) {
+          localStorage.clear();
+          localStorage.setItem("site_version", SITE_VERSION);
+        }
+        if (localStorage.getItem("user_authenticated") !== "true") {
+          setTimeout(() => {
+            window.location.href = "https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/signin.html";
+          }, 0);
+        }
+      } catch(e){ console.error("Auth check error", e); }
+    })();
+
     // --- Fetch and Apply Config on Load ---
     window.addEventListener("load", async function(){
       try {
         const data = await fetchFromPantry('config');
-        // Set global versions from config
-        window.SITE_VERSION = data.site_version || "6.6"; // Fallback
-        window.POPUP_VERSION = data.popup_version || "2025-09-14"; // Fallback
-
-        // Auth Check: Preserve user_authenticated and user_email
-        const currentSiteVersion = localStorage.getItem("site_version");
-        const userAuthenticated = localStorage.getItem("user_authenticated");
-        const userEmail = localStorage.getItem("user_email");
-        if (currentSiteVersion !== window.SITE_VERSION) {
-          // Clear non-authentication data
-          for (let key in localStorage) {
-            if (key !== "user_authenticated" && key !== "user_email" && key !== "site_version") {
-              localStorage.removeItem(key);
-            }
-          }
-          localStorage.setItem("site_version", window.SITE_VERSION);
-          console.log(`Site version updated to ${window.SITE_VERSION}`);
-        }
-
-        // Verify user is authenticated and whitelisted
-        if (userAuthenticated !== "true" || !userEmail) {
-          console.log("User not authenticated, redirecting to signin.html");
-          window.location.href = "https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/signin.html";
-          return;
-        }
-
-        const whitelistData = await fetchFromPantry('whitelist');
-        const whitelistedEmails = whitelistData.whitelisted_emails || [];
-        if (!whitelistedEmails.includes(userEmail)) {
-          console.log(`User email ${userEmail} not in whitelist, redirecting to signin.html`);
-          localStorage.clear();
-          window.location.href = "https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/signin.html";
-          return;
-        }
 
         // Global Redirect
         if (data.redirect_url && window.location.pathname !== '/signin.html') {
-          console.log(`Redirecting to ${data.redirect_url}`);
           window.location.href = data.redirect_url;
           return;
         }
@@ -165,7 +145,7 @@
         // Popup Handling
         if (data.popup_enabled !== false && data.popup_title && data.popup_content) {
           const dismissed = localStorage.getItem(DISMISS_KEY);
-          if (dismissed !== window.POPUP_VERSION) {
+          if (dismissed !== POPUP_VERSION) {
             const el = document.getElementById("welcome-popup");
             if (!el) return;
 
@@ -182,9 +162,7 @@
         }
       } catch(err) {
         console.error("Error loading config from Pantry:", err);
-        // Fallback to defaults
-        window.SITE_VERSION = "6.6";
-        window.POPUP_VERSION = "2025-09-14";
+        // No fallback: Popup only shows if custom title and content are set
       }
     });
 
@@ -192,7 +170,6 @@
     window.addEventListener("keydown", function(e){
       try {
         if (e.key === "`" || e.key === "~" || e.code === "Backquote") {
-          console.log("Panic key pressed, redirecting to Clever");
           window.location.href = "https://clever.com/oauth/saml/login?target=NWU4M2IwYzI2YTBkOTIwMDAxZjE4YzY3;NGM2M2MxY2Y2MjNkY2U4MmNhYWM=;aHR0cHM6Ly9jbGV2ZXIuY29tL2luL2F1dGhfY2FsbGJhY2s=;OGNkZjY5ZjdlZTNhMjQ1ZGYyMzhiMGFkMDhiYTA4N2MzOWZkMDg1ZTRkM2VmOTQwY2M3NDQyNzI2ZjkxOWNjZg==;Y29kZQ==";
         }
       } catch(err){ console.error("Panic key error", err); }
