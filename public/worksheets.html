@@ -650,7 +650,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
                 } else {
                     window.doCloak = true;
                 }
-                document.getElementById('tabCloakButton').textContent = getCookie('cloak') ? 'Disable Tab Cloak' : 'Enable Tab Cloak';
+                document.getElementById('tabCloakSettingsBtn').textContent = getCookie('cloak') ? 'Disable Tab Cloak' : 'Enable Tab Cloak';
             }
         });
 
@@ -696,8 +696,12 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         const chatMessages = document.getElementById('chatMessages');
         const chatInput = document.getElementById('chatInput');
         let welcomed = false;
+        let feedbackMode = false;
+        let feedbackType = null;
+        let feedbackConversation = [];
         const GEMINI_API_KEY = 'AIzaSyC8ExoCzx1s2jKu8lq79zFnWAde6H3Z7nU'; // Your Google Gemini API key
-        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1416597497597657088/HTWPobDqk1JORAq_-pVajGB6FTNkpMD4B4qL6Y2R3bYSN7k3Um5pV_PB4As03wKWhdRq'; // Replace with your Discord webhook URL
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1416597497597657088/HTWPobDqk1JORAq_-pVajGB6FTNkpMD4B4qL6Y2R3bYSN7k3Um5pV_PB4As03wKWhdRq'; // Regular message webhook
+        const FEEDBACK_WEBHOOK_URL = 'https://discord.com/api/webhooks/1416615100902805586/C2-lb20InKaUOQzwKrGUU0DwatLTeEeV2JyCCP0S9JZrRRtdWZBl50KWEF3H541rZmLD'; // Replace with your feedback webhook URL
         let conversationHistory = []; // Array to store {role: 'user' or 'assistant', content: text}
         let BLACKLISTED_EMAILS = [];
 
@@ -713,6 +717,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
 
         // Send message to Discord webhook
         async function sendToDiscordWebhook(email, userMessage, botReply) {
+            if (feedbackMode) return; // Skip regular logging in feedback mode
             try {
                 await fetch(DISCORD_WEBHOOK_URL, {
                     method: 'POST',
@@ -725,6 +730,23 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
                 });
             } catch (error) {
                 console.error('Error sending to Discord webhook:', error);
+            }
+        }
+
+        // Send feedback to Discord webhook
+        async function sendFeedbackToDiscordWebhook(email, feedbackData) {
+            try {
+                await fetch(FEEDBACK_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: feedbackData
+                    })
+                });
+            } catch (error) {
+                console.error('Error sending feedback to Discord webhook:', error);
             }
         }
 
@@ -758,6 +780,41 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             addMessage('user', message);
             chatInput.value = '';
 
+            if (message.toLowerCase() === 'feedback' && !feedbackMode) {
+                feedbackMode = true;
+                conversationHistory = []; // Clear regular conversation history
+                addMessage('bot', '1 = Suggestion\n2 = Report Blocked Game\n\nPlease respond with either "1" or "2" based on what you will be sending.');
+                return;
+            }
+
+            if (feedbackMode) {
+                feedbackConversation.push({ role: 'user', content: message });
+
+                if (!feedbackType) {
+                    if (message === '1') {
+                        feedbackType = 'suggestion';
+                        addMessage('bot', 'Please respond with your suggestion.');
+                    } else if (message === '2') {
+                        feedbackType = 'blocked_game';
+                        addMessage('bot', 'Please respond with the name of the blocked game.');
+                    } else {
+                        addMessage('bot', 'Invalid input. Please respond with either "1" or "2".');
+                    }
+                } else {
+                    const feedbackData = feedbackType === 'suggestion' 
+                        ? `**Responders Email**: ${userEmail}\n**Suggestion**: ${message}`
+                        : `**Responders Email**: ${userEmail}\n**Blocked Game**: ${message}`;
+                    
+                    await sendFeedbackToDiscordWebhook(userEmail, feedbackData);
+                    addMessage('bot', 'Thank you for your input on the L Unblocked Games site, your response will be reviewed soon. To continue using the regular chatbot, please refresh the page.');
+                    chatInput.disabled = true;
+                    chatInput.placeholder = 'Refresh to continue';
+                    feedbackMode = false;
+                    feedbackType = null;
+                }
+                return;
+            }
+
             // Add user message to history
             conversationHistory.push({ role: 'user', content: message });
 
@@ -790,7 +847,6 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
                 }
 
                 const data = await response.json();
-                console.log('API Response:', data); // Log the full response for debugging
                 let botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I couldn\'t generate a response.';
                 if (!botReply) {
                     botReply = 'Sorry, I couldn\'t generate a response.';
@@ -814,6 +870,9 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             div.textContent = text;
             chatMessages.appendChild(div);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            if (feedbackMode) {
+                feedbackConversation.push({ role: sender, content: text });
+            }
         }
 
         function handleKeyUp(event) {
