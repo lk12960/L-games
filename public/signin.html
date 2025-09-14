@@ -86,10 +86,12 @@
                 .then(data => {
                     if (WHITELISTED_EMAILS.includes(data.email)) {
                         localStorage.setItem("user_authenticated", "true");
+                        localStorage.setItem("user_email", data.email); // Store email in localStorage
                         window.location.href = "https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/worksheets.html";
                     } else {
                         alert("Access denied: Your email has not been added to the list of authorized members on Cool Math Worksheets.");
                         localStorage.removeItem("user_authenticated");
+                        localStorage.removeItem("user_email");
                     }
                 })
                 .catch(error => console.error('Error verifying token:', error));
