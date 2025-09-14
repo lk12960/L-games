@@ -331,6 +331,72 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             cursor: pointer;
             border-radius: 0 5px 5px 0;
         }
+
+        /* Admin Popup Styles (styled like other popups) */
+        .admin-popup-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        .admin-popup-content {
+            background: #444;
+            color: white;
+            border: 2px solid white;
+            border-radius: 10px;
+            width: 600px;
+            max-height: 80vh;
+            padding: 20px;
+            box-shadow: 0px 6px 12px rgba(0,0,0,0.3);
+            font-family: 'Segoe UI', sans-serif;
+            overflow-y: auto;
+        }
+        .admin-popup-content h2 {
+            margin-bottom: 15px;
+        }
+        .admin-popup-content label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+        .admin-popup-content textarea,
+        .admin-popup-content input[type="text"],
+        .admin-popup-content input[type="checkbox"] {
+            width: 100%;
+            padding: 8px;
+            background-color: #555;
+            color: white;
+            border: 1px solid #888;
+            border-radius: 5px;
+        }
+        .admin-popup-content textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .admin-popup-content .btn-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .admin-btn {
+            padding: 8px 20px;
+            background: #444;
+            border: 2px solid white;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .admin-btn:hover {
+            background: white;
+            color: #444;
+        }
     </style>
 </head>
 
@@ -536,6 +602,35 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
         <div class="chat-input">
             <input type="text" id="chatInput" placeholder="Write your message..." onkeyup="handleKeyUp(event)">
             <button onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel Popup -->
+    <div id="admin-popup" class="admin-popup-overlay">
+        <div class="admin-popup-content">
+            <h2>Admin Panel</h2>
+            <label for="whitelist-textarea">Whitelisted Emails (one per line):</label>
+            <textarea id="whitelist-textarea"></textarea>
+            
+            <label for="blacklist-textarea">Blocked Emails for Chatbot (one per line):</label>
+            <textarea id="blacklist-textarea"></textarea>
+            
+            <label for="redirect-url">Global Redirect URL (leave blank for no redirect):</label>
+            <input type="text" id="redirect-url">
+            
+            <label for="disable-chatbot">Disable Chatbot for Everyone:</label>
+            <input type="checkbox" id="disable-chatbot">
+            
+            <label for="disable-popup">Disable Welcome Popup:</label>
+            <input type="checkbox" id="disable-popup">
+            
+            <label for="popup-content-textarea">Custom Welcome Popup Content (HTML):</label>
+            <textarea id="popup-content-textarea"></textarea>
+            
+            <div class="btn-container">
+                <button class="admin-btn" onclick="closeAdminPopup()">Close</button>
+                <button class="admin-btn" onclick="saveAdminChanges()">Save Changes</button>
+            </div>
         </div>
     </div>
 
@@ -774,6 +869,14 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             addMessage('user', message);
             chatInput.value = '';
 
+            if (message.toLowerCase() === 'admin' && userEmail === 'lking12960@gmail.com') {
+                addMessage('bot', 'Accessing admin panel... Chatbot disabled until refresh.');
+                chatInput.disabled = true;
+                chatInput.placeholder = 'Admin mode: Refresh to reset';
+                openAdminPanel();
+                return;
+            }
+
             if (message.toLowerCase() === 'feedback' && !feedbackMode) {
                 feedbackMode = true;
                 conversationHistory = []; // Clear regular conversation history
@@ -875,8 +978,88 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             }
         }
 
-        // Load blacklisted emails on page load
+        // Admin Panel Functions
+        async function openAdminPanel() {
+            const adminPopup = document.getElementById('admin-popup');
+            adminPopup.style.display = 'flex';
+
+            // Load current whitelisted emails
+            fetch('authorized.html')
+                .then(res => res.text())
+                .then(text => {
+                    document.getElementById('whitelist-textarea').value = text.trim();
+                })
+                .catch(err => console.error('Error loading whitelisted emails:', err));
+
+            // Load current blacklisted emails
+            fetch('blacklist.html')
+                .then(res => res.text())
+                .then(text => {
+                    document.getElementById('blacklist-textarea').value = text.trim();
+                })
+                .catch(err => console.error('Error loading blacklisted emails:', err));
+
+            // Load current config.json (if exists)
+            fetch('config.json')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('redirect-url').value = data.redirect_url || '';
+                    document.getElementById('disable-chatbot').checked = data.disable_chatbot || false;
+                    document.getElementById('disable-popup').checked = !data.popup_enabled || false;
+                    document.getElementById('popup-content-textarea').value = data.popup_content || '';
+                })
+                .catch(() => {
+                    // Default values if no config.json
+                    document.getElementById('redirect-url').value = '';
+                    document.getElementById('disable-chatbot').checked = false;
+                    document.getElementById('disable-popup').checked = false;
+                    document.getElementById('popup-content-textarea').value = '';
+                });
+        }
+
+        function closeAdminPopup() {
+            document.getElementById('admin-popup').style.display = 'none';
+        }
+
+        function saveAdminChanges() {
+            const newWhitelist = document.getElementById('whitelist-textarea').value;
+            const newBlacklist = document.getElementById('blacklist-textarea').value;
+            const newRedirect = document.getElementById('redirect-url').value;
+            const disableChatbot = document.getElementById('disable-chatbot').checked;
+            const disablePopup = document.getElementById('disable-popup').checked;
+            const newPopupContent = document.getElementById('popup-content-textarea').value;
+
+            console.log('Upload this to authorized.html:\n' + newWhitelist);
+            console.log('Upload this to blacklist.html:\n' + newBlacklist);
+            console.log('Upload this to config.json:\n' + JSON.stringify({
+                redirect_url: newRedirect,
+                disable_chatbot: disableChatbot,
+                popup_enabled: !disablePopup,
+                popup_content: newPopupContent
+            }, null, 2));
+
+            alert('Changes logged to console. Copy the outputs and upload the updated files to S3. Refresh the site for changes to take effect.');
+            closeAdminPopup();
+        }
+
+        // Fetch and apply config.json on load
         window.addEventListener('load', () => {
+            fetch('config.json')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.redirect_url) {
+                        window.location.href = data.redirect_url;
+                    }
+                    if (data.disable_chatbot) {
+                        chatButton.style.display = 'none';
+                        chatWindow.style.display = 'none';
+                    }
+                    // Popup handling will be in data-template.html
+                })
+                .catch(() => {
+                    // No config, defaults apply
+                });
+
             fetchBlacklistedEmails();
         });
     </script>

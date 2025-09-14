@@ -2,7 +2,7 @@
 <div id="welcome-popup" class="popup-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="popup-title" aria-hidden="true">
   <div class="popup-content">
     <h2 id="popup-title">9/16/2025 Update Log</h2>
-    <p>
+    <p id="popup-body">
       Below are the things in todays update:<br>
       - Added More Tab Cloak Settings (Use button on homepage)<br>
       - Added a panic key (Pressing the ` key will automatically take you to Clever)<br>
@@ -71,7 +71,7 @@
 (function safeRunner(){
   try {
     // --- Configurable Popup Version (change this to force the popup to show again for everyone) ---
-    const POPUP_VERSION = "2025-09-14"; // <-- change this string to reset dismissal for everyone
+    const POPUP_VERSION = "2025-09-16"; // <-- Updated version to reflect new changes (e.g., admin panel integration)
     const DISMISS_KEY = "dismissed_popup_version";
 
     // Close (temporary hide)
@@ -110,20 +110,62 @@
       } catch(e){ console.error("Auth check error", e); }
     })();
 
-    // --- Show popup on page load unless dismissed for this version ---
+    // --- Fetch and Apply Config on Load ---
     window.addEventListener("load", function(){
       try {
-        const dismissed = localStorage.getItem(DISMISS_KEY);
-        if (dismissed !== POPUP_VERSION) {
-          const el = document.getElementById("welcome-popup");
-          if (!el) return;
-          el.style.display = "flex";
-          el.setAttribute("aria-hidden", "false");
-          // focus the first button for keyboard users
-          const btn = el.querySelector("button");
-          if (btn) btn.focus();
-        }
-      } catch(e){ console.error("Popup display error", e); }
+        fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/config.json')
+          .then(res => res.json())
+          .then(data => {
+            // Global Redirect
+            if (data.redirect_url && window.location.pathname !== '/signin.html') {
+              window.location.href = data.redirect_url;
+              return; // Stop further execution if redirecting
+            }
+
+            // Chatbot Disable (hide chatbot elements if present)
+            if (data.disable_chatbot) {
+              const chatButton = document.getElementById('chatButton');
+              const chatWindow = document.getElementById('chatWindow');
+              if (chatButton) chatButton.style.display = 'none';
+              if (chatWindow) chatWindow.style.display = 'none';
+            }
+
+            // Popup Handling
+            if (data.popup_enabled !== false) { // Show popup if enabled (default true)
+              const dismissed = localStorage.getItem(DISMISS_KEY);
+              if (dismissed !== POPUP_VERSION) {
+                const el = document.getElementById("welcome-popup");
+                if (!el) return;
+
+                // Custom Popup Content (override if set in config)
+                if (data.popup_content) {
+                  const popupBody = document.getElementById('popup-body');
+                  if (popupBody) popupBody.innerHTML = data.popup_content;
+                }
+
+                el.style.display = "flex";
+                el.setAttribute("aria-hidden", "false");
+                // Focus the first button for keyboard users
+                const btn = el.querySelector("button");
+                if (btn) btn.focus();
+              }
+            }
+          })
+          .catch(err => {
+            console.error("Error loading config.json:", err);
+            // Fallback: Show default popup if config fails to load
+            const dismissed = localStorage.getItem(DISMISS_KEY);
+            if (dismissed !== POPUP_VERSION) {
+              const el = document.getElementById("welcome-popup");
+              if (el) {
+                el.style.display = "flex";
+                el.setAttribute("aria-hidden", "false");
+                const btn = el.querySelector("button");
+                if (btn) btn.focus();
+              }
+            }
+          });
+      } catch(e){ console.error("Config or popup display error", e); }
     });
 
     // --- Panic Key (backtick or tilde redirects to Clever) ---
