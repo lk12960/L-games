@@ -616,7 +616,10 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             <label for="disable-popup">Disable Welcome Popup:</label>
             <input type="checkbox" id="disable-popup">
             
-            <label for="popup-content-textarea">Custom Welcome Popup Content (HTML):</label>
+            <label for="popup-title-input">Custom Welcome Popup Title (plain text):</label>
+            <input type="text" id="popup-title-input">
+            
+            <label for="popup-content-textarea">Custom Welcome Popup Content (plain text, use Enter for line breaks):</label>
             <textarea id="popup-content-textarea"></textarea>
             
             <div class="btn-container">
@@ -1000,6 +1003,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
                 document.getElementById('redirect-url').value = configData.redirect_url || '';
                 document.getElementById('disable-chatbot').checked = configData.disable_chatbot || false;
                 document.getElementById('disable-popup').checked = !configData.popup_enabled || false;
+                document.getElementById('popup-title-input').value = configData.popup_title || '';
                 document.getElementById('popup-content-textarea').value = configData.popup_content || '';
             } catch (err) {
                 console.error('Error loading admin data:', err);
@@ -1023,6 +1027,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
             const newRedirect = document.getElementById('redirect-url').value;
             const disableChatbot = document.getElementById('disable-chatbot').checked;
             const disablePopup = document.getElementById('disable-popup').checked;
+            const newPopupTitle = document.getElementById('popup-title-input').value;
             const newPopupContent = document.getElementById('popup-content-textarea').value;
 
             try {
@@ -1044,6 +1049,7 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
                             redirect_url: newRedirect,
                             disable_chatbot: disableChatbot,
                             popup_enabled: !disablePopup,
+                            popup_title: newPopupTitle,
                             popup_content: newPopupContent
                         })
                     }).then(res => { if (!res.ok) throw new Error('Failed to update config'); })

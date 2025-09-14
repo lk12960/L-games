@@ -1,19 +1,8 @@
 <!-- Popup HTML -->
 <div id="welcome-popup" class="popup-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="popup-title" aria-hidden="true">
   <div class="popup-content">
-    <h2 id="popup-title">9/16/2025 Update Log</h2>
-    <p id="popup-body">
-      Below are the things in todays update:<br>
-      - Added More Tab Cloak Settings (Use button on homepage)<br>
-      - Added a panic key (Pressing the ` key will automatically take you to Clever)<br>
-      - Added new Game Request/Feedback system (Say "Feedback" to the AI chatbot to use)<br>
-      - Removed Flappy Bird (Temporary)<br>
-      <br>
-      Below are things that will be coming in the future:<br>
-      - Web Proxy<br>
-      - Ability to upload images to the AI chatbot<br>
-      - Full Settings Page
-    </p>
+    <h2 id="popup-title"></h2>
+    <p id="popup-body"></p>
     <div style="display:flex; gap:12px; justify-content:center;">
       <button onclick="closePopup()" class="close-btn">Close</button>
       <button onclick="dontShowAgain()" class="close-btn">Ok, don’t show again</button>
@@ -86,6 +75,18 @@
       }
     }
 
+    // Escape text to prevent XSS
+    function escapeText(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Convert newlines to <br> for content
+    function formatContent(text) {
+      return escapeText(text).replace(/\n/g, '<br>');
+    }
+
     // Close (temporary hide)
     function closePopup() {
       try {
@@ -142,17 +143,16 @@
         }
 
         // Popup Handling
-        if (data.popup_enabled !== false) {
+        if (data.popup_enabled !== false && data.popup_title && data.popup_content) {
           const dismissed = localStorage.getItem(DISMISS_KEY);
           if (dismissed !== POPUP_VERSION) {
             const el = document.getElementById("welcome-popup");
             if (!el) return;
 
-            // Custom Popup Content
-            if (data.popup_content) {
-              const popupBody = document.getElementById('popup-body');
-              if (popupBody) popupBody.innerHTML = data.popup_content;
-            }
+            const popupTitle = document.getElementById('popup-title');
+            const popupBody = document.getElementById('popup-body');
+            if (popupTitle) popupTitle.innerHTML = escapeText(data.popup_title);
+            if (popupBody) popupBody.innerHTML = formatContent(data.popup_content);
 
             el.style.display = "flex";
             el.setAttribute("aria-hidden", "false");
@@ -162,17 +162,7 @@
         }
       } catch(err) {
         console.error("Error loading config from Pantry:", err);
-        // Fallback: Show default popup if config fails
-        const dismissed = localStorage.getItem(DISMISS_KEY);
-        if (dismissed !== POPUP_VERSION) {
-          const el = document.getElementById("welcome-popup");
-          if (el) {
-            el.style.display = "flex";
-            el.setAttribute("aria-hidden", "false");
-            const btn = el.querySelector("button");
-            if (btn) btn.focus();
-          }
-        }
+        // No fallback: Popup only shows if custom title and content are set
       }
     });
 
