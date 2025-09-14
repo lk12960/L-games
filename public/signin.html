@@ -68,26 +68,25 @@
     </div>
 
     <script>
+        const PANTRY_ID = 'cdb7692f-15c1-46b5-ae67-f13af0746cc8';
         let WHITELISTED_EMAILS = [];
 
-        // Fetch whitelisted emails
-        function fetchWhitelistedEmails() {
-            return fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/authorized.html')
-                .then(response => response.text())
-                .then(text => {
-                    WHITELISTED_EMAILS = text.split('\n').map(email => email.trim()).filter(email => email);
-                })
-                .catch(error => console.error('Error loading whitelisted emails:', error));
+        // Fetch data from Pantry
+        async function fetchFromPantry(basket) {
+            try {
+                const res = await fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/${basket}`);
+                if (!res.ok) throw new Error(`Failed to fetch ${basket}`);
+                return await res.json();
+            } catch (err) {
+                console.error(`Error fetching ${basket}:`, err);
+                return {};
+            }
         }
 
-        // Fetch blacklisted emails (for consistency, though not used in sign-in)
-        function fetchBlacklistedEmails() {
-            return fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/blacklist.html')
-                .then(response => response.text())
-                .then(text => {
-                    // Not used in sign-in, but fetched for future use
-                })
-                .catch(error => console.error('Error loading blacklisted emails:', error));
+        // Fetch whitelisted emails from Pantry
+        async function fetchWhitelistedEmails() {
+            const data = await fetchFromPantry('whitelist');
+            WHITELISTED_EMAILS = data.whitelisted_emails || [];
         }
 
         function handleCredentialResponse(response) {
@@ -111,11 +110,11 @@
                 });
         }
 
-        // Load whitelisted and blacklisted emails on page load
+        // Load whitelisted emails on page load
         window.addEventListener('load', () => {
-            Promise.all([fetchWhitelistedEmails(), fetchBlacklistedEmails()])
-                .then(() => console.log('Email lists loaded'))
-                .catch(error => console.error('Error loading email lists:', error));
+            fetchWhitelistedEmails()
+                .then(() => console.log('Whitelisted emails loaded'))
+                .catch(error => console.error('Error loading whitelisted emails:', error));
         });
     </script>
 </body>

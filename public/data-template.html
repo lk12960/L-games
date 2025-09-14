@@ -13,7 +13,6 @@
       - Web Proxy<br>
       - Ability to upload images to the AI chatbot<br>
       - Full Settings Page
-
     </p>
     <div style="display:flex; gap:12px; justify-content:center;">
       <button onclick="closePopup()" class="close-btn">Close</button>
@@ -70,9 +69,22 @@
 <script>
 (function safeRunner(){
   try {
-    // --- Configurable Popup Version (change this to force the popup to show again for everyone) ---
-    const POPUP_VERSION = "2025-09-16"; // <-- Updated version to reflect new changes (e.g., admin panel integration)
+    // --- Configurable Popup Version ---
+    const POPUP_VERSION = "2025-09-16";
     const DISMISS_KEY = "dismissed_popup_version";
+    const PANTRY_ID = 'cdb7692f-15c1-46b5-ae67-f13af0746cc8';
+
+    // Fetch data from Pantry
+    async function fetchFromPantry(basket) {
+      try {
+        const res = await fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/${basket}`);
+        if (!res.ok) throw new Error(`Failed to fetch ${basket}`);
+        return await res.json();
+      } catch (err) {
+        console.error(`Error fetching ${basket}:`, err);
+        return {};
+      }
+    }
 
     // Close (temporary hide)
     function closePopup() {
@@ -111,64 +123,60 @@
     })();
 
     // --- Fetch and Apply Config on Load ---
-    window.addEventListener("load", function(){
+    window.addEventListener("load", async function(){
       try {
-        fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/config.json')
-          .then(res => res.json())
-          .then(data => {
-            // Global Redirect
-            if (data.redirect_url && window.location.pathname !== '/signin.html') {
-              window.location.href = data.redirect_url;
-              return; // Stop further execution if redirecting
+        const data = await fetchFromPantry('config');
+
+        // Global Redirect
+        if (data.redirect_url && window.location.pathname !== '/signin.html') {
+          window.location.href = data.redirect_url;
+          return;
+        }
+
+        // Chatbot Disable
+        if (data.disable_chatbot) {
+          const chatButton = document.getElementById('chatButton');
+          const chatWindow = document.getElementById('chatWindow');
+          if (chatButton) chatButton.style.display = 'none';
+          if (chatWindow) chatWindow.style.display = 'none';
+        }
+
+        // Popup Handling
+        if (data.popup_enabled !== false) {
+          const dismissed = localStorage.getItem(DISMISS_KEY);
+          if (dismissed !== POPUP_VERSION) {
+            const el = document.getElementById("welcome-popup");
+            if (!el) return;
+
+            // Custom Popup Content
+            if (data.popup_content) {
+              const popupBody = document.getElementById('popup-body');
+              if (popupBody) popupBody.innerHTML = data.popup_content;
             }
 
-            // Chatbot Disable (hide chatbot elements if present)
-            if (data.disable_chatbot) {
-              const chatButton = document.getElementById('chatButton');
-              const chatWindow = document.getElementById('chatWindow');
-              if (chatButton) chatButton.style.display = 'none';
-              if (chatWindow) chatWindow.style.display = 'none';
-            }
-
-            // Popup Handling
-            if (data.popup_enabled !== false) { // Show popup if enabled (default true)
-              const dismissed = localStorage.getItem(DISMISS_KEY);
-              if (dismissed !== POPUP_VERSION) {
-                const el = document.getElementById("welcome-popup");
-                if (!el) return;
-
-                // Custom Popup Content (override if set in config)
-                if (data.popup_content) {
-                  const popupBody = document.getElementById('popup-body');
-                  if (popupBody) popupBody.innerHTML = data.popup_content;
-                }
-
-                el.style.display = "flex";
-                el.setAttribute("aria-hidden", "false");
-                // Focus the first button for keyboard users
-                const btn = el.querySelector("button");
-                if (btn) btn.focus();
-              }
-            }
-          })
-          .catch(err => {
-            console.error("Error loading config.json:", err);
-            // Fallback: Show default popup if config fails to load
-            const dismissed = localStorage.getItem(DISMISS_KEY);
-            if (dismissed !== POPUP_VERSION) {
-              const el = document.getElementById("welcome-popup");
-              if (el) {
-                el.style.display = "flex";
-                el.setAttribute("aria-hidden", "false");
-                const btn = el.querySelector("button");
-                if (btn) btn.focus();
-              }
-            }
-          });
-      } catch(e){ console.error("Config or popup display error", e); }
+            el.style.display = "flex";
+            el.setAttribute("aria-hidden", "false");
+            const btn = el.querySelector("button");
+            if (btn) btn.focus();
+          }
+        }
+      } catch(err) {
+        console.error("Error loading config from Pantry:", err);
+        // Fallback: Show default popup if config fails
+        const dismissed = localStorage.getItem(DISMISS_KEY);
+        if (dismissed !== POPUP_VERSION) {
+          const el = document.getElementById("welcome-popup");
+          if (el) {
+            el.style.display = "flex";
+            el.setAttribute("aria-hidden", "false");
+            const btn = el.querySelector("button");
+            if (btn) btn.focus();
+          }
+        }
+      }
     });
 
-    // --- Panic Key (backtick or tilde redirects to Clever) ---
+    // --- Panic Key ---
     window.addEventListener("keydown", function(e){
       try {
         if (e.key === "`" || e.key === "~" || e.code === "Backquote") {
