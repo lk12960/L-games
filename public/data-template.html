@@ -67,7 +67,7 @@
 (function safeRunner(){
   try {
     // --- Configurable Popup Version (change this to force the popup to show again for everyone) ---
-    const POPUP_VERSION = "2025-09-13.1"; // <-- change this string to reset dismissal for everyone
+    const POPUP_VERSION = "2025-09-14"; // <-- change this string to reset dismissal for everyone
     const DISMISS_KEY = "dismissed_popup_version";
 
     // Close (temporary hide)
@@ -93,7 +93,7 @@
     // --- Auth Check ---
     (function() {
       try {
-        const SITE_VERSION = "6.2";
+        const SITE_VERSION = "6.5";
         if (localStorage.getItem("site_version") !== SITE_VERSION) {
           localStorage.clear();
           localStorage.setItem("site_version", SITE_VERSION);
