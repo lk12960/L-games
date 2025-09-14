@@ -1023,57 +1023,76 @@ fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.h
       document.getElementById('admin-popup').style.display = 'none';
     }
 
-    async function saveAdminChanges() {
-      const userEmail = localStorage.getItem('user_email');
-      if (userEmail !== 'lking12960@gmail.com') {
+async function saveAdminChanges() {
+    const userEmail = localStorage.getItem('user_email');
+    if (userEmail !== 'lking12960@gmail.com') {
         alert('Unauthorized: Only lking12960@gmail.com can save changes.');
         return;
-      }
+    }
 
-      const newWhitelist = document.getElementById('whitelist-textarea').value.split('\n').map(e => e.trim()).filter(e => e);
-      const newBlacklist = document.getElementById('blacklist-textarea').value.split('\n').map(e => e.trim()).filter(e => e);
-      const newRedirect = document.getElementById('redirect-url').value;
-      const disableChatbot = document.getElementById('disable-chatbot').checked;
-      const disablePopup = document.getElementById('disable-popup').checked;
-      const newPopupTitle = document.getElementById('popup-title-input').value;
-      const newPopupContent = document.getElementById('popup-content-textarea').value;
-      const newSiteVersion = document.getElementById('site-version-input').value;
-      const newPopupVersion = document.getElementById('popup-version-input').value;
+    const newWhitelist = document.getElementById('whitelist-textarea').value.split('\n').map(e => e.trim()).filter(e => e);
+    const newBlacklist = document.getElementById('blacklist-textarea').value.split('\n').map(e => e.trim()).filter(e => e);
+    const newRedirect = document.getElementById('redirect-url').value;
+    const disableChatbot = document.getElementById('disable-chatbot').checked;
+    const disablePopup = document.getElementById('disable-popup').checked;
+    const newPopupTitle = document.getElementById('popup-title-input').value;
+    const newPopupContent = document.getElementById('popup-content-textarea').value;
+    const newSiteVersion = document.getElementById('site-version-input').value;
+    const newPopupVersion = document.getElementById('popup-version-input').value;
 
-      try {
-        await Promise.all([
-          fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/whitelist`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ whitelisted_emails: newWhitelist })
-          }).then(res => { if (!res.ok) throw new Error('Failed to update whitelist'); }),
-          fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/blacklist`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ blacklisted_emails: newBlacklist })
-          }).then(res => { if (!res.ok) throw new Error('Failed to update blacklist'); }),
-          fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/config`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              redirect_url: newRedirect,
-              disable_chatbot: disableChatbot,
-              popup_enabled: !disablePopup,
-              popup_title: newPopupTitle,
-              popup_content: newPopupContent,
-              site_version: newSiteVersion,
-              popup_version: newPopupVersion
-            })
-          }).then(res => { if (!res.ok) throw new Error('Failed to update config'); })
+    const maxRetries = 3;
+    const retryDelay = 1000;
+
+    async function tryFetch(url, body, basketName) {
+        for (let i = 0; i < maxRetries; i++) {
+            try {
+                console.log(`Attempt ${i + 1} to update ${basketName}`);
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    throw new Error(`Failed to update ${basketName}: ${res.status} - ${errorText}`);
+                }
+                console.log(`Successfully updated ${basketName}`);
+                return res;
+            } catch (err) {
+                console.error(`Error updating ${basketName} (attempt ${i + 1}):`, err);
+                if (i === maxRetries - 1) throw err;
+                await new Promise(resolve => setTimeout(resolve, retryDelay * Math.pow(2, i)));
+            }
+        }
+    }
+
+    try {
+        const results = await Promise.allSettled([
+            tryFetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/whitelist`, { whitelisted_emails: newWhitelist }, 'whitelist'),
+            tryFetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/blacklist`, { blacklisted_emails: newBlacklist }, 'blacklist'),
+            tryFetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/config`, {
+                redirect_url: newRedirect,
+                disable_chatbot: disableChatbot,
+                popup_enabled: !disablePopup,
+                popup_title: newPopupTitle,
+                popup_content: newPopupContent,
+                site_version: newSiteVersion,
+                popup_version: newPopupVersion
+            }, 'config')
         ]);
 
-        alert('Changes saved automatically! Refresh other tabs/devices to see updates.');
+        const errors = results.filter(r => r.status === 'rejected').map(r => r.reason);
+        if (errors.length > 0) {
+            throw new Error(`Failed to update some baskets: ${errors.join('; ')}`);
+        }
+
+        alert('Changes saved successfully! Refresh other tabs/devices to see updates.');
         closeAdminPopup();
-      } catch (err) {
+    } catch (err) {
         console.error('Save error:', err);
-        alert('Error saving changes—check console for details.');
-      }
+        alert(`Error saving changes: ${err.message}. Check console for details.`);
     }
+}
 
         // Fetch and apply config on load
         window.addEventListener('load', async () => {
