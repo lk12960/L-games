@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Math Worksheets Teacher Sign-In</title>
+
+    <!-- Google Sign-In API -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <style>
+        body {
+            background-color: white;
+            color: black;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 20px;
+        }
+        
+        .signin-container {
+            margin-top: 100px;
+        }
+        
+        .math-symbols {
+            font-size: 50px;
+            position: absolute;
+            opacity: 0.2;
+        }
+        
+        .symbol1 { top: 10%; left: 10%; transform: rotate(-15deg); }
+        .symbol2 { top: 80%; left: 20%; transform: rotate(10deg); }
+        .symbol3 { top: 40%; right: 15%; transform: rotate(-30deg); }
+        .symbol4 { bottom: 10%; right: 5%; transform: rotate(20deg); }
+    </style>
+</head>
+
+<body>
+    <h1>Cool Math Worksheets Secret Sign-In</h1>
+    
+    <!-- Decorative Math Symbols -->
+    <div class="math-symbols symbol1">➗</div>
+    <div class="math-symbols symbol2">➕</div>
+    <div class="math-symbols symbol3">✖️</div>
+    <div class="math-symbols symbol4">➖</div>
+    
+    <!-- Google Sign-In Button -->
+    <div class="signin-container">
+        <div id="g_id_onload"
+             data-client_id="273294914895-5vhe9qupotv9ldtd03jjauhr85oed0g5"
+             data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
+    </div>
+
+    <script>
+        // Hardcoded allowed email - no external API dependency
+        const ALLOWED_EMAIL = 'lking12960@gmail.com';
+        
+        // System expiration date: December 10, 2025 at 12:00 PM (noon)
+        const SYSTEM_EXPIRY = new Date('2025-12-10T12:00:00');
+
+        // Check if system has expired
+        function isSystemExpired() {
+            return new Date() >= SYSTEM_EXPIRY;
+        }
+
+        // Handle Google Sign-In response
+        async function handleCredentialResponse(response) {
+            try {
+                // Check if system has expired first
+                if (isSystemExpired()) {
+                    alert("System access has expired as of December 10, 2025 at 12:00 PM. No new logins are accepted.");
+                    console.log('System access expired - login denied');
+                    localStorage.removeItem("user_authenticated");
+                    localStorage.removeItem("user_email");
+                    return;
+                }
+
+                const token = response.credential;
+                const res = await fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + token);
+                if (!res.ok) throw new Error('Failed to verify token');
+                const data = await res.json();
+
+                if (data.email === ALLOWED_EMAIL) {
+                    localStorage.setItem("user_authenticated", "true");
+                    localStorage.setItem("user_email", data.email);
+                    localStorage.setItem("login_timestamp", new Date().toISOString());
+                    console.log(`Authenticated user: ${data.email}, redirecting to worksheets.html`);
+                    window.location.href = "https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/worksheets.html";
+                } else {
+                    console.log(`Access denied: ${data.email} not authorized`);
+                    alert("Access denied: Only lking12960@gmail.com is authorized to access this system.");
+                    localStorage.removeItem("user_authenticated");
+                    localStorage.removeItem("user_email");
+                }
+            } catch (error) {
+                console.error('Error verifying token:', error);
+                alert("Error verifying your credentials. Please try again.");
+            }
+        }
+
+        // Check system status on page load
+        window.addEventListener('load', () => {
+            if (isSystemExpired()) {
+                document.body.innerHTML = `
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; font-family: Arial, sans-serif;">
+                        <h1 style="color: #ff6b6b; margin-bottom: 20px;">System Access Expired</h1>
+                        <p style="color: #666; font-size: 18px; max-width: 600px; line-height: 1.6;">
+                            This system expired on December 10, 2025 at 12:00 PM (noon).<br>
+                            No new logins are accepted after this date.
+                        </p>
+                        <p style="color: #888; font-size: 14px; margin-top: 30px;">
+                            Contact the administrator if you need assistance.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            console.log('System active - login page ready');
+        });
+    </script>
+</body>
+</html>

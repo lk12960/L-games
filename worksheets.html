@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+fetch('https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/data-template.html')
+  .then(response => response.text())
+  .then(data => {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = data;
+
+    // Append styles and DIVs
+    Array.from(tempDiv.children).forEach(el => {
+      if (el.tagName === 'STYLE' || el.tagName === 'DIV') {
+        document.body.appendChild(el);
+      }
+    });
+
+    // Re-run all <script> tags
+    const scripts = tempDiv.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+        newScript.async = oldScript.async;
+      } else {
+        newScript.textContent = oldScript.textContent;
+      }
+      document.body.appendChild(newScript);
+    });
+  })
+  .catch(err => console.error('Error loading external content:', err));
+    </script>
+   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Unblocked Games</title>
+
+    <!-- Favicon link -->
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #282828;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            height: 100%;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .button-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .button-container button {
+            background-color: transparent;
+            border: 3px solid white;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            font-style: italic;
+            margin-top: 5vh;
+        }
+
+        .search-container {
+            margin-top: 5vh;
+            text-align: center;
+        }
+
+        .search-container input {
+            padding: 8px 30px;
+            font-size: 1rem;
+            width: 350px;
+            height: 35px;
+            border-radius: 5px;
+            border: 2px solid #888888;
+            outline: none;
+            background-color: rgba(51, 51, 51, 0.4);
+            color: #d0d0d0;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 30px auto;
+            padding: 0 10px;
+            max-width: 1200px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        @media (max-width: 700px) {
+            .game-container {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .game-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .game-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 400px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .game-card {
+            width: 200px;
+            text-align: center;
+            background-color: rgba(68, 68, 68, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-card img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .game-card b {
+            display: block;
+            margin-top: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #7b5bff;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 5px;
+        }
+
+        .favicon-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 0px;
+        }
+
+        .favicon-container img {
+            width: 150px;
+            height: auto;
+            margin-top: 40px;
+        }
+
+        /* New styles for chat widget */
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #ffffff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 30px;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 320px;
+            height: 420px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            background-color: #282828;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #282828;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            max-width: 80%;
+            font-size: 0.95rem;
+        }
+
+        .bot {
+            background-color: #555;
+            color: white;
+            align-self: flex-start;
+        }
+
+        .user {
+            background-color: #ffffff;
+            color: #000000;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: #444;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background-color: #555;
+            color: white;
+            outline: none;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .chat-input button {
+            padding: 10px 16px;
+            border: none;
+            background-color: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            border-radius: 0 5px 5px 0;
+        }
+
+        /* Admin Popup Styles (styled like other popups) */
+        .admin-popup-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        .admin-popup-content {
+            background: #444;
+            color: white;
+            border: 2px solid white;
+            border-radius: 10px;
+            width: 600px;
+            max-height: 80vh;
+            padding: 20px;
+            box-shadow: 0px 6px 12px rgba(0,0,0,0.3);
+            font-family: 'Segoe UI', sans-serif;
+            overflow-y: auto;
+        }
+        .admin-popup-content h2 {
+            margin-bottom: 15px;
+        }
+        .admin-popup-content label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+        .admin-popup-content textarea,
+        .admin-popup-content input[type="text"],
+        .admin-popup-content input[type="checkbox"] {
+            width: 100%;
+            padding: 8px;
+            background-color: #555;
+            color: white;
+            border: 1px solid #888;
+            border-radius: 5px;
+        }
+        .admin-popup-content textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .admin-popup-content .btn-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .admin-btn {
+            padding: 8px 20px;
+            background: #444;
+            border: 2px solid white;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .admin-btn:hover {
+            background: white;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="particles-js"></div>
+
+    <div class="favicon-container">
+        <img src="logo.png" alt="Logo Image">
+    </div>
+
+    <h1>Unblocked Games</h1>
+
+    <div class="button-container">
+        <button id="tabCloakSettingsBtn">Tab Cloak Settings</button>
+
+        <!-- Tab Cloak Settings Popup -->
+        <div id="cloak-popup" class="popup-overlay" style="display:none;" role="dialog" aria-modal="true" aria-hidden="true">
+            <div class="popup-content">
+                <h2>Tab Cloak Settings</h2>
+                <div style="text-align:left; margin-top:10px;">
+                    <label style="display:flex; align-items:center; gap:8px; margin-bottom:15px;">
+                        <input type="checkbox" id="cloakCheckbox">
+                        Enable About:Blank Cloaking
+                    </label>
+
+                    <label for="disguiseSelect"><b>Tab Disguises:</b></label><br>
+                    <select id="disguiseSelect" style="margin-top:8px; width:100%; padding:6px;">
+                        <option value="">Default</option>
+                        <option value="docs">Google Docs</option>
+                        <option value="canvas">NLSD - Canvas</option>
+                        <option value="smartpass">Smart Pass</option>
+                        <option value="clever">Clever</option>
+                    </select>
+                </div>
+
+                <div style="display:flex; gap:12px; justify-content:center; margin-top:20px;">
+                    <button onclick="closeCloakPopup()" class="close-btn">Close</button>
+                    <button onclick="saveCloakSettings()" class="close-btn">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .popup-overlay {
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                background-color: rgba(0,0,0,0.6);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3000;
+            }
+            .popup-content {
+                background: #444;
+                color: white;
+                border: 2px solid white;
+                border-radius: 10px;
+                width: 400px;
+                padding: 20px;
+                box-shadow: 0px 6px 12px rgba(0,0,0,0.3);
+                font-family: 'Segoe UI', sans-serif;
+            }
+            .close-btn {
+                padding: 8px 20px;
+                background: #444;
+                border: 2px solid white;
+                color: white;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: 0.3s;
+            }
+            .close-btn:hover {
+                background: white;
+                color: #444;
+            }
+        </style>
+
+        <script>
+            // Preset disguises
+            const disguises = {
+                "docs": { title: "Untitled document - Google Docs", icon: "https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico" },
+                "canvas": { title: "Home", icon: "https://s3-us-west-2.amazonaws.com/scorestream-team-profile-pictures/14668/20220922124817_817_mascotOrig.png" },
+                "smartpass": { title: "Smartpass", icon: "https://assets.clever.com/resource-icons/apps/5fd279ea0ab69b00013f8036/icon_60043f6.png" },
+                "clever": { title: "Clever | Portal", icon: "https://resources.finalsite.net/images/f_auto,q_auto/v1689877141/mooreschoolscom/emadd6nvplrnh1vsswjf/Clever-Logo.jpg" }
+            };
+
+            const popup = document.getElementById("cloak-popup");
+            const cloakCheckbox = document.getElementById("cloakCheckbox");
+            const disguiseSelect = document.getElementById("disguiseSelect");
+
+            // Open settings popup
+            document.getElementById("tabCloakSettingsBtn").addEventListener("click", () => {
+                loadCloakSettings();
+                popup.style.display = "flex";
+            });
+
+            function closeCloakPopup() {
+                popup.style.display = "none";
+            }
+
+            function saveCloakSettings() {
+                const cloakEnabled = cloakCheckbox.checked;
+                if (cloakEnabled) {
+                    document.cookie = "cloak=1; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                    window.doCloak = true;
+                } else {
+                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                    window.doCloak = false;
+                }
+
+                const disguise = disguiseSelect.value;
+                localStorage.setItem("tab_disguise", disguise);
+
+                applyDisguise(disguise);
+                closeCloakPopup();
+            }
+
+            function loadCloakSettings() {
+                cloakCheckbox.checked = !!getCookie("cloak");
+                const disguise = localStorage.getItem("tab_disguise") || "";
+                disguiseSelect.value = disguise;
+            }
+
+            function applyDisguise(disguiseKey) {
+                const disguise = disguises[disguiseKey];
+                const link = document.querySelector("link[rel~='icon']");
+                if (disguise) {
+                    document.title = disguise.title;
+                    if (link) link.href = disguise.icon;
+                } else {
+                    document.title = "Unblocked Games";
+                    if (link) link.href = "logo.png";
+                }
+            }
+
+            window.addEventListener("load", () => {
+                const savedDisguise = localStorage.getItem("tab_disguise");
+                if (savedDisguise) {
+                    applyDisguise(savedDisguise);
+                }
+            });
+        </script>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="game-search" placeholder="Search for games..." onkeyup="filterGames()">
+    </div>
+
+    <div class="game-container">
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/retrobowl/index.html" class="game-card" data-name="Retro Bowl"><img src="./icons/retrobowl.webp" alt="Retro Bowl"><b>Retro Bowl</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraftstable/index.html" class="game-card" data-name="Minecraft 1.8.8"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.8.8 (MORE LAGGY)</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/minecraft/index.html" class="game-card" data-name="Minecraft 1.12.2"><img src="./icons/minecraft.jpg" alt="Minecraft"><b>Minecraft 1.12.2</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/arenaking/index.html" class="game-card" data-name="Survival Race: Arena King"><img src="./icons/arena.png" alt="Survival Race: Arena King"><b>Survival Race: Arena King</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/gunspin/index.html" class="game-card" data-name="Gunspin"><img src="./icons/gunspin.png" alt="Gunspin"><b>Gunspin</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/sprinterflash/index.html" class="game-card" data-name="Sprinter Flash"><img src="./icons/sprinter.webp" alt="Stickman Hook"><b>Sprinter Flash</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/stickmanhook/index.html" class="game-card" data-name="Stickman Hook"><img src="./icons/stickmanhook.jpg" alt="Stickman Hook"><b>Stickman Hook</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/bitlife/index.html" class="game-card" data-name="Bitlife"><img src="./icons/bitlife.webp" alt="Bitlife"><b>Bitlife</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rooftop-snipers-2/index.html" class="game-card" data-name="Rooftop Snipers"><img src="./icons/rooftop.avif" alt="Rooftop Snipers"><b>Rooftop Snipers</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/soccerrandom/index.html" class="game-card" data-name="Soccer Random"><img src="./icons/soccerrandom.webp" alt="Soccer Random"><b>Soccer Random</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketrandom/index.html" class="game-card" data-name="Basket Random"><img src="./icons/basketrandom.webp" alt="Basket Random"><b>Basket Random</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/drifthunters/index.html" class="game-card" data-name="Drift Hunters"><img src="./icons/drifthunters.png" alt="Drift Hunters"><b>Drift Hunters</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crazycrash/index.html" class="game-card" data-name="Crazy Crash Landing"><img src="./icons/crazy.webp" alt="Crazy Crash Landing"><b>Crazy Crash Landing</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/subway-surfers/index.html" class="game-card" data-name="Subway Surfers"><img src="./icons/subway.avif" alt="Subway Surfers"><b>Subway Surfers</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowrider/index.html" class="game-card" data-name="Snow Rider 3D"><img src="./icons/snow.jpg" alt="Snow Rider 3D"><b>Snow Rider 3D</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/paperio/index.html" class="game-card" data-name="Paper.io 2"><img src="./icons/paperio.webp" alt="Paper.io 2"><b>Paper.io 2</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snakeio/index.html" class="game-card" data-name="Snake.io"><img src="./icons/snakeio.png" alt="Snake.io"><b>Snake.io</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/driftboss/index.html" class="game-card" data-name="Drift Boss"><img src="./icons/driftboss.png" alt="Drift Boss"><b>Drift Boss</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/blockblast/index.html" class="game-card" data-name="Block Blast"><img src="./icons/blockblast.png" alt="Block Blast"><b>Block Blast</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/snowball/index.html" class="game-card" data-name="Snowball.io"><img src="./icons/snowball.png" alt="Snowball.io"><b>Snowball.io</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/OvO/index.html" class="game-card" data-name="OvO"><img src="./icons/ovo.png" alt="OvO"><b>OvO</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/basketball-stars/index.html" class="game-card" data-name="Basketball Stars"><img src="./icons/basketball-stars.png" alt="Basketball Stars"><b>Basketball Stars</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/rocket-pult/index.html" class="game-card" data-name="Rocket Pult"><img src="./icons/Rocketpult.webp" alt="Rocket Pult"><b>Rocket Pult</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/unicycle-hero/index.html" class="game-card" data-name="Unicycle Hero"><img src="./icons/unicycle-hero.webp" alt="Unicycle Hero"><b>Unicycle Hero</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/cookie/index.html" class="game-card" data-name="Cookie Clicker"><img src="./icons/cookie.webp" alt="Cookie Clicker"><b>Cookie Clicker</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/crossyroad/index.html" class="game-card" data-name="Crossy Road"><img src="./icons/crossyroad.webp" alt="Crossy Road"><b>Crossy Road</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eatio/index.html" class="game-card" data-name="Eat.io"><img src="./icons/eatio.webp" alt="Eat.io"><b>Eat.io</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/eggy-car/index.html" class="game-card" data-name="Eggy Car"><img src="./icons/eggy-car.webp" alt="Eggy Car"><b>Eggy Car</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/impossiblequiz/index.html" class="game-card" data-name="Impossible Quiz"><img src="./icons/impossiblequiz.webp" alt="Impossible Quiz"><b>Impossible Quiz</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/kitchen-gun-game/index.html" class="game-card" data-name="Kitchen Gun Game"><img src="./icons/kitchen-gun-game.webp" alt="Kitchen Gun Game"><b>Kitchen Gun Game</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/pong/index.html" class="game-card" data-name="Pong"><img src="./icons/pong.webp" alt="Pong"><b>Pong</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/slope/index.html" class="game-card" data-name="Slope"><img src="./icons/slope.webp" alt="Slope"><b>Slope</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/404.html" class="game-card" data-name="Flappy Bird"><img src="./icons/flappy.webp" alt="Flappy Bird"><b>Flappy Bird</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game/index.html" class="game-card" data-name="World's Hardest Game"><img src="./icons/whg.webp" alt="World's Hardest Game"><b>World's Hardest Game</b></a>
+        <a href="https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/play/worlds-hardest-game-2/index.html" class="game-card" data-name="World's Hardest Game 2"><img src="./icons/whg.webp" alt="World's Hardest Game 2"><b>World's Hardest Game 2</b></a>
+    </div>
+
+    <!-- Chat widget elements -->
+    <div class="chat-button" id="chatButton">💬</div>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">Google Gemini AI Chatbot</div>
+        <div class="chat-messages" id="chatMessages">
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Write your message..." onkeyup="handleKeyUp(event)">
+            <button onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel Popup -->
+    <div id="admin-popup" class="admin-popup-overlay">
+        <div class="admin-popup-content">
+            <h2>Admin Panel</h2>
+            <label for="whitelist-textarea">Whitelisted Emails (one per line):</label>
+            <textarea id="whitelist-textarea"></textarea>
+            
+            <label for="blacklist-textarea">Blocked Emails for Chatbot (one per line):</label>
+            <textarea id="blacklist-textarea"></textarea>
+            
+            <label for="redirect-url">Global Redirect URL (leave blank for no redirect):</label>
+            <input type="text" id="redirect-url">
+            
+            <label for="disable-chatbot">Disable Chatbot for Everyone:</label>
+            <input type="checkbox" id="disable-chatbot">
+            
+            <label for="disable-popup">Disable Welcome Popup:</label>
+            <input type="checkbox" id="disable-popup">
+            
+            <label for="popup-title-input">Custom Welcome Popup Title (plain text):</label>
+            <input type="text" id="popup-title-input">
+            
+            <label for="popup-content-textarea">Custom Welcome Popup Content (plain text, use Enter for line breaks):</label>
+            <textarea id="popup-content-textarea"></textarea>
+            
+            <div class="btn-container">
+                <button class="admin-btn" onclick="closeAdminPopup()">Close</button>
+                <button class="admin-btn" onclick="saveAdminChanges()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // No external API dependencies - system now uses local authentication only
+        // Admin panel disabled as system only accepts lking12960@gmail.com
+
+        // ABC class for cloaking
+        class ABC {
+            constructor(config = {}) {
+                this.type = config.type || "blank";
+                this.url = config.url || "about:blank";
+            }
+            setType(type) {
+                if (!type) return;
+                this.type = type;
+            }
+            setUrl(url) {
+                if (!url) return;
+                this.url = url;
+            }
+            getCode() {
+                return `<iframe style="height:100%; width: 100%; border: none; position: fixed; top: 0; right: 0; left: 0; bottom: 0; border: none" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation" src="${this.url}"></iframe>`;
+            }
+            open() {
+                if (this.type === "blank") {
+                    try {
+                        var page = window.open('about:blank');
+                        if (!page) {
+                            throw new Error('Popup blocked');
+                        }
+                        page.document.body.innerHTML = this.getCode();
+                        return page;
+                    } catch (e) {
+                        alert("Fatal Error:\n\nNAME: ERR_POPUP_BLOCKED\nDESCRIPTION: Allow pop-ups to enable tab cloaking and try again.");
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // Cookie and cloak handling
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function inIframe() {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return true;
+            }
+        }
+
+        function cloak(url, absolute = false) {
+            url = absolute ? url : window.location.href.replace(/\/$/, "") + url;
+            if (window.doCloak) {
+                var page = new ABC({
+                    type: "blank",
+                    url: url
+                });
+                page.setType("blank");
+                page.setUrl(url);
+                var win = page.open();
+                if (!win) {
+                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                    window.doCloak = false;
+                    return false;
+                }
+                return true;
+            } else {
+                window.location.href = url;
+            }
+        }
+
+        function toggleCloak() {
+            if (getCookie("cloak")) {
+                document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                window.doCloak = false;
+                window.location.reload();
+            } else {
+                document.cookie = "cloak=1; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                window.doCloak = true;
+                cloak(window.location.href, true);
+            }
+        }
+
+        // Initialize cloak state
+        window.addEventListener('load', () => {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            if (!inIframe() && getCookie("cloak") && !urlParams.get("disable")) {
+                window.doCloak = true;
+                if (cloak(window.location.href, true)) {
+                    window.location.replace("https://google.com");
+                }
+            } else {
+                if (!inIframe()) {
+                    document.cookie = "cloak=; expires=Thu, 18 Dec 2099 12:00:00 UTC";
+                    window.doCloak = false;
+                } else {
+                    window.doCloak = true;
+                }
+            }
+        });
+
+        // Intercept game card clicks
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = card.getAttribute('href');
+                const gameName = card.getAttribute('data-name');
+                cloak(url, true);
+                gtag("event", "click_game", {
+                    event_category: "game",
+                    event_label: gameName,
+                });
+            });
+        });
+
+        // Other existing scripts
+        particlesJS.load('particles-js', 'particles.json', function () {
+            console.log('particles.json loaded...');
+        });
+
+        function filterGames() {
+            const searchInput = document.getElementById('game-search').value.toLowerCase();
+            const games = document.querySelectorAll('.game-card');
+            games.forEach(game => {
+                const name = game.dataset.name.toLowerCase();
+                if (name.includes(searchInput)) {
+                    game.style.display = 'block';
+                } else {
+                    game.style.display = 'none';
+                }
+            });
+        }
+
+        // Chat widget scripts
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        let welcomed = false;
+        let feedbackMode = false;
+        let feedbackType = null;
+        let feedbackConversation = [];
+        const GEMINI_API_KEY = 'AIzaSyC8ExoCzx1s2jKu8lq79zFnWAde6H3Z7nU';
+        const DISCORD_WEBHOOK_URL = 'https://webhook.newstargeted.com/api/webhooks/1416597497597657088/HTWPobDqk1JORAq_-pVajGB6FTNkpMD4B4qL6Y2R3bYSN7k3Um5pV_PB4As03wKWhdRq';
+        const FEEDBACK_WEBHOOK_URL = 'https://webhook.newstargeted.com/api/webhooks/1416615100902805586/C2-lb20InKaUOQzwKrGUU0DwatLTeEeV2JyCCP0S9JZrRRtdWZBl50KWEF3H541rZmLD';
+        let conversationHistory = [];
+        // Only one authorized user - no blacklist needed
+        const AUTHORIZED_EMAIL = 'lking12960@gmail.com';
+
+        // Send message to Discord webhook
+        async function sendToDiscordWebhook(email, userMessage, botReply) {
+            if (feedbackMode) return;
+            try {
+                await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: `**User Email**: ${email}\n**User Message**: ${userMessage}\n**Bot Reply**: ${botReply}`
+                    })
+                });
+            } catch (error) {
+                console.error('Error sending to Discord webhook:', error);
+            }
+        }
+
+        // Send feedback to Discord webhook
+        async function sendFeedbackToDiscordWebhook(email, feedbackData) {
+            try {
+                await fetch(FEEDBACK_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: feedbackData
+                    })
+                });
+            } catch (error) {
+                console.error('Error sending feedback to Discord webhook:', error);
+            }
+        }
+
+        chatButton.addEventListener('click', () => {
+            chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+            if (chatWindow.style.display === 'flex') {
+                const userEmail = localStorage.getItem('user_email') || 'Unknown';
+                if (userEmail !== AUTHORIZED_EMAIL) {
+                    addMessage('bot', 'You are unauthorized to use this chatbot.');
+                    chatInput.disabled = true;
+                    chatInput.placeholder = 'Chat disabled';
+                    return;
+                }
+                if (!welcomed) {
+                    addMessage('bot', 'Hello! How can I assist you today?');
+                    welcomed = true;
+                }
+                chatInput.focus();
+            }
+        });
+
+        async function sendMessage() {
+            const userEmail = localStorage.getItem('user_email') || 'Unknown';
+            if (userEmail !== AUTHORIZED_EMAIL) {
+                addMessage('bot', 'You are unauthorized to use this chatbot.');
+                return;
+            }
+
+            const message = chatInput.value.trim();
+            if (!message) return;
+            addMessage('user', message);
+            chatInput.value = '';
+
+            // Admin panel removed - no external configuration needed
+
+            if (message.toLowerCase() === 'feedback' && !feedbackMode) {
+                feedbackMode = true;
+                conversationHistory = [];
+                addMessage('bot', '1 = Suggestion\n2 = Report Blocked Game\n\nPlease respond with either "1" or "2" based on what you will be sending.');
+                return;
+            }
+
+            if (feedbackMode) {
+                feedbackConversation.push({ role: 'user', content: message });
+
+                if (!feedbackType) {
+                    if (message === '1') {
+                        feedbackType = 'suggestion';
+                        addMessage('bot', 'Please respond with your suggestion.');
+                    } else if (message === '2') {
+                        feedbackType = 'blocked_game';
+                        addMessage('bot', 'Please respond with the name of the blocked game.');
+                    } else {
+                        addMessage('bot', 'Invalid input. Please respond with either "1" or "2".');
+                    }
+                } else {
+                    const feedbackData = feedbackType === 'suggestion' 
+                        ? `**Responders Email**: ${userEmail}\n**Suggestion**: ${message}`
+                        : `**Responders Email**: ${userEmail}\n**Blocked Game**: ${message}`;
+                    
+                    await sendFeedbackToDiscordWebhook(userEmail, feedbackData);
+                    addMessage('bot', 'Thank you for your input on the L Unblocked Games site, your response will be reviewed soon. To continue using the regular chatbot, please refresh the page.');
+                    chatInput.disabled = true;
+                    chatInput.placeholder = 'Refresh to continue';
+                    feedbackMode = false;
+                    feedbackType = null;
+                }
+                return;
+            }
+
+            conversationHistory.push({ role: 'user', content: message });
+
+            const contents = conversationHistory.map(msg => ({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.content }]
+            }));
+
+            try {
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-goog-api-key': GEMINI_API_KEY
+                    },
+                    body: JSON.stringify({
+                        contents: contents,
+                        generationConfig: {
+                            temperature: 0.7,
+                            topP: 0.95,
+                            maxOutputTokens: 100
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API request failed with status ${response.status}: ${errorText}`);
+                }
+
+                const data = await response.json();
+                let botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I couldn\'t generate a response.';
+                if (!botReply) {
+                    botReply = 'Sorry, I couldn\'t generate a response.';
+                }
+
+                addMessage('bot', botReply);
+                conversationHistory.push({ role: 'assistant', content: botReply });
+
+                await sendToDiscordWebhook(userEmail, message, botReply);
+            } catch (error) {
+                console.error('Error details:', error);
+                addMessage('bot', `Sorry, there was an error. Please check the console for details. Status: ${error.message}`);
+                await sendToDiscordWebhook(userEmail, message, 'Error: ' + error.message);
+            }
+        }
+
+        function addMessage(sender, text) {
+            const div = document.createElement('div');
+            div.classList.add('message', sender);
+            div.textContent = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            if (feedbackMode) {
+                feedbackConversation.push({ role: sender, content: text });
+            }
+        }
+
+        function handleKeyUp(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Admin Panel Functions - DISABLED
+        // System now only accepts lking12960@gmail.com with no external configuration
+        function openAdminPanel() {
+            alert('Admin panel has been disabled. System now uses local authentication only.');
+        }
+
+        function closeAdminPopup() {
+            // Admin panel disabled
+        }
+
+        function saveAdminChanges() {
+            // Admin panel disabled
+        }
+
+        // No external config loading needed - local authentication only
+        window.addEventListener('load', async () => {
+            console.log('Worksheets page loaded - local authentication system active');
+        });
+    </script>
+
+    <script src="js/app.js"></script>
+    <script src="js/particles.js"></script>
+
+    <footer style="color: gray; font-style: italic; font-size: 0.9em; text-align: center; padding: 1em; margin-top: 50px; border-top: 1px solid #ccc;">
+        Please do not play these games in school without permission. Doing so can result in losing a computer or other school punishment. You also agree that we are using analysis to collect data like how you are on the website, how many live users are on our website, and what games you play.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!-- Popup HTML -->
+<div id="welcome-popup" class="popup-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="popup-title" aria-hidden="true">
+  <div class="popup-content">
+    <h2 id="popup-title"></h2>
+    <p id="popup-body"></p>
+    <div style="display:flex; gap:12px; justify-content:center;">
+      <button onclick="closePopup()" class="close-btn">Close</button>
+      <button onclick="dontShowAgain()" class="close-btn">Ok, don’t show again</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Styles -->
+<style>
+  .popup-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+  .popup-content {
+    background-color: #444;
+    color: white;
+    border: 2px solid white;
+    padding: 30px 40px;
+    text-align: center;
+    border-radius: 10px;
+    width: 450px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .popup-content h2 { margin-bottom: 15px; }
+  .popup-content p { line-height: 1.5; font-size: 1.1rem; }
+  .close-btn {
+    margin-top: 25px;
+    padding: 10px 25px;
+    background-color: #444;
+    color: white;
+    border: 2px solid white;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+  .close-btn:hover {
+    background-color: white;
+    color: #444;
+    border-color: #444;
+  }
+</style>
+
+<!-- Master Script Wrapper -->
+<script>
+(function safeRunner(){
+  try {
+    // --- Local Authentication System ---
+    // No external API dependencies
+
+    // Escape text to prevent XSS
+    function escapeText(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Convert newlines to <br> for content
+    function formatContent(text) {
+      return escapeText(text).replace(/\n/g, '<br>');
+    }
+
+    // Close (temporary hide)
+    function closePopup() {
+      try {
+        const el = document.getElementById("welcome-popup");
+        if (!el) return;
+        el.style.display = "none";
+        el.setAttribute("aria-hidden", "true");
+      } catch(e){ console.error("Popup close error", e); }
+    }
+    window.closePopup = closePopup;
+
+    // Don't show again (persist dismissal)
+    function dontShowAgain() {
+      try {
+        localStorage.setItem(DISMISS_KEY, POPUP_VERSION);
+        closePopup();
+      } catch(e){ console.error("DontShowAgain error", e); }
+    }
+    window.dontShowAgain = dontShowAgain;
+
+    // --- Auth Check ---
+    (function() {
+      try {
+        const SITE_VERSION = "6.5";
+        
+        // System expiration date: December 10, 2025 at 12:00 PM (noon)
+        const SYSTEM_EXPIRY = new Date('2025-12-10T12:00:00');
+        
+        // Check if system has expired
+        function isSystemExpired() {
+          return new Date() >= SYSTEM_EXPIRY;
+        }
+        
+        // Clear old site version data
+        if (localStorage.getItem("site_version") !== SITE_VERSION) {
+          localStorage.clear();
+          localStorage.setItem("site_version", SITE_VERSION);
+        }
+        
+        // Check if system has expired - kick out all users after expiration
+        if (isSystemExpired()) {
+          console.log('System expired - clearing authentication and redirecting');
+          localStorage.removeItem("user_authenticated");
+          localStorage.removeItem("user_email");
+          localStorage.removeItem("login_timestamp");
+          
+          // Show expiration message and redirect
+          document.body.innerHTML = `
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; font-family: Arial, sans-serif; background-color: #282828; color: white;">
+              <h1 style="color: #ff6b6b; margin-bottom: 20px;">System Access Expired</h1>
+              <p style="color: #ccc; font-size: 18px; max-width: 600px; line-height: 1.6;">
+                This system expired on December 10, 2025 at 12:00 PM (noon).<br>
+                All user sessions have been terminated.
+              </p>
+              <p style="color: #888; font-size: 14px; margin-top: 30px;">
+                Redirecting to sign-in page in 3 seconds...
+              </p>
+            </div>
+          `;
+          
+          setTimeout(() => {
+            window.location.href = "https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/signin.html";
+          }, 3000);
+          return;
+        }
+        
+        // Normal authentication check for active system
+        if (localStorage.getItem("user_authenticated") !== "true") {
+          setTimeout(() => {
+            window.location.href = "https://cool-math-worksheets-1.s3.us-east-1.amazonaws.com/signin.html";
+          }, 0);
+        }
+        
+      } catch(e){ console.error("Auth check error", e); }
+    })();
+
+    // --- No External Config Loading ---
+    // System now uses local authentication only - no external popup configuration
+    window.addEventListener("load", async function(){
+      try {
+        console.log("Page loaded - local authentication system active");
+        // No external configuration needed
+      } catch(err) {
+        console.error("Page load error:", err);
+      }
+    });
+
+    // --- Panic Key ---
+    window.addEventListener("keydown", function(e){
+      try {
+        if (e.key === "`" || e.key === "~" || e.code === "Backquote") {
+          window.location.href = "https://clever.com/oauth/saml/login?target=NWU4M2IwYzI2YTBkOTIwMDAxZjE4YzY3;NGM2M2MxY2Y2MjNkY2U4MmNhYWM=;aHR0cHM6Ly9jbGV2ZXIuY29tL2luL2F1dGhfY2FsbGJhY2s=;OGNkZjY5ZjdlZTNhMjQ1ZGYyMzhiMGFkMDhiYTA4N2MzOWZkMDg1ZTRkM2VmOTQwY2M3NDQyNzI2ZjkxOWNjZg==;Y29kZQ==";
+        }
+      } catch(err){ console.error("Panic key error", err); }
+    });
+
+    // --- Google Analytics ---
+    try {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-ELC1SXB08M');
+    } catch(e){ console.error("GA error", e); }
+
+  } catch(e) {
+    console.error("Fatal script error", e);
+  }
+})();
+</script>
+
+<!-- Google Analytics Loader -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ELC1SXB08M"></script>
